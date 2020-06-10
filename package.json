@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "immutable": "^4.0.0-rc.12",
     "vue": "^2.6.11",
     "vuex": "^3.4.0"
   },

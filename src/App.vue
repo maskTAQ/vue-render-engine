@@ -1,28 +1,36 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Engine mode="h5" :dataInject="dataInject" :nodeInject="nodeInject" :bridge="bridge" />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Engine from "@/Engine";
+import Bridge from "@/Engine/utils/Bridge";
+import { dataInject } from "@/utils";
+import nodeInject from "./components";
+
+const bridge = new Bridge();
+window.bridge = bridge;
 
 export default {
-  name: 'App',
+  name: "App",
+  data() {
+    return {
+      dataInject,
+      nodeInject,
+      bridge
+    };
+  },
   components: {
-    HelloWorld
+    Engine
+  },
+  mounted() {
+    //像引擎发送一个 EVENTS.NODE_MOVE 命令
+    //bridge.execute({ type: bridge.command.EVENTS.NODE_MOVE, data: { x: 0, y: 0 } });
   }
-}
+};
 </script>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
