@@ -1,6 +1,7 @@
 //状态同步类 负责 同步 引擎和配置面板的数据通信
 export default class Bridge {
     command = null;
+    record = null;
     zIndexControl = null;
     //事件存储器
     eventStore = {
@@ -41,6 +42,10 @@ export default class Bridge {
     //注册 命令对象 由引擎在适当的时机注入
     setCommand = command => {
         this.command = command;
+    };
+    //注册 记录实例 由引擎在适当的时机注入
+    setRecord = record => {
+        this.record = record;
     };
     setZIndexControl = zIndexControl => {
         this.zIndexControl = zIndexControl;
