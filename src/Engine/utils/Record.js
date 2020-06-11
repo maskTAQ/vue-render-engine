@@ -17,16 +17,10 @@ export default class Record {
         this.history = this.history.push(record);
         //更新指针 执行操作队列最后一刻
         this.point = this.history.size - 1;
-        console.log({
-            history: this.history,
-            historyJs: this.history.toJS(),
-            point: this.point
-        })
     }
     back(step = 1) {
         const { history, point, command } = this;
         const nextPoint = point - step;
-        console.log('call back')
         if (nextPoint >= -1 && nextPoint < history.size) {
             //获取记录区间 step步之内的记录:
             history.slice(nextPoint + 1, point + 1).forEach(record => {
@@ -36,12 +30,13 @@ export default class Record {
                 });
             });
             this.point = nextPoint;
-            return Promise.resolve();
+            return Promise.resolve('后退成功');
         } else {
             return Promise.reject('超出记录范围');
         }
     }
     forward(step = 1) {
+		//如果没有步数说明没回退过
         const { history, point, command } = this;
         const nextPoint = point + step;
         if (nextPoint >= -1 && nextPoint < history.size) {
@@ -53,7 +48,7 @@ export default class Record {
                 });
             });
             this.point = nextPoint;
-            return Promise.resolve();
+            return Promise.resolve('前进成功');
         } else {
             return Promise.reject('超出记录范围');
         }
