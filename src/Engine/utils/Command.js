@@ -31,6 +31,15 @@ const TRIGGER_TYPE = {
 const NEED_RECORD_TRIGGER_TYPE = [TRIGGER_TYPE.INTERACTION];
 //加入记录控制的事件类型
 const NEED_RECORD_EVENT = [EVENTS.NODE_ADD];
+
+const RESULT = {
+    RESOLVE(v) {
+        return Promise.resolve(v);
+    },
+    REJECT(e) {
+        return Promise.reject(e);
+    },
+};
 export default class Command {
     constructor(config) {
         const { store, getRecord } = config;
@@ -41,15 +50,18 @@ export default class Command {
     //事件触发来源
     TRIGGER_TYPE = TRIGGER_TYPE
     execute = datasource => {
+
         //事件类型 数据 触发命令的来源 历史数据（如果触发来源是回退时此项有数据）
         const { type, data, trigger = this.TRIGGER_TYPE.INTERACTION, record } = datasource;
         //是否是回退命令触发的事件
-        const IS_BACK = type === TRIGGER_TYPE.RECORD_MANAGE_BACK;
+        const IS_BACK = trigger === TRIGGER_TYPE.RECORD_MANAGE_BACK;
         //如果此触发源的命令需要添加进记录
         if (NEED_RECORD_TRIGGER_TYPE.includes(trigger) && NEED_RECORD_EVENT.includes(type)) {
             const record = this.getRecord();
             record.add(datasource);
         }
+        //命令的执行结果
+        let commandResult;
         const store = this.store.get();
         switch (type) {
             case EVENTS.NODE_MOVE: {
@@ -60,7 +72,12 @@ export default class Command {
                 let nodes = store.nodes;
                 const { insert, insertIndex } = data;
                 if (IS_BACK) {
-                    console.log('这是是处理 NODE_ADD 回退的逻辑');
+                    if (Array.isArray(insert)) {
+                        nodes = nodes.splice(insertIndex, insert.length);
+                    } else {
+                        nodes = nodes.delete(insertIndex);
+                    }
+                    commandResult = RESULT.RESOLVE('撤退(添加)成功');
                 } else {
                     if (Array.isArray(insert)) {
                         insert.forEach((node, i) => {
@@ -69,19 +86,24 @@ export default class Command {
                     } else {
                         nodes = nodes.insert(insertIndex, insert);
                     }
-                    this.store.set({
-                        key: 'nodes',
-                        value: nodes
-                    });
+                    commandResult = RESULT.RESOLVE('添加成功');
                 }
+                this.store.set({
+                    key: 'nodes',
+                    value: nodes
+                });
+
                 break;
             }
             case EVENTS.BACK: {
-                return this.getRecord().back();
+                commandResult = this.getRecord().back(data);
+                break;
             }
             case EVENTS.FORWARD: {
-                this.getRecord().forward();
+                commandResult = this.getRecord().forward(data);
+                break;
             }
         }
+        return commandResult;
     }
 }
