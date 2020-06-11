@@ -8,6 +8,7 @@ export default class Record {
     history = List();
     //当前页面状态指针位置
     point = -1;
+	
     add = (record) => {
         const { point } = this;
         //删除指针之后的记录

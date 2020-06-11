@@ -1,5 +1,6 @@
 export default {
     input(h, node) {
-        return <input type="text" />
+        return <div> <span>{node.label}</span>
+		<input type="text" /></div>
     }
 }
