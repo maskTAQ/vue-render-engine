@@ -175,19 +175,26 @@ export default class Command {
 			case EVENTS.NODE_EDIT:
 				//bridge.execute({type:bridge.command.EVENTS.NODE_EDIT,data:{edit:{type:'input',i:1,label:'我是被修改后的'},editIndex:0}})
 				{
+					if (IS_BACK) {
+						
+					}
+					else{
 					let nodes = store.nodes;
 					const {
 						edit,
 						editIndex
 					} = data;
 					nodes = nodes.set(editIndex, edit)
+					// get = nodes.get(editIndex, edit)
 					console.log(nodes, 'nodes')
 					this.store.set({
 						key: 'nodes',
 						value: nodes
 					})
 					break;
+					}
 				}
+				
 		}
 		//如果此触发源的命令需要添加进记录
 		if (NEED_RECORD_TRIGGER_TYPE.includes(trigger) && NEED_RECORD_EVENT.includes(type)) {
