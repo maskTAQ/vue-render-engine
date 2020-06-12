@@ -18,4 +18,10 @@ export const DATA = {
             })
     }
 };
+/**
+*判断差异是否在范围之内
+**/
+export function isDiffInTheRange(diff, rang) {
+    return !(diff > 0 ? diff - rang > 0 : diff + rang < 0);
+}
 export const EMPTY_LIST = List();

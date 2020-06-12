@@ -1,6 +1,7 @@
 <script>
 import { DATA, EMPTY_LIST } from "./utils";
 import Command from "./utils/Command";
+import CommandCollect from "./utils/CommandCollect";
 import Record from "./utils/Record";
 import Layout from "./Layout";
 
@@ -48,6 +49,7 @@ export default {
       },
       getRecord: () => this.bridge.record
     });
+
     //初始化记录模块
     this.record = new Record(this.command);
     //注册命令模块到 桥
@@ -57,14 +59,31 @@ export default {
     //引擎挂载时请求数据
     DATA.GET_CANVAS.call(this);
   },
+  mounted() {
+    //初始化命令收集器
+    this.commandCollect = new CommandCollect(
+      {
+        engineContainer: this.$refs.engine
+      },
+      this.command
+    );
+  },
   render() {
     //引擎渲染入口 拆分为不同的场景 比如 移动浮层渲染层 组件渲染层
     const { nodeInject, status, nodes, mode } = this;
     return (
-      <div class="engine">
+      <div class="engine" ref="engine">
         <Layout nodeInject={nodeInject} nodes={nodes} mode={mode} />
       </div>
     );
   }
 };
 </script>
+<style lang="scss">
+  .engine{
+    margin: 20px;
+    width: 300px;
+    height: 500px;
+    border: 1px solid red;
+  }
+</style>
