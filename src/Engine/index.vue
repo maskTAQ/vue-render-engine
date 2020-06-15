@@ -4,7 +4,7 @@ import Command from "./utils/Command";
 import CommandCollect from "./utils/CommandCollect";
 import Record from "./utils/Record";
 import Layout from "./Layout";
-
+import bj from "../assets/bj.png"
 export default {
   name: "engine",
   props: {
@@ -74,16 +74,18 @@ export default {
     return (
       <div class="engine" ref="engine">
         <Layout nodeInject={nodeInject} nodes={nodes} mode={mode} />
+		
       </div>
     );
   }
 };
 </script>
+
 <style lang="scss">
   .engine{
-    margin: 20px;
+    margin: 69px 10px;
     width: 300px;
     height: 500px;
-    border: 1px solid red;
   }
+  
 </style>

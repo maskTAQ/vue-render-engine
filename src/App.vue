@@ -5,7 +5,10 @@
 				<MainLeft></MainLeft>
 			</a-col>
 			<a-col :span="8">
+				<div class="hb">
+					<img src="./assets/bj.png" alt="" class="bj">
 				<Engine mode="h5" :dataInject="dataInject" :nodeInject="nodeInject" :bridge="bridge" />
+				</div>
 			</a-col>
 			<!-- <a-col :span="8">
 				配置
@@ -47,4 +50,16 @@
 </script>
 
 <style lang="scss">
+	#app{
+		.bj{
+			         width: 327px;
+			         height: 591px;
+			         box-shadow: 2px 3px 6px 3px #EEEEEE;
+			         border-radius: 16px;
+			         position: absolute;
+			         z-index: -1;
+			         left: -4px;
+			         top: 31px;
+		}
+	}
 </style>
