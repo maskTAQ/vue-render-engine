@@ -147,7 +147,6 @@ export default class Command {
                     commandResult = this.getRecord().back(data);
                     break;
                 }
-
             case EVENTS.FORWARD:
                 {
                     commandResult = this.getRecord().forward(data);

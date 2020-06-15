@@ -12,8 +12,8 @@ import Bridge from "@/Engine/utils/Bridge";
 import { dataInject } from "@/utils";
 import nodeInject from "./components";
 
-const bridge = new Bridge();
-window.bridge = bridge;
+	const bridge = new Bridge();
+	window.bridge = bridge;
 
 export default {
   name: "App",
