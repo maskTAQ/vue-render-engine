@@ -18,7 +18,7 @@ export default {
   render(h) {
     const { nodes, nodeInject, mode } = this;
     return (
-      <div class="layout">
+      <div class="layout"draggable="true">
         {nodes
           .map(node => nodeInject.get(h, mode, node))
           .toJS()

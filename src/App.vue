@@ -1,11 +1,13 @@
 <template>
   <div id="app">
+	<MainLeft></MainLeft>
     <Engine mode="h5" :dataInject="dataInject" :nodeInject="nodeInject" :bridge="bridge" />
   </div>
 </template>
 
 <script>
 import Engine from "@/Engine";
+import MainLeft from "@/components/mainLeft";
 import Bridge from "@/Engine/utils/Bridge";
 import { dataInject } from "@/utils";
 import nodeInject from "./components";
@@ -23,7 +25,7 @@ export default {
     };
   },
   components: {
-    Engine
+    Engine,MainLeft
   },
   mounted() {
     //像引擎发送一个 EVENTS.NODE_MOVE 命令
