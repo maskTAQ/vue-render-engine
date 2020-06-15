@@ -11,7 +11,7 @@ export default class CommandCollect {
         const o = "orientationchange" in window ? "orientationchange" : "resize";
         if (!config.readonly) {
             document.addEventListener('mousedown', this.handleMousedown, true);
-            config.engineContainer.addEventListener('mousemove', this.tryMove, true);
+            document.addEventListener('mousemove', this.tryMove, true);
             document.addEventListener('mouseup', this.handleMouseup, true);
         }
         window.addEventListener(o, this.debounceResize());
@@ -19,7 +19,7 @@ export default class CommandCollect {
     destroy() {
         const o = "orientationchange" in window ? "orientationchange" : "resize";
         document.removeEventListener('mousedown', this.handleMousedown);
-        this.engineContainer.removeEventListener('mousemove', this.tryMove);
+        document.removeEventListener('mousemove', this.tryMove);
         document.removeEventListener('mouseup', this.handleMouseup);
         window.removeEventListener(o, this.debounceResize());
     }
@@ -62,22 +62,22 @@ export default class CommandCollect {
     }
     getTarget(dom) {
         const { attributes, className = '', id } = dom;
-
-        //if (attributes && attributes['data-module'] && attributes['data-module'].nodeValue === 'yes') {
-        return {
-            type: 'move',
-            //      moduleId: id,
-            selfDom: dom,
-            dom
-        };
-        //}
+        if (attributes && attributes['data-engine-node']) {
+            const nodeType = dom.attributes['data-node-type'].value;
+            return {
+                type: 'move',
+                trigger: dom,
+                dom,
+                nodeType
+            };
+        }
         if (className.includes && className.includes('resizable-handler')) {
             const moduleDom = dom.parentNode.childNodes[0];
             return {
                 type: 'resize',
                 direction: className.split(' ')[0],
                 moduleId: moduleDom.id,
-                selfDom: dom,
+                trigger: dom,
                 dom: dom.parentNode
             };
         }
@@ -86,7 +86,7 @@ export default class CommandCollect {
             return {
                 type: 'rotate',
                 moduleId: moduleDom.id,
-                selfDom: dom,
+                trigger: dom,
                 dom: dom.parentNode
             };
         }
@@ -96,14 +96,13 @@ export default class CommandCollect {
             return false;
         }
     }
-    isCanvas = (e) => {
-        console.log(e, 'e')
+    isEngine = (e) => {
         const { id } = e;
         if (e === this.engineContainer) {
             return e;
         }
         if (e.parentElement) {
-            return this.isCanvas(e.parentElement);
+            return this.isEngine(e.parentElement);
         } else {
             return false;
         }
@@ -143,10 +142,11 @@ export default class CommandCollect {
         this.statusTag.inMove = false;
     }
     tryMove = e => {
-        const { clientX, clientY, offsetX, offsetY } = e;
+
+        const { clientX, clientY, offsetX, offsetY, pageX, pageY } = e;
         const { execute, EVENTS } = this.command;
         const { startX, startY } = this.statusTag['clickOffset.px'];
-        const { type, direction, moduleId, dom } = this.statusTag.target;
+        const { type, direction, moduleId, dom, nodeType } = this.statusTag.target;
         //是否是第一次移动
         let isStartMove = false;
         //移动的幅度大于2才算移动
@@ -188,18 +188,22 @@ export default class CommandCollect {
                 execute({
                     type: EVENTS.NODE_MOVEING,
                     data: {
-                        type,
-                        direction,
-                        dom,
-                        offset: pxConverPointWithObject(this.statusTag['offset.px']),
-                        groups: _.uniq([
-                            moduleId,
-                            //'test'
-                        ])
+                        pageX,
+                        pageY,
+                        nodeType,
+                        inEngine: !!this.isEngine(e.target)
+                        // type,
+                        // direction,
+                        // dom,
+                        // offset: pxConverPointWithObject(this.statusTag['offset.px']),
+                        // groups: _.uniq([
+                        //     moduleId,
+                        //     //'test'
+                        // ])
                     }
                 });
             }
-            console.log(offsetX, offsetY)
+            //console.log(offsetX, offsetY)
         }
 
         return true;
@@ -220,7 +224,7 @@ export default class CommandCollect {
         const eventType = numberOfMoveFail >= 1 && now - prevSingleClickTimeStamp <= 300 ? 'doubleClick' : 'click';
 
         if (eventType === 'click') {
-            if (moduleId) {
+           // if (moduleId) {
                 if (inMove) {
                     execute({
                         type: EVENTS.NODE_MOVE_COMPLETE,
@@ -241,14 +245,14 @@ export default class CommandCollect {
                         data: moduleId
                     });
                 }
-            } else {
-                //没有则判断点击的dom是不是冒泡到canvas
-                if (this.isCanvas(e.target)) {
-                    execute({
-                        type: EVENTS.CLICK_CANVAS
-                    });
-                }
-            }
+            // } else {
+            //     //没有则判断点击的dom是不是冒泡到canvas
+            //     if (this.isEngine(e.target)) {
+            //         execute({
+            //             type: EVENTS.CLICK_CANVAS
+            //         });
+            //     }
+            // }
         }
 
         if (eventType === 'doubleClick') {
@@ -259,7 +263,7 @@ export default class CommandCollect {
                 });
             } else {
                 //没有则判断点击的dom是不是冒泡到canvas
-                if (this.isCanvas(e.target)) {
+                if (this.isEngine(e.target)) {
                     execute({
                         type: EVENTS.DOUBLECLICK_CANVAS,
                         data: moduleId
