@@ -27,6 +27,6 @@ export function mock({ timeout = 1000, data, success = true }) {
 }
 export const dataInject = {
     getCanvas() {
-        return mock({ data: [{ type: 'input',label:"输入框",id:'001' }] });
+        return mock({ data: [{ type: 'input',label:"输入框",id:'001' },{ type: 'input',label:"输入框",id:'002' }] });
     }
 }
