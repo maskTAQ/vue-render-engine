@@ -6,14 +6,14 @@ const EVENTS = {
     BACK: 'BACK',
     FORWARD: 'FORWARD',
 
-    NODE_START_MOVE:'NODE_START_MOVE',
-    DOUBLECLICK_CANVAS:'DOUBLECLICK_CANVAS',
-    DOUBLECLICK_NODE:'DOUBLECLICK_NODE',
-    RESIZE:'RESIZE',
-    NODE_MOVEING:'NODE_MOVEING',
-    NODE_MOVE_COMPLETE:'NODE_MOVE_COMPLETE',
-    CLICK_NODE:'CLICK_NODE',
-    CLICK_CANVAS:'CLICK_CANVAS'
+    NODE_START_MOVE: 'NODE_START_MOVE',
+    DOUBLECLICK_CANVAS: 'DOUBLECLICK_CANVAS',
+    DOUBLECLICK_NODE: 'DOUBLECLICK_NODE',
+    RESIZE: 'RESIZE',
+    NODE_MOVEING: 'NODE_MOVEING',
+    NODE_MOVE_COMPLETE: 'NODE_MOVE_COMPLETE',
+    CLICK_NODE: 'CLICK_NODE',
+    CLICK_CANVAS: 'CLICK_CANVAS'
 };
 
 function or() { };
@@ -71,7 +71,6 @@ export default class Command {
     //事件触发来源
     TRIGGER_TYPE = TRIGGER_TYPE
     execute = datasource => {
-        console.log(datasource, 'datasource');
         //事件类型 数据 触发命令的来源 record:历史数据（如果触发来源是回退时此项有数据）
         const {
             type,
@@ -108,7 +107,6 @@ export default class Command {
                         } else {
                             nodes = nodes.delete(insertIndex);
                         }
-                        console.log(insert, nodes, insertIndex)
                         commandResult = RESULT.RESOLVE('撤退(添加)成功');
                     } else {
                         if (Array.isArray(insert)) {
@@ -126,23 +124,35 @@ export default class Command {
                     });
                     break;
                 }
+            case EVENTS.NODE_START_MOVE: {
+                //此步骤需要是实例化一个节点
+                console.log(data, 'NODE_START_MOVE,此步骤需要是实例化一个节点')
+                break;
+            }
+            case EVENTS.NODE_MOVEING: {
+                //此步骤需要是控制实例化节点的位置
+                const { pageX, pageY, nodeType, inEngine } = data;
+                //inEngine 来判断光标是否在引擎中
+                console.log({
+                    pageX, pageY, nodeType, inEngine
+                },'来判断光标是否在引擎中');
+                break;
+            }
+            case EVENTS.NODE_MOVE_COMPLETE: {
+                //此步骤需要是销毁 NODE_START_MOVE 实例化的空间
+                break;
+            }
             case EVENTS.BACK:
                 {
                     commandResult = this.getRecord().back(data);
                     break;
                 }
-            // {
-            // 	this.getRecord().forward(data);
-            // 	commandResult = this.getRecord().back(data);
-            // 	break;
-            // }
             case EVENTS.FORWARD:
                 {
                     commandResult = this.getRecord().forward(data);
                     break;
                 }
             // bridge.execute({type:bridge.command.EVENTS.DELETE_NODE,data:['input']});//删多个
-            // bridge.execute({type:bridge.command.EVENTS.DELETE_NODE,data:'input'})//删一个
             case EVENTS.DELETE_NODE:
                 {
                     const {
