@@ -8,6 +8,7 @@ import Record from "./utils/Record";
 import Layout from "./Layout";
 import Layer from "./Layer";
 
+import bj from "../assets/bj.png";
 export default {
   name: "engine",
   props: {
@@ -87,10 +88,19 @@ export default {
   }
 };
 </script>
+
 <style lang="scss">
 * {
   margin: 0;
   padding: 0;
+
+  moz-user-select: -moz-none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 .engine {
   position: relative;
