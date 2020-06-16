@@ -15,7 +15,7 @@ export default {
       this.data,
       ["process", "isShowMoveNodeGlobal", "moveData"]
     );
-    console.log(process, "process");
+    
     switch (process) {
       case "start": {
         this.injectNodeToRoot();
