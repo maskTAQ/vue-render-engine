@@ -1,4 +1,4 @@
-import { List } from 'immutable';
+import { List, Map } from 'immutable';
 
 import { LoadingControl } from "@/utils";
 
@@ -24,4 +24,64 @@ export const DATA = {
 export function isDiffInTheRange(diff, rang) {
     return !(diff > 0 ? diff - rang > 0 : diff + rang < 0);
 }
+export const MapUtils = {
+    getKeys(map, keys, fullKey = false) {
+        const result = {};
+        keys.forEach(key => {
+            const keyPath = key.split('@');
+            if (fullKey) {
+                result[key] = map.getIn(keyPath);
+            } else {
+                result[keyPath[keyPath.length - 1]] = map.getIn(keyPath);
+            }
+
+        });
+        return result;
+    },
+    setKeys(map, keys) {
+        let next = map;
+        for (const key in keys) {
+            const keyPath = key.split('@');
+            if (keyPath.length === 1) {
+                next = next.set(key, keys[key]);
+            } else {
+                next = next.setIn(keyPath, keys[key]);
+            }
+        }
+        return next;
+    },
+    insertKeys(map, keys) {
+        let next = map;
+        for (const key in keys) {
+            const keyPath = key.split('@');
+            const { insertIndex, value } = keys[key];
+            if (keyPath.length === 1) {
+                let root = next.get(key);
+                root = root.insert(insertIndex, value);
+                next = next.set(key, root);
+            } else {
+                let root = next.getIn(keyPath);
+                root = root.insert(insertIndex, value);
+                next = next.setIn(keyPath, root)
+            }
+        }
+
+        return next;
+    },
+    mergeKeys(map, keys) {
+        let next = map;
+        for (const key in keys) {
+            const keyPath = key.split('@');
+            next = next.mergeIn(keyPath, keys[key]);
+            // if (keyPath.length === 1) {
+            //     console.log(key,'key',next,next.get(key));
+            //     next = next.get(key).merge(keys[key]);
+            // } else {
+
+            // }
+        }
+        return next;
+    }
+};
 export const EMPTY_LIST = List();
+export const EMPTY_OBJECT = Map();

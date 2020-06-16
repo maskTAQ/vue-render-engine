@@ -1,9 +1,12 @@
 <script>
-import { DATA, EMPTY_LIST } from "./utils";
+import { Map } from "immutable";
+
+import { DATA, EMPTY_LIST, EMPTY_OBJECT } from "./utils";
 import Command from "./utils/Command";
 import CommandCollect from "./utils/CommandCollect";
 import Record from "./utils/Record";
 import Layout from "./Layout";
+import Layer from "./Layer";
 
 export default {
   name: "engine",
@@ -34,7 +37,11 @@ export default {
       status: {
         canvas: "init"
       },
-      nodes: EMPTY_LIST
+      nodes: EMPTY_LIST,
+      layer: Map({
+        isShowMoveNodeGlobal: false,
+        moveData: {}
+      })
     };
   },
   created() {
@@ -70,20 +77,26 @@ export default {
   },
   render() {
     //引擎渲染入口 拆分为不同的场景 比如 移动浮层渲染层 组件渲染层
-    const { nodeInject, status, nodes, mode } = this;
+    const { nodeInject, status, nodes, mode, layer } = this;
     return (
       <div class="engine" ref="engine">
         <Layout nodeInject={nodeInject} nodes={nodes} mode={mode} />
+        <Layer data={layer} />
       </div>
     );
   }
 };
 </script>
 <style lang="scss">
-  .engine{
-    margin: 20px;
-    width: 300px;
-    height: 500px;
-    border: 1px solid red;
-  }
+* {
+  margin: 0;
+  padding: 0;
+}
+.engine {
+  position: relative;
+  margin: 20px;
+  width: 300px;
+  height: 500px;
+  border: 1px solid red;
+}
 </style>

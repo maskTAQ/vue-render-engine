@@ -5,8 +5,9 @@ const DEFAULT_PROPS = {
     },
 };
 export default {
-    input(h, node) {
+    input(h, node, mode) {
         const { props = DEFAULT_PROPS.INPUT } = node;
+        const isRenderByMenu = mode === 'menu';
         return (
             <div class="field" data-engine-node={true} data-node-type="input">
                 <span class="label">{props.label || DEFAULT_PROPS.INPUT.label}</span>
