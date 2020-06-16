@@ -15,7 +15,7 @@ export default {
       this.data,
       ["process", "isShowMoveNodeGlobal", "moveData"]
     );
-    
+
     switch (process) {
       case "start": {
         this.injectNodeToRoot();
@@ -65,7 +65,8 @@ export default {
     }
   },
   render(h) {
-    return <div class="layer">{this.data}</div>;
+      this.data
+    return null;
   }
 };
 </script>
