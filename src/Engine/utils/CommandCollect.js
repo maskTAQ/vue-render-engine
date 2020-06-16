@@ -68,7 +68,10 @@ export default class CommandCollect {
                 type: 'move',
                 trigger: dom,
                 dom,
-                nodeType
+                node: {
+                    type: nodeType,
+                    from: 'add'
+                }
             };
         }
         if (className.includes && className.includes('resizable-handler')) {
@@ -146,7 +149,7 @@ export default class CommandCollect {
         const { clientX, clientY, offsetX, offsetY, pageX, pageY } = e;
         const { execute, EVENTS } = this.command;
         const { startX, startY } = this.statusTag['clickOffset.px'];
-        const { type, direction, moduleId, dom, nodeType } = this.statusTag.target;
+        const { type, direction, moduleId, dom, node } = this.statusTag.target;
         //是否是第一次移动
         let isStartMove = false;
         //移动的幅度大于2才算移动
@@ -156,12 +159,7 @@ export default class CommandCollect {
         }
         if (type) {
             if (this.statusTag.inMove) {
-                if (isStartMove) {
-                    execute({
-                        type: EVENTS.NODE_START_MOVE,
-                        data: this.statusTag.target
-                    });
-                }
+
                 if (type === 'move') {
                     const { x, y } = this.getCanvasScroll();
                     //位置的偏移量等于 clientX的差异 和 cavans的滚动位置的 和
@@ -184,24 +182,31 @@ export default class CommandCollect {
                         y: clientY
                     };
                 }
+                if (isStartMove) {
+                    execute({
+                        type: EVENTS.NODE_START_MOVE,
+                        data: {
+                            ...this.statusTag.target,
+                            location: {
+                                left: pageX,
+                                top: pageY
+                            }
+                        }
+                    });
+                } else {
+                    execute({
+                        type: EVENTS.NODE_MOVEING,
+                        data: {
+                            node,
+                            inEngine: !!this.isEngine(e.target),
+                            location: {
+                                left: pageX,
+                                top: pageY
+                            }
+                        }
+                    });
+                }
 
-                execute({
-                    type: EVENTS.NODE_MOVEING,
-                    data: {
-                        pageX,
-                        pageY,
-                        nodeType,
-                        inEngine: !!this.isEngine(e.target)
-                        // type,
-                        // direction,
-                        // dom,
-                        // offset: pxConverPointWithObject(this.statusTag['offset.px']),
-                        // groups: _.uniq([
-                        //     moduleId,
-                        //     //'test'
-                        // ])
-                    }
-                });
             }
             //console.log(offsetX, offsetY)
         }
@@ -224,27 +229,27 @@ export default class CommandCollect {
         const eventType = numberOfMoveFail >= 1 && now - prevSingleClickTimeStamp <= 300 ? 'doubleClick' : 'click';
 
         if (eventType === 'click') {
-           // if (moduleId) {
-                if (inMove) {
-                    execute({
-                        type: EVENTS.NODE_MOVE_COMPLETE,
-                        data: {
-                            type,
-                            direction,
-                            dom,
-                            offset: pxConverPointWithObject(this.statusTag['offset.px']),
-                            groups: _.uniq([
-                                moduleId,
-                                //'test'
-                            ])
-                        }
-                    });
-                } else {
-                    execute({
-                        type: EVENTS.CLICK_NODE,
-                        data: moduleId
-                    });
-                }
+            // if (moduleId) {
+            if (inMove) {
+                execute({
+                    type: EVENTS.NODE_MOVE_COMPLETE,
+                    data: {
+                        type,
+                        direction,
+                        dom,
+                        offset: pxConverPointWithObject(this.statusTag['offset.px']),
+                        groups: _.uniq([
+                            moduleId,
+                            //'test'
+                        ])
+                    }
+                });
+            } else {
+                execute({
+                    type: EVENTS.CLICK_NODE,
+                    data: moduleId
+                });
+            }
             // } else {
             //     //没有则判断点击的dom是不是冒泡到canvas
             //     if (this.isEngine(e.target)) {
