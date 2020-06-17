@@ -7,12 +7,21 @@ const DEFAULT_PROPS = {
 export default {
     input(h, node, mode) {
         const { props = DEFAULT_PROPS.INPUT } = node;
-        const isRenderByMenu = mode === 'menu';
+		 const isRenderByMenu = mode === 'menu';
+		if(isRenderByMenu){
+		return (
+			    <div class="field" data-engine-node={true} data-node-type="input">
+			        <span class="label">{props.label || DEFAULT_PROPS.INPUT.label}</span>
+			    </div>
+			)
+		}
+		else{
         return (
             <div class="field" data-engine-node={true} data-node-type="input">
                 <span class="label">{props.label || DEFAULT_PROPS.INPUT.label}</span>
                 <input type="text" placeholder={props.placeholder || DEFAULT_PROPS.placeholder} />
             </div>
         )
+		}
     }
 }

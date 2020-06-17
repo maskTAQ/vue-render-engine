@@ -8,6 +8,7 @@ export default {
   render(h) {
     return (
       <div class="node-menu">
+
         {nodeInject.getList().map(render => render(h, {}, "menu"))}
       </div>
     );
