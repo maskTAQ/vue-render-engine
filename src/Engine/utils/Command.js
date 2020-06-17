@@ -151,17 +151,17 @@ export default class Command {
                 });
 				 // console.log(data,'this.store')
                 //此步骤需要是控制实例化节点的位置
-                const { pageX, pageY, node, inEngine } = data;
-                //inEngine 来判断光标是否在引擎中
-				console.log( pageX, pageY, node, inEngine,'inEngine')
-				// if(inEngine){
+                const { pageX, pageY, node, isCursorInEngine } = data;
+                //isCursorInEngine 来判断光标是否在引擎中
+				console.log( isCursorInEngine,'isCursorInEngine')
+				// if(isCursorInEngine){
 				// 	this.store.set({
 				// 	    key: 'nodes',
 				// 	    value: nodes.insert(0, node)
 				// 	});
 				// }
                 // console.log({
-                //     pageX, pageY, inEngine, node
+                //     pageX, pageY, isCursorInEngine, node
                 // });
                 break;
             }

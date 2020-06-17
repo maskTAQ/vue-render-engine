@@ -60,6 +60,8 @@ export default class CommandCollect {
             type: this.command.EVENTS.RESIZE
         });
     }
+    isCursorisCursorInEngine = false;
+
     getTarget(dom) {
         const { attributes, className = '', id } = dom;
         if (attributes && attributes['data-engine-node']) {
@@ -100,7 +102,6 @@ export default class CommandCollect {
         }
     }
     isEngine = (e) => {
-        const { id } = e;
         if (e === this.engineContainer) {
             return e;
         }
@@ -140,15 +141,24 @@ export default class CommandCollect {
                 offsetX,
                 offsetY
             };
+
             this.statusTag.target = target;
         }
         this.statusTag.inMove = false;
+    }
+    cursorisCursorInEngine = e => {
+        const p = {
+            x: e.pageX - document.documentElement.scrollLeft,
+            y: e.pageY - document.documentElement.scrollTop,
+        }
+        var rect = this.engineContainer.getBoundingClientRect();
+        return Math.min(p.x, rect.x) === rect.x && Math.max(p.x, rect.x + rect.width) === rect.x + rect.width && Math.min(p.y, rect.y) === rect.y && Math.max(p.y, rect.y + rect.height) === rect.y + rect.height
     }
     tryMove = e => {
 
         const { clientX, clientY, pageX, pageY } = e;
         const { execute, EVENTS } = this.command;
-        const { startX, startY ,offsetX, offsetY, } = this.statusTag['clickOffset.px'];
+        const { startX, startY, offsetX, offsetY, } = this.statusTag['clickOffset.px'];
         const { type, direction, moduleId, dom, node } = this.statusTag.target;
         //是否是第一次移动
         let isStartMove = false;
@@ -159,34 +169,34 @@ export default class CommandCollect {
         }
         if (type) {
             if (this.statusTag.inMove) {
-
-                if (type === 'move') {
-                    const { x, y } = this.getCanvasScroll();
-                    //位置的偏移量等于 clientX的差异 和 cavans的滚动位置的 和
-                    this.statusTag['offset.px'] = {
-                        left: clientX - this.statusTag['clickOffset.px'].startX - x,
-                        top: clientY - this.statusTag['clickOffset.px'].startY - y
-                    }
-                }
-                if (type === 'resize') {
-                    const deltaX = clientX - this.statusTag['clickOffset.px'].startX
-                    const deltaY = clientY - this.statusTag['clickOffset.px'].startY
-                    this.statusTag['offset.px'] = {
-                        deltaX,
-                        deltaY
-                    };
-                }
-                if (type === 'rotate') {
-                    this.statusTag['offset.px'] = {
-                        x: clientX,
-                        y: clientY
-                    };
-                }
+                // if (type === 'move') {
+                //     const { x, y } = this.getCanvasScroll();
+                //     //位置的偏移量等于 clientX的差异 和 cavans的滚动位置的 和
+                //     this.statusTag['offset.px'] = {
+                //         left: clientX - this.statusTag['clickOffset.px'].startX - x,
+                //         top: clientY - this.statusTag['clickOffset.px'].startY - y
+                //     }
+                // }
+                // if (type === 'resize') {
+                //     const deltaX = clientX - this.statusTag['clickOffset.px'].startX
+                //     const deltaY = clientY - this.statusTag['clickOffset.px'].startY
+                //     this.statusTag['offset.px'] = {
+                //         deltaX,
+                //         deltaY
+                //     };
+                // }
+                // if (type === 'rotate') {
+                //     this.statusTag['offset.px'] = {
+                //         x: clientX,
+                //         y: clientY
+                //     };
+                // }
                 if (isStartMove) {
                     execute({
                         type: EVENTS.NODE_START_MOVE,
                         data: {
                             ...this.statusTag.target,
+                            isCursorInEngine: this.cursorisCursorInEngine(e),
                             location: {
                                 left: pageX,
                                 top: pageY
@@ -198,7 +208,7 @@ export default class CommandCollect {
                         type: EVENTS.NODE_MOVEING,
                         data: {
                             node,
-                            inEngine: !!this.isEngine(e.target),
+                            isCursorInEngine: this.cursorisCursorInEngine(e),
                             location: {
                                 left: pageX - offsetX,
                                 top: pageY - offsetY
