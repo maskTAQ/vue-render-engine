@@ -152,6 +152,7 @@ export default class CommandCollect {
             y: e.pageY - document.documentElement.scrollTop,
         }
         var rect = this.engineContainer.getBoundingClientRect();
+		console.log(rect,'rect')
         return Math.min(p.x, rect.x) === rect.x && Math.max(p.x, rect.x + rect.width) === rect.x + rect.width && Math.min(p.y, rect.y) === rect.y && Math.max(p.y, rect.y + rect.height) === rect.y + rect.height
     }
     tryMove = e => {

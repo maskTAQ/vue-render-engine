@@ -7,13 +7,14 @@
 			<a-col :span="8">
 				<div class="hb">
 					<img src="./assets/bj.png" alt="" class="bj">
-				 <Engine trigger mode="h5" :dataInject="dataInject" :nodeInject="nodeInject" :bridge="bridge" />
+				    <Engine trigger mode="h5" :dataInject="dataInject" :nodeInject="nodeInject" :bridge="bridge" />
 				</div>
 			</a-col>
-			
-			<!-- <a-col :span="8">
-				配置
-			</a-col> -->
+			<a-col :span="8">
+				<div>
+					<input type="text" placeholder="默认值">
+				</div>
+			</a-col>
 		</a-row>
 	</div>
 </template>
