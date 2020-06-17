@@ -104,9 +104,9 @@ export default {
 }
 .engine {
   position: relative;
-  margin: 20px;
+  margin: 69px 10px;
   width: 300px;
   height: 500px;
-  border: 1px solid red;
+  border: 1px solid pink;
 }
 </style>

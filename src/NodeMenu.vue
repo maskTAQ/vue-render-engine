@@ -8,11 +8,8 @@ export default {
   render(h) {
     return (
       <div class="node-menu">
-<<<<<<< HEAD
-        {nodeInject.getList().map(render => render(h, {},'menu'))}
-=======
+
         {nodeInject.getList().map(render => render(h, {}, "menu"))}
->>>>>>> 4f7e452cb90f66142ca3e0387a6c8e6824115eb3
       </div>
     );
   },
