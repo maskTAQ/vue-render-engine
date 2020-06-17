@@ -140,8 +140,6 @@ export default class Command {
             }
             case EVENTS.NODE_MOVEING: {
                 const { layer } = store;
-				
-				let nodes = store.nodes;
                 this.store.set({
                     key: 'layer',
                     value: MapUtils.setKeys(layer, {
@@ -149,20 +147,19 @@ export default class Command {
                         moveData: data
                     })
                 });
-				 // console.log(data,'this.store')
+				 console.log(data,'this.store')
                 //此步骤需要是控制实例化节点的位置
-                const { pageX, pageY, node, isCursorInEngine } = data;
-                //isCursorInEngine 来判断光标是否在引擎中
-				console.log( isCursorInEngine,'isCursorInEngine')
-				// if(isCursorInEngine){
-				// 	this.store.set({
-				// 	    key: 'nodes',
-				// 	    value: nodes.insert(0, node)
-				// 	});
-				// }
-                // console.log({
-                //     pageX, pageY, isCursorInEngine, node
-                // });
+                const { pageX, pageY, node, inEngine } = data;
+                //inEngine 来判断光标是否在引擎中
+				if(inEngine){
+					// this.store.set({
+					//     key: 'nodes',
+					//     value: nodes.insert(0, node)
+					// });
+				}
+                console.log({
+                    pageX, pageY, inEngine, node
+                });
                 break;
             }
             case EVENTS.NODE_MOVE_COMPLETE: {
