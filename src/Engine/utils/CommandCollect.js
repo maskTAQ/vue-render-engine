@@ -146,9 +146,9 @@ export default class CommandCollect {
     }
     tryMove = e => {
 
-        const { clientX, clientY, offsetX, offsetY, pageX, pageY } = e;
+        const { clientX, clientY, pageX, pageY } = e;
         const { execute, EVENTS } = this.command;
-        const { startX, startY } = this.statusTag['clickOffset.px'];
+        const { startX, startY ,offsetX, offsetY, } = this.statusTag['clickOffset.px'];
         const { type, direction, moduleId, dom, node } = this.statusTag.target;
         //是否是第一次移动
         let isStartMove = false;
@@ -200,8 +200,8 @@ export default class CommandCollect {
                             node,
                             inEngine: !!this.isEngine(e.target),
                             location: {
-                                left: pageX,
-                                top: pageY
+                                left: pageX - offsetX,
+                                top: pageY - offsetY
                             }
                         }
                     });
