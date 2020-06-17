@@ -1,5 +1,5 @@
 import { MapUtils } from './index';
-
+import { TYPE as LayerType } from "../Layer.vue";
 const EVENTS = {
     NODE_MOVE: 'NODE_MOVE',
     NODE_ADD: 'NODE_ADD',
@@ -8,10 +8,10 @@ const EVENTS = {
     BACK: 'BACK',
     FORWARD: 'FORWARD',
 
-    NODE_START_MOVE: 'NODE_START_MOVE',
     DOUBLECLICK_CANVAS: 'DOUBLECLICK_CANVAS',
     DOUBLECLICK_NODE: 'DOUBLECLICK_NODE',
     RESIZE: 'RESIZE',
+    NODE_START_MOVE: 'NODE_START_MOVE',
     NODE_MOVEING: 'NODE_MOVEING',
     NODE_MOVE_COMPLETE: 'NODE_MOVE_COMPLETE',
     CLICK_NODE: 'CLICK_NODE',
@@ -131,38 +131,21 @@ export default class Command {
                 this.store.set({
                     key: 'layer',
                     value: MapUtils.setKeys(layer, {
-                        process: 'start',
-                        isShowMoveNodeGlobal: true,
-                        moveData: data
+                        type: LayerType.NODE_START_MOVE,
+                        data
                     })
                 })
                 break;
             }
             case EVENTS.NODE_MOVEING: {
                 const { layer } = store;
-				
-				let nodes = store.nodes;
                 this.store.set({
                     key: 'layer',
                     value: MapUtils.setKeys(layer, {
-                        process: 'moveing',
-                        moveData: data
+                        type: LayerType.NODE_MOVEING,
+                        data
                     })
                 });
-				 // console.log(data,'this.store')
-                //此步骤需要是控制实例化节点的位置
-                const { pageX, pageY, node, isCursorInEngine } = data;
-                //isCursorInEngine 来判断光标是否在引擎中
-				console.log( isCursorInEngine,'isCursorInEngine')
-				// if(isCursorInEngine){
-				// 	this.store.set({
-				// 	    key: 'nodes',
-				// 	    value: nodes.insert(0, node)
-				// 	});
-				// }
-                // console.log({
-                //     pageX, pageY, isCursorInEngine, node
-                // });
                 break;
             }
             case EVENTS.NODE_MOVE_COMPLETE: {
@@ -170,9 +153,8 @@ export default class Command {
                 this.store.set({
                     key: 'layer',
                     value: MapUtils.setKeys(layer, {
-                        process: 'end',
-                        isShowMoveNodeGlobal: false,
-                        moveData: null
+                        type: LayerType.NODE_MOVE_COMPLETE,
+                        data: null
                     })
                 })
                 //此步骤需要是销毁 NODE_START_MOVE 实例化的空间

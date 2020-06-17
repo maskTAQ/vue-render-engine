@@ -151,8 +151,15 @@ export default class CommandCollect {
             x: e.pageX - document.documentElement.scrollLeft,
             y: e.pageY - document.documentElement.scrollTop,
         }
-        var rect = this.engineContainer.getBoundingClientRect();
-        return Math.min(p.x, rect.x) === rect.x && Math.max(p.x, rect.x + rect.width) === rect.x + rect.width && Math.min(p.y, rect.y) === rect.y && Math.max(p.y, rect.y + rect.height) === rect.y + rect.height
+        const rect = this.engineContainer.getBoundingClientRect();
+        const result = Math.min(p.x, rect.x) === rect.x && Math.max(p.x, rect.x + rect.width) === rect.x + rect.width && Math.min(p.y, rect.y) === rect.y && Math.max(p.y, rect.y + rect.height) === rect.y + rect.height
+        return {
+            result,
+            offset: {
+                x: p.x - rect.x,
+                y: p.y - rect.y
+            }
+        }
     }
     tryMove = e => {
 
@@ -191,16 +198,18 @@ export default class CommandCollect {
                 //         y: clientY
                 //     };
                 // }
+                const { result, offset } = this.cursorisCursorInEngine(e);
                 if (isStartMove) {
                     execute({
                         type: EVENTS.NODE_START_MOVE,
                         data: {
                             ...this.statusTag.target,
-                            isCursorInEngine: this.cursorisCursorInEngine(e),
-                            location: {
-                                left: pageX,
-                                top: pageY
-                            }
+                            isCursorInEngine: result,
+                            global: {
+                                x: pageX,
+                                y: pageY
+                            },
+                            offset
                         }
                     });
                 } else {
@@ -208,11 +217,12 @@ export default class CommandCollect {
                         type: EVENTS.NODE_MOVEING,
                         data: {
                             node,
-                            isCursorInEngine: this.cursorisCursorInEngine(e),
-                            location: {
-                                left: pageX - offsetX,
-                                top: pageY - offsetY
-                            }
+                            isCursorInEngine: result,
+                            global: {
+                                x: pageX - offsetX,
+                                y: pageY - offsetY
+                            },
+                            offset
                         }
                     });
                 }

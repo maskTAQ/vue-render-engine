@@ -5,23 +5,24 @@ const DEFAULT_PROPS = {
     },
 };
 export default {
-    input(h, node, mode) {
+    input(h, node, mode = 'render') {
         const { props = DEFAULT_PROPS.INPUT } = node;
-		 const isRenderByMenu = mode === 'menu';
-		if(isRenderByMenu){
-		return (
-			    <div class="field" data-engine-node={true} data-node-type="input">
-			        <span class="label">{props.label || DEFAULT_PROPS.INPUT.label}</span>
-			    </div>
-			)
-		}
-		else{
+        const isRenderByMenu = mode === 'menu';
         return (
-            <div class="field" data-engine-node={true} data-node-type="input">
+            <div class="field" data-engine-node={true} data-mode={mode} data-node-type="input">
                 <span class="label">{props.label || DEFAULT_PROPS.INPUT.label}</span>
                 <input type="text" placeholder={props.placeholder || DEFAULT_PROPS.placeholder} />
             </div>
         )
-		}
+        // if(isRenderByMenu){
+        // return (
+        // 	    <div class="field" data-engine-node={true} data-node-type="input">
+        // 	        <span class="label">{props.label || DEFAULT_PROPS.INPUT.label}</span>
+        // 	    </div>
+        // 	)
+        // }
+        // else{
+
+        // }
     }
 }

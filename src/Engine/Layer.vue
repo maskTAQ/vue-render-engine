@@ -3,6 +3,11 @@ import Vue from "vue";
 import nodeInject from "../components";
 import { MapUtils } from "./utils";
 
+export const TYPE = {
+  NODE_START_MOVE: "NODE_START_MOVE",
+  NODE_MOVEING: "NODE_MOVEING",
+  NODE_MOVE_COMPLETE: "NODE_MOVE_COMPLETE"
+};
 export default {
   name: "Layer",
   props: ["data"],
@@ -11,26 +16,23 @@ export default {
     return {};
   },
   beforeUpdate() {
-    const { process, isShowMoveNodeGlobal, moveData } = MapUtils.getKeys(
-      this.data,
-      ["process", "isShowMoveNodeGlobal", "moveData"]
-    );
+    const { type, data } = MapUtils.getKeys(this.data, ["type", "data"]);
 
-    switch (process) {
-      case "start": {
+    switch (type) {
+      case TYPE.NODE_START_MOVE: {
         this.injectNodeToRoot();
         break;
       }
-      case "moveing": {
-        const { left, top } = moveData.location;
+      case TYPE.NODE_MOVEING: {
+        const { x, y } = data.global;
         this.setStyle(this.nodeGlobal, {
           position: "absolute",
-          left: `${left}px`,
-          top: `${top}px`
+          left: `${x}px`,
+          top: `${y}px`
         });
         break;
       }
-      case "end": {
+      case TYPE.NODE_MOVE_COMPLETE: {
         this.destroyNodeInRoot();
         break;
       }
@@ -39,17 +41,17 @@ export default {
   methods: {
     injectNodeToRoot() {
       if (!this.nodeGlobal) {
-        const moveData = this.data.get("moveData") || {};
+        const data = this.data.get("data") || {};
         const {
           dom,
-          location: { left, top }
-        } = moveData;
+          global: { x, y }
+        } = data;
         const nodeGlobal = dom.cloneNode(true);
         const root = document.getElementById("app");
         this.setStyle(nodeGlobal, {
           position: "absolute",
-          left: `${left}px`,
-          top: `${top}px`
+          left: `${x}px`,
+          top: `${y}px`
         });
         this.nodeGlobal = nodeGlobal;
 
@@ -65,7 +67,7 @@ export default {
     }
   },
   render(h) {
-      this.data
+    this.data;
     return null;
   }
 };
