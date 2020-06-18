@@ -6,10 +6,10 @@ const DEFAULT_PROPS = {
 };
 export default {
     input(h, node, mode = 'render') {
-        const { props = DEFAULT_PROPS.INPUT } = node;
+        const { props = DEFAULT_PROPS.INPUT, id } = node;
         const isRenderByMenu = mode === 'menu';
         return (
-            <div class="field" data-engine-node={true} data-mode={mode} data-node-type="input">
+            <div class="field" data-engine-node={true} data-mode={mode} data-node-id={id} data-node-type="input">
                 <span class="label">{props.label || DEFAULT_PROPS.INPUT.label}</span>
                 <input type="text" placeholder={props.placeholder || DEFAULT_PROPS.placeholder} />
             </div>
@@ -25,9 +25,9 @@ export default {
 
         // }
     },
-	line(h, node, mode = 'render'){
-		 return (
-		 <div data-engine-node={true} data-mode={mode} data-node-type="input">我是一根线</div>
-		 )
-	}
+    line(h, node, mode = 'render') {
+        return (
+            <div data-engine-node={true} data-mode={mode} data-node-type="input">我是一根线</div>
+        )
+    }
 }

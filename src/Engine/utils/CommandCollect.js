@@ -61,18 +61,34 @@ export default class CommandCollect {
         });
     }
     isCursorisCursorInEngine = false;
-
+    attr(dom, key) {
+        const match = dom.attributes[key];
+        return match ? match.value : undefined;
+    }
     getTarget(dom) {
         const { attributes, className = '', id } = dom;
         if (attributes && attributes['data-engine-node']) {
-            const nodeType = dom.attributes['data-node-type'].value;
+            const nodeType = this.attr(dom, 'data-node-type');
+            const nodeId = this.attr(dom, 'data-node-id');
+            const nodeMode = this.attr(dom, 'data-mode');
+            console.log({
+                type: 'move',
+                trigger: dom,
+                dom,
+                node: {
+                    type: nodeType,
+                    from: nodeMode === 'render' ? 'move' : 'add',
+                    id: nodeId
+                }
+            })
             return {
                 type: 'move',
                 trigger: dom,
                 dom,
                 node: {
                     type: nodeType,
-                    from: 'add'
+                    from: nodeMode === 'render' ? 'move' : 'add',
+                    id: nodeId
                 }
             };
         }

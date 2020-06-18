@@ -1,4 +1,4 @@
-import { MapUtils, getInsertIndex } from './index';
+import { MapUtils, getInsertIndex, createId } from './index';
 import { TYPE as LayerType } from "../Layer.vue";
 const EVENTS = {
     NODE_MOVE: 'NODE_MOVE',
@@ -161,6 +161,7 @@ export default class Command {
                     type: EVENTS.NODE_ADD,
                     data: {
                         insert: {
+                            id: createId(data.node.type),
                             type: data.node.type,
                             size: {
                                 height: 40,
