@@ -52,6 +52,7 @@ export default {
           }
         };
         children.splice(
+          //获取插入节点的位置
           this.getInsertIndex(children, offset),
           0,
           this.getWrapper(
@@ -76,23 +77,34 @@ export default {
     getInsertIndex(children, offset) {
       const { px } = this;
       if (children.length) {
-        const y = px.getNumber(offset.y);
+        //或者光标y轴的值
+        const y = offset.y; //px.getNumber(offset.y);
+        //如果节点数量为一个
         if (children.length === 1) {
-          return y > parseFloat(children[0].data.style.height) ? 1 : 0;
+          //如果y轴大于组件的高度 则在后插入 反之在前 组件的高度并不是真实渲染的高度 需要计算出真实渲染的高度
+          return y > parseFloat(px.getNumber(children[0].data.style.height))
+            ? 1
+            : 0;
         }
         let insertIndex;
         const nodeYList = children
-          .map(node => parseFloat(node.data.style.height))
+          //map处理一下 返回每个组件的高度
+          .map(node => parseFloat(px.getNumber(node.data.style.height)))
+          //reduce 遍历一下
           .reduce((n, p, i) => {
+            //n为之前的所有高度 p为下一个组件的高度 i为下一个组件的下标
             switch (true) {
-              case y <= p: {
+              //如果y小于上一个组件的高度 则在上一个位置插入
+              case y <= n: {
+                insertIndex = i - 1;
+                break;
+              }
+              //如果y在上一个组件位置之下 下一个组件位置之上  则插入到下一个组件的位置
+              case y > n && y <= n + p: {
                 insertIndex = i;
                 break;
               }
-              case y > n && n < p: {
-                insertIndex = i + 1;
-                break;
-              }
+              //如果匹配到最后一个节点了 并且之前没有计算出插入的位置 则 在最后一项插入
               case i === children.length && insertIndex === undefined: {
                 insertIndex = i;
               }

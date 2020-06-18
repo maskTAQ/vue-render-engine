@@ -235,7 +235,9 @@ export default class CommandCollect {
     }
 
     handleMouseup = (e) => {
-        const { moduleId, type, direction, dom } = this.statusTag.target;
+        const { pageX, pageY } = e;
+        const { offsetX, offsetY, } = this.statusTag['clickOffset.px'];
+        const { moduleId, node } = this.statusTag.target;
         const { inMove, numberOfMoveFail, prevSingleClickTimeStamp } = this.statusTag;
         const { EVENTS, execute } = this.command;
         const now = Date.now();
@@ -251,17 +253,17 @@ export default class CommandCollect {
         if (eventType === 'click') {
             // if (moduleId) {
             if (inMove) {
+                const { result, offset } = this.cursorisCursorInEngine(e);
                 execute({
                     type: EVENTS.NODE_MOVE_COMPLETE,
                     data: {
-                        type,
-                        direction,
-                        dom,
-                        offset: pxConverPointWithObject(this.statusTag['offset.px']),
-                        groups: _.uniq([
-                            moduleId,
-                            //'test'
-                        ])
+                        node,
+                        isCursorInEngine: result,
+                        global: {
+                            x: pageX - offsetX,
+                            y: pageY - offsetY
+                        },
+                        offset
                     }
                 });
             } else {

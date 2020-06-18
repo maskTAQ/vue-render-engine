@@ -154,7 +154,7 @@ export default class Command {
                     key: 'layer',
                     value: MapUtils.setKeys(layer, {
                         type: LayerType.NODE_MOVE_COMPLETE,
-                        data: null
+                        data
                     })
                 })
                 //此步骤需要是销毁 NODE_START_MOVE 实例化的空间

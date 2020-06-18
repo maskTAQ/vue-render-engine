@@ -33,7 +33,7 @@ export default {
         break;
       }
       case TYPE.NODE_MOVE_COMPLETE: {
-        this.destroyNodeInRoot();
+        this.destroyNodeInRoot(data);
         break;
       }
     }
@@ -58,7 +58,8 @@ export default {
         root.appendChild(nodeGlobal);
       }
     },
-    destroyNodeInRoot() {
+    destroyNodeInRoot(data) {
+      console.log(data, "data");
       this.nodeGlobal.parentNode.removeChild(this.nodeGlobal);
       this.nodeGlobal = null;
     },
