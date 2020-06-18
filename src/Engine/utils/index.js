@@ -99,7 +99,7 @@ export class PX {
         return `${v * this.radio}px`;
     }
     getNumber(v) {
-        return v * this.radio;
+        return parseFloat(v) * this.radio;
     }
     conver(v) {
         return v;

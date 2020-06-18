@@ -81,7 +81,6 @@ export default {
   		        //如果节点数量为一个
   		        if (children.length === 1) {
   		          //如果y轴大于组件的高度 则在后插入 反之在前 组件的高度并不是真实渲染的高度 需要计算出真实渲染的高度
-				        console.log(px.getNumber(children[0].data.style.height),'parseFloat(px.getNumber(children[0].data.style.height))')
   		          return y > parseFloat(px.getNumber(children[0].data.style.height)) ? 1 : 0;
 				 
   		        }
