@@ -24,5 +24,10 @@ export default {
         // else{
 
         // }
-    }
+    },
+	line(h, node, mode = 'render'){
+		 return (
+		 <div data-engine-node={true} data-mode={mode} data-node-type="input">我是一根线</div>
+		 )
+	}
 }

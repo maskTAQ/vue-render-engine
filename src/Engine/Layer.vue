@@ -13,7 +13,9 @@ export default {
   props: ["data"],
   nodeGlobal: null,
   data() {
-    return {};
+    return {
+      moveData:'',
+    };
   },
   beforeUpdate() {
     const { type, data } = MapUtils.getKeys(this.data, ["type", "data"]);
@@ -54,12 +56,10 @@ export default {
           top: `${y}px`
         });
         this.nodeGlobal = nodeGlobal;
-
         root.appendChild(nodeGlobal);
       }
     },
     destroyNodeInRoot(data) {
-      console.log(data, "data");
       this.nodeGlobal.parentNode.removeChild(this.nodeGlobal);
       this.nodeGlobal = null;
     },

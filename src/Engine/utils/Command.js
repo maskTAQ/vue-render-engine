@@ -1,4 +1,4 @@
-import { MapUtils } from './index';
+import { MapUtils, getInsertIndex } from './index';
 import { TYPE as LayerType } from "../Layer.vue";
 const EVENTS = {
     NODE_MOVE: 'NODE_MOVE',
@@ -149,13 +149,29 @@ export default class Command {
                 break;
             }
             case EVENTS.NODE_MOVE_COMPLETE: {
-                const { layer } = store;
+                const { layer, px, nodes } = store;
                 this.store.set({
                     key: 'layer',
                     value: MapUtils.setKeys(layer, {
                         type: LayerType.NODE_MOVE_COMPLETE,
                         data
                     })
+                });
+                this.execute({
+                    type: EVENTS.NODE_ADD,
+                    data: {
+                        insert: {
+                            type: data.node.type,
+                            size: {
+                                height: 40,
+                            }
+                        },
+                        insertIndex: getInsertIndex({
+                            px,
+                            nodes: nodes.toJS(),
+                            offset: data.offset
+                        })
+                    }
                 })
                 //此步骤需要是销毁 NODE_START_MOVE 实例化的空间
                 break;
