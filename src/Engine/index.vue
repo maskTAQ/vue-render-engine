@@ -1,17 +1,18 @@
 <script>
 import { Map } from "immutable";
 
-import { DATA, EMPTY_LIST, EMPTY_OBJECT } from "./utils";
+import { PX, DATA, EMPTY_LIST, EMPTY_OBJECT } from "./utils";
 import Command from "./utils/Command";
 import CommandCollect from "./utils/CommandCollect";
 import Record from "./utils/Record";
 import Layout from "./Layout";
-import Layer from "./Layer";
+import Layer, { TYPE as LayerType } from "./Layer";
 
 import bj from "../assets/bj.png";
 export default {
   name: "engine",
   props: {
+    //数据提供
     dataInject: {
       type: Object,
       required: true
@@ -21,10 +22,12 @@ export default {
       type: Object,
       required: true
     },
+    //节点提供
     nodeInject: {
       type: Object,
       required: true
     },
+    //引擎渲染面试
     mode: {
       type: String,
       default: "auto",
@@ -40,9 +43,11 @@ export default {
       },
       nodes: EMPTY_LIST,
       layer: Map({
-        isShowMoveNodeGlobal: false,
-        moveData: {}
-      })
+        type: "",
+        data: null
+      }),
+      //px计算对象
+      px: null
     };
   },
   created() {
@@ -68,21 +73,34 @@ export default {
     DATA.GET_CANVAS.call(this);
   },
   mounted() {
+    this.px = new PX(this.$refs.engine, {
+      base: 375
+    });
     //初始化命令收集器
     this.commandCollect = new CommandCollect(
       {
-        engineContainer: this.$refs.engine
+        engineContainer: this.$refs.engine,
+        px: this.px
       },
       this.command
     );
   },
   render() {
     //引擎渲染入口 拆分为不同的场景 比如 移动浮层渲染层 组件渲染层
-    const { nodeInject, status, nodes, mode, layer } = this;
+    const { nodeInject, status, nodes, mode, layer, px } = this;
     return (
       <div class="engine" ref="engine">
-        <Layout nodeInject={nodeInject} nodes={nodes} mode={mode} />
-        <Layer data={layer} />
+        {px && [
+          <Layout
+            nodeInject={nodeInject}
+            nodes={nodes}
+            mode={mode}
+            px={px}
+            layer={layer}
+            key="layout"
+          />,
+          <Layer data={layer} key="layer" />
+        ]}
       </div>
     );
   }

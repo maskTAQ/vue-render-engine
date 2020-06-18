@@ -83,5 +83,27 @@ export const MapUtils = {
         return next;
     }
 };
+export class PX {
+    constructor(container, config) {
+        this.container = container;
+        this.base = config.base;
+        this.radio = 1;
+        this.calculationRatio();
+    }
+
+    calculationRatio() {
+        const w = this.container.offsetWidth;
+        this.radio = w / this.base;
+    }
+    get(v) {
+        return `${v * this.radio}px`;
+    }
+    getNumber(v) {
+        return v * this.radio;
+    }
+    conver(v) {
+        return v;
+    }
+}
 export const EMPTY_LIST = List();
 export const EMPTY_OBJECT = Map();
