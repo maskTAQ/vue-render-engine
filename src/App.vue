@@ -10,7 +10,7 @@
 				 <Engine trigger mode="h5" :dataInject="dataInject" :nodeInject="nodeInject" :bridge="bridge" />
 				</div>
 			</a-col>
-			
+			<Setting :bridge="bridge"/>
 			<!-- <a-col :span="8">
 				配置
 			</a-col> -->
@@ -21,6 +21,8 @@
 <script>
 import Engine from "@/Engine";
 import NodeMenu from "@/NodeMenu";
+import Setting from './Seting/index.vue';
+
 import Bridge from "@/Engine/utils/Bridge";
 import { dataInject } from "@/utils";
 import nodeInject from "./components";
@@ -39,7 +41,8 @@ export default {
   },
   components: {
     Engine,
-    NodeMenu
+	NodeMenu,
+	Setting
   },
   mounted() {
     //像引擎发送一个 EVENTS.NODE_MOVE 命令

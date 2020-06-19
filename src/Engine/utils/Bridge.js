@@ -1,26 +1,54 @@
 //状态同步类 负责 同步 引擎和配置面板的数据通信
+function includes(list, v) {
+    //判断list里有没有a数组的项
+    return list.some(item => v.includes(v));
+}
 export default class Bridge {
     command = null;
     record = null;
     zIndexControl = null;
     //事件存储器
     eventStore = {
-        statusPoint: [],
-        store: [],
-        editor: []
+        point: [
+            // {
+            //     fields:'',
+            //     call:function(){}
+            // }
+        ]//数组每一项都是函数
     };
-    //添加时间句柄 enum{statusPoint,store}
-    addEventListener = (key, func) => {
+    findEvent(key, fun) {
+        const list = this.eventStore[key] || [];
+        return list.find(item => item.call === fun);
+    }
+    //添加时间句柄 enum{point}
+    addEventListener = (key, func, fields) => {
         const { eventStore } = this;
-        if (eventStore[key] && !eventStore[key].includes(func)) {
-            eventStore[key].push(func)
+        //如果eventStore[key]存在 并且之前没有注册过这个函数 避免同一个函数多次注册
+        if (eventStore[key] && !this.findEvent(func)) {
+            eventStore[key].push({
+                call: func,
+                fields
+            })
         }
     }
+    //移除
     removeEventListener = (key, func) => {
         const { eventStore } = this;
         if (eventStore[key]) {
-            const i = eventStore[key].findIndex(item => item === func);
+            const i = eventStore[key].findIndex(item => item.call === func);
             eventStore[key].splice(i, 1);
+        }
+    }
+    
+    emit=({ key, fields, old, now })=> {
+        const list = this.eventStore[key]
+        if (list) {
+            const callList = list.filter(({ call,fields: condition }) => {
+                return Array.isArray(fields) ? includes(condition, fields) : condition.includes(fields);
+            });
+            callList.forEach(item => {
+                item.call({ now, old })
+            });
         }
     }
     //获取引擎状态

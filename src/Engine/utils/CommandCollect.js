@@ -56,9 +56,9 @@ export default class CommandCollect {
         return this.cache
     }
     resize = () => {
-        execute({
-            type: this.command.EVENTS.RESIZE
-        });
+        // execute({
+        //     type: this.command.EVENTS.RESIZE
+        // });
     }
     isCursorisCursorInEngine = false;
     attr(dom, key) {

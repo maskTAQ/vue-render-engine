@@ -100,6 +100,7 @@ export default class Command {
                         fields: 'click'
                     });
                 }
+                
                 break;
             }
             case EVENTS.NODE_MOVE:
@@ -253,18 +254,23 @@ export default class Command {
                     }
                     else {
                         let nodes = store.nodes;
+                        console.log(nodes,'nodes')
                         const {
                             edit,
                             editIndex
                         } = data;
-                        nodes = nodes.set(editIndex, edit)
-                        // get = nodes.get(editIndex, edit)
-                        console.log(nodes, 'nodes')
-                        this.store.set({
-                            key: 'nodes',
-                            value: nodes,
-                            fields: 'node'
-                        })
+                        console.log(edit.id,'edit')
+                          for (let index = 0; index < nodes.length; index++) {
+                             if(nodes[index].id == edit.id){
+                                nodes = nodes.set(index,nodes.get(index).merge({label:'12'}))
+                                this.store.set({
+                                    key: 'nodes',
+                                    value: nodes,
+                                    fields: 'node'
+                                })
+                             }
+                          }
+                        
                         break;
                     }
                 }
