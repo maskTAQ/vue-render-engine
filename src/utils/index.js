@@ -35,6 +35,10 @@ export const dataInject = {
                     id: '001',
                     size: {
                         height: 40,
+                    },
+                    props:{
+                        "placeholder": "请输入",
+                        "label": "单行输入框",
                     }
                 }
             ]
