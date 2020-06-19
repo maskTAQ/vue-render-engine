@@ -177,6 +177,10 @@ export default class Command {
                 //此步骤需要是销毁 NODE_START_MOVE 实例化的空间
                 break;
             }
+            case EVENTS.CLICK_NODE:{
+                console.log('data');
+                break;
+            }
             case EVENTS.BACK:
                 {
                     commandResult = this.getRecord().back(data);

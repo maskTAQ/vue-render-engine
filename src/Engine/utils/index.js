@@ -116,7 +116,7 @@ export function getInsertIndex({ px, nodes, offset }) {
         h.forEach((v, i) => {
             h[i] = !i ? h[i] : v + h[i - 1];
         })
-        //找比y小的索引 没有就是最好一项
+        //找比y小的索引 没有就是最后一项
         const i = h.findIndex(v => y <= v);
         return i > -1 ? i : nodes.length;
     } else {

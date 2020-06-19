@@ -46,6 +46,10 @@ export default {
         type: "",
         data: null
       }),
+      point: Map({
+        click: "",
+        doubleClick: ""
+      }),
       //px计算对象
       px: null
     };
