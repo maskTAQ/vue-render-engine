@@ -254,23 +254,20 @@ export default class Command {
                     }
                     else {
                         let nodes = store.nodes;
-                        console.log(nodes,'nodes')
                         const {
                             edit,
                             editIndex
                         } = data;
-                        console.log(edit.id,'edit')
-                          for (let index = 0; index < nodes.length; index++) {
-                             if(nodes[index].id == edit.id){
-                                nodes = nodes.set(index,nodes.get(index).merge({label:'12'}))
-                                this.store.set({
-                                    key: 'nodes',
-                                    value: nodes,
-                                    fields: 'node'
-                                })
-                             }
-                          }
-                        
+                        for (let index = 0; index < nodes.length; index++) {
+                           if(nodes[index].id == edit.id){
+                            nodes = nodes.set(index,nodes.get(index).merge({label:'12'}))
+                           }
+                        }
+                          this.store.set({
+                            key: 'nodes',
+                            value: nodes,
+                            fields: 'node'
+                        })
                         break;
                     }
                 }
