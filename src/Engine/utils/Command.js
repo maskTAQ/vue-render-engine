@@ -89,9 +89,13 @@ export default class Command {
         let commandResult;
         const store = this.store.get();
         switch (type) {
+            case EVENTS.CLICK_NODE:{
+                console.log(datasource,'值')
+                break;
+            }
             case EVENTS.NODE_MOVE:
                 {
-                    console.log(store.nodes, this.store, '我是处理 EVENTS.NODE_MOVE 命令的逻辑');
+                    // console.log(store.nodes, this.store, '我是处理 EVENTS.NODE_MOVE 命令的逻辑');
                     break;
                 }
             // bridge.execute({type:bridge.command.EVENTS.NODE_ADD,data:{insert:[{type:'input',i:1,label:'dsdfs',id:'0002'},{type:'input',i:1,label:'dsdfs',id:'00026'}],insertIndex:0}})
@@ -150,6 +154,7 @@ export default class Command {
             }
             case EVENTS.NODE_MOVE_COMPLETE: {
                 const { layer, px, nodes } = store;
+               console.log(data.node.from,'NODE_MOVE_COMPLETE')
                 this.store.set({
                     key: 'layer',
                     value: MapUtils.setKeys(layer, {
@@ -157,6 +162,7 @@ export default class Command {
                         data
                     })
                 });
+              if(datasource.data.isCursorInEngine && data.node.from === 'add'){
                 this.execute({
                     type: EVENTS.NODE_ADD,
                     data: {
@@ -174,6 +180,7 @@ export default class Command {
                         })
                     }
                 })
+            }
                 //此步骤需要是销毁 NODE_START_MOVE 实例化的空间
                 break;
             }

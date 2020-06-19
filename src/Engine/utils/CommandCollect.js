@@ -71,16 +71,6 @@ export default class CommandCollect {
             const nodeType = this.attr(dom, 'data-node-type');
             const nodeId = this.attr(dom, 'data-node-id');
             const nodeMode = this.attr(dom, 'data-mode');
-            console.log({
-                type: 'move',
-                trigger: dom,
-                dom,
-                node: {
-                    type: nodeType,
-                    from: nodeMode === 'render' ? 'move' : 'add',
-                    id: nodeId
-                }
-            })
             return {
                 type: 'move',
                 trigger: dom,
