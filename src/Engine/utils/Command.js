@@ -89,8 +89,17 @@ export default class Command {
         let commandResult;
         const store = this.store.get();
         switch (type) {
-            case EVENTS.CLICK_NODE:{
-                console.log(datasource,'值')
+            case EVENTS.CLICK_NODE: {
+                const { mode, id } = data;
+                const { point } = store;
+                //只有点击渲染在引擎内的组件才会触发点击
+                if (mode === 'render') {
+                    this.store.set({
+                        key: 'point',
+                        value: point.set('click', id),
+                        fields: 'click'
+                    });
+                }
                 break;
             }
             case EVENTS.NODE_MOVE:
@@ -126,7 +135,8 @@ export default class Command {
                     }
                     this.store.set({
                         key: 'nodes',
-                        value: nodes
+                        value: nodes,
+                        fields: 'node'
                     });
                     break;
                 }
@@ -137,7 +147,8 @@ export default class Command {
                     value: MapUtils.setKeys(layer, {
                         type: LayerType.NODE_START_MOVE,
                         data
-                    })
+                    }),
+                    fields: ['type', 'data']
                 })
                 break;
             }
@@ -148,44 +159,41 @@ export default class Command {
                     value: MapUtils.setKeys(layer, {
                         type: LayerType.NODE_MOVEING,
                         data
-                    })
+                    }),
+                    fields: ['type', 'data']
                 });
                 break;
             }
             case EVENTS.NODE_MOVE_COMPLETE: {
                 const { layer, px, nodes } = store;
-               console.log(data.node.from,'NODE_MOVE_COMPLETE')
                 this.store.set({
                     key: 'layer',
                     value: MapUtils.setKeys(layer, {
                         type: LayerType.NODE_MOVE_COMPLETE,
                         data
-                    })
+                    }),
+                    fields: ['type', 'data']
                 });
-              if(datasource.data.isCursorInEngine && data.node.from === 'add'){
-                this.execute({
-                    type: EVENTS.NODE_ADD,
-                    data: {
-                        insert: {
-                            id: createId(data.node.type),
-                            type: data.node.type,
-                            size: {
-                                height: 40,
-                            }
-                        },
-                        insertIndex: getInsertIndex({
-                            px,
-                            nodes: nodes.toJS(),
-                            offset: data.offset
-                        })
-                    }
-                })
-            }
+                if (datasource.data.isCursorInEngine && data.node.mode === 'menu') {
+                    this.execute({
+                        type: EVENTS.NODE_ADD,
+                        data: {
+                            insert: {
+                                id: createId(data.node.type),
+                                type: data.node.type,
+                                size: {
+                                    height: 40,
+                                }
+                            },
+                            insertIndex: getInsertIndex({
+                                px,
+                                nodes: nodes.toJS(),
+                                offset: data.offset
+                            })
+                        }
+                    })
+                }
                 //此步骤需要是销毁 NODE_START_MOVE 实例化的空间
-                break;
-            }
-            case EVENTS.CLICK_NODE:{
-                console.log('data');
                 break;
             }
             case EVENTS.BACK:
@@ -214,7 +222,8 @@ export default class Command {
                         })
                         this.store.set({
                             key: 'nodes',
-                            value: nodes
+                            value: nodes,
+                            fields: 'node'
                         })
                     } else {
                         const deleteNodeList = [];
@@ -231,7 +240,8 @@ export default class Command {
                     }
                     this.store.set({
                         key: 'nodes',
-                        value: nodes
+                        value: nodes,
+                        fields: 'node'
                     })
                     break;
                 }
@@ -252,7 +262,8 @@ export default class Command {
                         console.log(nodes, 'nodes')
                         this.store.set({
                             key: 'nodes',
-                            value: nodes
+                            value: nodes,
+                            fields: 'node'
                         })
                         break;
                     }

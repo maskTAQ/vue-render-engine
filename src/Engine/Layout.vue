@@ -40,11 +40,11 @@ export default {
 
     if (data && data.isCursorInEngine && type === LayerType.NODE_MOVEING) {
       const {
-        node: { type, from },
+        node: { type, mode },
         isCursorInEngine,
         offset
       } = data;
-      if (from === "add") {
+      if (mode === "menu") {
         const insertNodeData = {
           type: "line",
           props: {
@@ -56,10 +56,10 @@ export default {
         };
         children.splice(
           //获取插入节点的位置
-          getInsertIndex({ px, nodes:nodes.toJS(), offset }),
+          getInsertIndex({ px, nodes: nodes.toJS(), offset }),
           0,
           this.getWrapper(
-            nodeInject.get(h, mode, insertNodeData),
+            nodeInject.get(h, this.mode, insertNodeData),
             insertNodeData
           )
         );

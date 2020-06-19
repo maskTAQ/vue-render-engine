@@ -77,8 +77,8 @@ export default class CommandCollect {
                 dom,
                 node: {
                     type: nodeType,
-                    from: nodeMode === 'render' ? 'move' : 'add',
-                    id: nodeId
+                    id: nodeId,
+                    mode: nodeMode
                 }
             };
         }
@@ -257,35 +257,35 @@ export default class CommandCollect {
         const eventType = numberOfMoveFail >= 1 && now - prevSingleClickTimeStamp <= 300 ? 'doubleClick' : 'click';
 
         if (eventType === 'click') {
-            // if (moduleId) {
-            if (inMove) {
-                const { result, offset } = this.cursorisCursorInEngine(e);
-                execute({
-                    type: EVENTS.NODE_MOVE_COMPLETE,
-                    data: {
-                        node,
-                        isCursorInEngine: result,
-                        global: {
-                            x: pageX - offsetX,
-                            y: pageY - offsetY
-                        },
-                        offset
-                    }
-                });
+            if (node) {
+                if (inMove) {
+                    const { result, offset } = this.cursorisCursorInEngine(e);
+                    execute({
+                        type: EVENTS.NODE_MOVE_COMPLETE,
+                        data: {
+                            node,
+                            isCursorInEngine: result,
+                            global: {
+                                x: pageX - offsetX,
+                                y: pageY - offsetY
+                            },
+                            offset
+                        }
+                    });
+                } else {
+                    execute({
+                        type: EVENTS.CLICK_NODE,
+                        data: node
+                    });
+                }
             } else {
-                execute({
-                    type: EVENTS.CLICK_NODE,
-                    data: moduleId
-                });
+                //没有则判断点击的dom是不是冒泡到canvas
+                if (this.isEngine(e.target)) {
+                    execute({
+                        type: EVENTS.CLICK_CANVAS
+                    });
+                }
             }
-            // } else {
-            //     //没有则判断点击的dom是不是冒泡到canvas
-            //     if (this.isEngine(e.target)) {
-            //         execute({
-            //             type: EVENTS.CLICK_CANVAS
-            //         });
-            //     }
-            // }
         }
 
         if (eventType === 'doubleClick') {

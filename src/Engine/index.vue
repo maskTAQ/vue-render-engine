@@ -60,7 +60,8 @@ export default {
       store: {
         //命令模块参数的数据变更都由 get set函数包装一下 方便后期溯源
         get: () => this,
-        set: ({ key, value }) => {
+        set: ({ key, value, fields }) => {
+          console.log({ key, fields });
           this.$set(this, key, value);
         }
       },
@@ -88,6 +89,9 @@ export default {
       },
       this.command
     );
+  },
+  destroyed() {
+    this.commandCollect.destroy();
   },
   render() {
     //引擎渲染入口 拆分为不同的场景 比如 移动浮层渲染层 组件渲染层
