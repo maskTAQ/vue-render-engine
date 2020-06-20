@@ -10,10 +10,10 @@
 				 <Engine trigger mode="h5" :dataInject="dataInject" :nodeInject="nodeInject" :bridge="bridge" />
 				</div>
 			</a-col>
-			<Setting :bridge="bridge"/>
-			<!-- <a-col :span="8">
-				配置
-			</a-col> -->
+			
+			<a-col :span="8">
+				<Setting :bridge="bridge"/>
+			</a-col>
 		</a-row>
 	</div>
 </template>
@@ -63,5 +63,12 @@ export default {
 			         left: -4px;
 			         top: 31px;
 		}
+	}
+	.line{
+		height: 1px;
+    width: 100%;
+    background: red;
+	display: flex;
+    align-items: center;
 	}
 </style>

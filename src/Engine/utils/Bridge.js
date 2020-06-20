@@ -49,9 +49,8 @@ export default class Bridge {
                 //当fields: condition没传时说明 只要key对就触发
                 return Array.isArray(fields) ? includes(condition, fields) : condition ? condition.includes(fields) : true;
             });
-            console.log(callList, key)
             callList.forEach(item => {
-                item.call({ now, old })
+                item.call({ now, old ,key})
             });
         }
     }

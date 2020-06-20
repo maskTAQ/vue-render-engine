@@ -1,13 +1,18 @@
 <template>
-  <div v-if="node">
+  <div v-if="node" class="seting">
     <div>
-      标题:<input type="text"  :value="node.props.label" @input="onChange" /> 
+      标题:<a-input :value="node.props.label" @input="onChange" />
     </div>
     <div>
-      默认值:<input type="text" :value="node.props.placeholder" @input="onChangePlaceholder" /> 
+      默认值:<a-input :value="node.props.placeholder" @input="onChangePlaceholder" />
     </div>
   </div>
 </template>
+<style>
+.seting{
+  
+}
+</style>
 <script>
 import Bridge from "@/Engine/utils/Bridge";
 import Command from "@/Engine/utils/Command";
