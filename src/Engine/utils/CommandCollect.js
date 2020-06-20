@@ -273,9 +273,10 @@ export default class CommandCollect {
                         }
                     });
                 } else {
+                    console.log(e.target.innerHTML,'发送')
                     execute({
                         type: EVENTS.CLICK_NODE,
-                        data: node
+                        data:{node:node,value:e.target.innerHTML}
                     });
                 }
             } else {

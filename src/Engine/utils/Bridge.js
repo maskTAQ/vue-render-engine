@@ -22,7 +22,9 @@ export default class Bridge {
     }
     //添加时间句柄 enum{point}
     addEventListener = (key, func, fields) => {
+        console.log(key, func, fields,'初始化')
         const { eventStore } = this;
+        console.log(eventStore)
         //如果eventStore[key]存在 并且之前没有注册过这个函数 避免同一个函数多次注册
         if (eventStore[key] && !this.findEvent(func)) {
             eventStore[key].push({

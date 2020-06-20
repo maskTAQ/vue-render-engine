@@ -1,6 +1,6 @@
 <template>
   <div v-if="ishow">
-    标题名 <input type="text" v-model="label" @change="onChange">
+    标题名 <input type="text" v-model="label" @input="onChange">
   </div>
 </template>
 <script>
@@ -28,7 +28,10 @@ export default {
   
   methods: {
     onChange(){
-      this.label 
+     this.bridge.execute({type:bridge.command.EVENTS.NODE_EDIT,data:{data:{props:{label:this.label}}}})  
+    },
+    watchNodes(e){
+    console.log(e,'watchNodes')
     },
     watchPoint({now, old}) {
       //通过监听 来同步引擎内 的指针状态
@@ -40,6 +43,7 @@ export default {
   mounted() {
     //第一步监听改变
     this.bridge.addEventListener("point", this.watchPoint, ["click"]);
+    this.bridge.addEventListener("nodesvalue", this.watchNodes, ["click"]);
   },
   destroyed() {
     //卸载 移除句柄

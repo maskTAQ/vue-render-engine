@@ -90,7 +90,7 @@ export default class Command {
         const store = this.store.get();
         switch (type) {
             case EVENTS.CLICK_NODE: {
-                const { mode, id } = data;
+                const { mode, id } = data.node;
                 const { point } = store;
                 //只有点击渲染在引擎内的组件才会触发点击
                 if (mode === 'render') {
@@ -99,8 +99,13 @@ export default class Command {
                         value: point.set('click', id),
                         fields: 'click'
                     });
+                    this.store.set({
+                        key: 'nodesvalue',
+                        value: data.value,
+                        fields: 'click'
+                    });
                 }
-                
+
                 break;
             }
             case EVENTS.NODE_MOVE:
@@ -253,21 +258,24 @@ export default class Command {
 
                     }
                     else {
-                        let nodes = store.nodes;
+                        const {nodes,point} = store;
                         const {
-                            edit,
-                            editIndex
+                            id =point.get('click') ,
+                            data: modify
                         } = data;
-                        for (let index = 0; index < nodes.length; index++) {
-                           if(nodes[index].id == edit.id){
-                            nodes = nodes.set(index,nodes.get(index).merge({label:'12'}))
-                           }
+                       
+                        const index = nodes.findIndex(node => node.id === id);
+                        if (index > -1) {
+                            this.store.set({
+                                key: 'nodes',
+                                value: nodes.mergeDeepIn([index], modify),
+                                fields: 'node'
+                            })
+                            commandResult = RESULT.RESOLVE('编辑成功');
+                        }else{
+                            commandResult = RESULT.REJECT(`找不到id为:${id}的节点`);
                         }
-                          this.store.set({
-                            key: 'nodes',
-                            value: nodes,
-                            fields: 'node'
-                        })
+
                         break;
                     }
                 }
