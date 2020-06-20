@@ -9,6 +9,8 @@ export default class Bridge {
     zIndexControl = null;
     //事件存储器
     eventStore = {
+        //添加存储 nodes监听的函数
+        nodes: [],
         point: [
             // {
             //     fields:'',
@@ -22,9 +24,7 @@ export default class Bridge {
     }
     //添加时间句柄 enum{point}
     addEventListener = (key, func, fields) => {
-        console.log(key, func, fields,'初始化')
         const { eventStore } = this;
-        console.log(eventStore)
         //如果eventStore[key]存在 并且之前没有注册过这个函数 避免同一个函数多次注册
         if (eventStore[key] && !this.findEvent(func)) {
             eventStore[key].push({
@@ -41,13 +41,15 @@ export default class Bridge {
             eventStore[key].splice(i, 1);
         }
     }
-    
-    emit=({ key, fields, old, now })=> {
+
+    emit = ({ key, fields = '', old, now }) => {
         const list = this.eventStore[key]
         if (list) {
-            const callList = list.filter(({ call,fields: condition }) => {
-                return Array.isArray(fields) ? includes(condition, fields) : condition.includes(fields);
+            const callList = list.filter(({ call, fields: condition = '' }) => {
+                //当fields: condition没传时说明 只要key对就触发
+                return Array.isArray(fields) ? includes(condition, fields) : condition ? condition.includes(fields) : true;
             });
+            console.log(callList, key)
             callList.forEach(item => {
                 item.call({ now, old })
             });

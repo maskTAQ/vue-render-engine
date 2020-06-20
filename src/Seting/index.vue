@@ -1,6 +1,11 @@
 <template>
-  <div v-if="ishow">
-    标题名 <input type="text" v-model="label" @input="onChange">
+  <div v-if="node">
+    <div>
+      标题:<input type="text"  :value="node.props.label" @input="onChange" /> 
+    </div>
+    <div>
+      默认值:<input type="text" :value="node.props.placeholder" @input="onChangePlaceholder" /> 
+    </div>
   </div>
 </template>
 <script>
@@ -18,37 +23,63 @@ export default {
   },
   data() {
     return {
-      ishow:false,
-      label:'',
+      ishow: false,
+      label: "",
       point: {
         click: ""
-      }
+      },
+      pointval: {
+        click: ""
+      },
+      node: null
     };
   },
-  
+
   methods: {
-    onChange(){
-     this.bridge.execute({type:bridge.command.EVENTS.NODE_EDIT,data:{data:{props:{label:this.label}}}})  
+    onChange(e) {
+      this.bridge.execute({
+        type: bridge.command.EVENTS.NODE_EDIT,
+        data: { data: { props: { label: e.target.value } } }
+      });
     },
-    watchNodes(e){
-    console.log(e,'watchNodes')
+    onChangePlaceholder(e) {
+      this.bridge.execute({
+        type: bridge.command.EVENTS.NODE_EDIT,
+        data: { data: { props: {placeholder:e.target.value } } }
+      });
     },
-    watchPoint({now, old}) {
+    onNodeChange() {
+      //这个时候拿到的还是上一个状态的 我们把下一个状态的传进来
+      const { nodes, point } = bridge.getEngineState();
+      const selectNodeId = point.toJS().click;
+
+      if (selectNodeId) {
+        const selectNode = nodes.find(node => node.id === selectNodeId);
+        this.node = selectNode;
+        console.log("call onNo88adeChange", this.node);
+      } else {
+        this.node = null;
+      }
+    },
+    watchNodes(e) {
+      console.log(e, "watchNodes");
+    },
+    watchPoint({ now, old }) {
       //通过监听 来同步引擎内 的指针状态
-      console.log(now.toJS(), old.toJS(),'now, old')
+      // console.log(now.toJS(), old.toJS(),'now, old')
       this.point = now.toJS();
-      this.ishow = true
+      this.ishow = true;
     }
   },
   mounted() {
     //第一步监听改变
-    this.bridge.addEventListener("point", this.watchPoint, ["click"]);
-    this.bridge.addEventListener("nodesvalue", this.watchNodes, ["click"]);
+    this.bridge.addEventListener("point", this.onNodeChange, ["click"]);
+    this.bridge.addEventListener("nodes", this.onNodeChange);
   },
   destroyed() {
     //卸载 移除句柄
-    this.bridge.removeEventListener("point", this.watchPoint);
-     this.ishow = false;
+    this.bridge.removeEventListener("point", this.onNodeChange);
+    this.bridge.removeEventListener("nodes", this.onNodeChange);
   }
 };
 </script>

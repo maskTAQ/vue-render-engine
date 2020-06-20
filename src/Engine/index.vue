@@ -61,14 +61,15 @@ export default {
         //命令模块参数的数据变更都由 get set函数包装一下 方便后期溯源
         get: () => this,
         set: ({ key, value, fields }) => {
-          
-          this.bridge.emit({
-            key,
-            fields,
-            now: value,
-            old: this[key]
-          });
           this.$set(this, key, value);
+          this.$nextTick(() => {
+            this.bridge.emit({
+              key,
+              fields,
+              now: value,
+              old: this[key]
+            });
+          });
         }
       },
       getRecord: () => this.bridge.record

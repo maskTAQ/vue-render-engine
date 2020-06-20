@@ -99,11 +99,6 @@ export default class Command {
                         value: point.set('click', id),
                         fields: 'click'
                     });
-                    this.store.set({
-                        key: 'nodesvalue',
-                        value: data.value,
-                        fields: 'click'
-                    });
                 }
 
                 break;
@@ -189,7 +184,8 @@ export default class Command {
                                 type: data.node.type,
                                 size: {
                                     height: 40,
-                                }
+                                },
+                                props:{}
                             },
                             insertIndex: getInsertIndex({
                                 px,
