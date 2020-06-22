@@ -8,6 +8,8 @@ const EVENTS = {
     BACK: 'BACK',
     FORWARD: 'FORWARD',
 
+    NODE_SORT: 'NODE_SORT',
+
     DOUBLECLICK_CANVAS: 'DOUBLECLICK_CANVAS',
     DOUBLECLICK_NODE: 'DOUBLECLICK_NODE',
     RESIZE: 'RESIZE',
@@ -175,6 +177,11 @@ export default class Command {
                     }),
                     fields: ['type', 'data']
                 });
+                const nodeIndex = getInsertIndex({
+                    px,
+                    nodes: nodes.toJS(),
+                    offset: data.offset
+                });
                 if (datasource.data.isCursorInEngine && data.node.mode === 'menu') {
                     this.execute({
                         type: EVENTS.NODE_ADD,
@@ -185,17 +192,38 @@ export default class Command {
                                 size: {
                                     height: 44,
                                 },
-                                props:{}
+                                props: {}
                             },
-                            insertIndex: getInsertIndex({
-                                px,
-                                nodes: nodes.toJS(),
-                                offset: data.offset
-                            })
+                            insertIndex: nodeIndex
                         }
                     })
                 }
-                //此步骤需要是销毁 NODE_START_MOVE 实例化的空间
+                //上面是处理从左侧菜单拖进引擎中的处理 参考这个实现一个更改组件位置的实现
+                if (datasource.data.isCursorInEngine && data.node.mode === 'render') {
+
+                    const oldIndex = nodes.findIndex(node => node.id === data.node.id);
+                    //如果拖动前后的所有相差不超过1 则是在组件附近拖动 没有改变组件的位置
+                    const isIndexChange = oldIndex > nodeIndex + 1 || nodeIndex > oldIndex + 1;
+                    console.log('实现引擎内组件移动', isIndexChange)
+                    if (isIndexChange) {
+                        this.execute({
+                            type: EVENTS.NODE_SORT,
+                            data: {
+                                id: data.node.id,
+                                oldIndex,
+                                index: nodeIndex
+                            }
+                        })
+                    }
+
+                }
+                break;
+            }
+            case EVENTS.NODE_SORT: {
+                console.log(datasource, 'da')
+                nodes.sort(() => {
+                    //根据数据实现排序逻辑
+                })
                 break;
             }
             case EVENTS.BACK:
@@ -254,12 +282,12 @@ export default class Command {
 
                     }
                     else {
-                        const {nodes,point} = store;
+                        const { nodes, point } = store;
                         const {
-                            id =point.get('click') ,
+                            id = point.get('click'),
                             data: modify
                         } = data;
-                       
+
                         const index = nodes.findIndex(node => node.id === id);
                         if (index > -1) {
                             this.store.set({
@@ -268,7 +296,7 @@ export default class Command {
                                 fields: 'node'
                             })
                             commandResult = RESULT.RESOLVE('编辑成功');
-                        }else{
+                        } else {
                             commandResult = RESULT.REJECT(`找不到id为:${id}的节点`);
                         }
 

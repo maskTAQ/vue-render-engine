@@ -147,7 +147,7 @@ export default class CommandCollect {
                 offsetX,
                 offsetY
             };
-
+            console.log(target,'target');
             this.statusTag.target = target;
         }
         this.statusTag.inMove = false;
