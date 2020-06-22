@@ -51,7 +51,7 @@ export default {
             label: "插入"
           },
           size: {
-            height:40
+            height:44
           }
         };
         children.splice(

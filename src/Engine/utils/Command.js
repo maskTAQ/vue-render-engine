@@ -183,7 +183,7 @@ export default class Command {
                                 id: createId(data.node.type),
                                 type: data.node.type,
                                 size: {
-                                    height: 40,
+                                    height: 44,
                                 },
                                 props:{}
                             },

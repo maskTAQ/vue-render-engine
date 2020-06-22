@@ -10,10 +10,10 @@ export default {
         const isRenderByMenu = mode === 'menu';
         return (
             <div class="field" data-engine-node={true} data-mode={mode} data-node-id={id} data-node-type="input">
-               <van-cell-group>
-                <van-field  label={props.label || DEFAULT_PROPS.INPUT.label} placeholder={props.placeholder || DEFAULT_PROPS.placeholder} />
+                <van-cell-group>
+                    <van-field label={props.label || DEFAULT_PROPS.INPUT.label} placeholder={props.placeholder || DEFAULT_PROPS.placeholder} />
                 </van-cell-group>
-             </div>
+            </div>
         )
         // if(isRenderByMenu){
         // return (
@@ -28,7 +28,9 @@ export default {
     },
     line(h, node, mode = 'render') {
         return (
-            <div class="line" data-engine-node={true} data-mode={mode} data-node-type="input">我是一根线</div>
+            <div class="line-box flex-row center" data-engine-node={true} data-mode={mode} data-node-type="input">
+                <div class="line"></div>
+            </div>
         )
     }
 }

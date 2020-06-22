@@ -88,12 +88,18 @@ export class PX {
         this.container = container;
         this.base = config.base;
         this.radio = 1;
+        this.root = window.document.documentElement;
         this.calculationRatio();
     }
 
     calculationRatio() {
         const w = this.container.offsetWidth;
         this.radio = w / this.base;
+        this.setRootFontSize();
+    }
+    setRootFontSize() {
+        const fs = `${this.radio * 100}px`;
+        this.root.style.fontSize = fs;
     }
     get(v) {
         return `${v * this.radio}px`;

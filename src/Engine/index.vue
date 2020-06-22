@@ -138,7 +138,7 @@ export default {
 .engine {
   position: relative;
   margin: 69px 10px;
-  width: 300px;
+  width: 375px;
   height: 500px;
   border: 1px solid pink;
 }
