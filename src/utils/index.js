@@ -34,7 +34,7 @@ export const dataInject = {
                     label: "输入框",
                     id: '001',
                     size: {
-                        height: 40,
+                        height:60,
                     },
                     props:{
                         "placeholder": "请输入",

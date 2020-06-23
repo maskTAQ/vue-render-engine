@@ -51,7 +51,7 @@ export default {
             label: "插入"
           },
           size: {
-            height:40
+            height:100
           }
         };
         children.splice(
@@ -70,9 +70,11 @@ export default {
   },
   methods: {
     getWrapper(child, node) {
+     
       const { height } = node.size;
+       console.log(height,this.px.get(height),'this.px.get(height)')
       return (
-        <div class="node" style={{ height: this.px.get(height) }}>
+        <div class="node" style={{ height:this.px.get(height) }}>
           {child}
         </div>
       );

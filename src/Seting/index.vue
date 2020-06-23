@@ -1,10 +1,10 @@
 <template>
   <div v-if="node" class="seting">
     <div>
-      标题:<a-input :value="node.props.label" @input="onChange(e=>{e,'label'})" />
+      标题:<a-input :value="node.props.label" @input="e=>onChange(e,'label')" />
     </div>
     <div>
-      默认值:<a-input :value="node.props.placeholder" @input="onChange(e=>{e,'placeholder'})" />
+      默认值:<a-input :value="node.props.placeholder" @input="e=>onChange(e,'placeholder')" />
     </div>
   </div>
 </template>
@@ -41,10 +41,10 @@ export default {
   },
 
   methods: {
-    onChange(e,title) {
+    onChange(e,key) {
       this.bridge.execute({
         type: bridge.command.EVENTS.NODE_EDIT,
-        data: { data: { props: { title: e.target.value } } }
+        data: { data: { props: { [key]: e.target.value } } }
       });
     },
     onChangePlaceholder(e) {

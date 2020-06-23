@@ -5,9 +5,8 @@
 			<NodeMenu />
 			</a-col>
 			<a-col :span="8">
-				<div class="hb">
-					<img src="./assets/bj.png" alt="" class="bj">
-				 <Engine trigger mode="h5" :dataInject="dataInject" :nodeInject="nodeInject" :bridge="bridge" />
+				<div class="wf-formcanvas">
+				 <Engine class="wf-formcanvas-inner" trigger mode="h5" :dataInject="dataInject" :nodeInject="nodeInject" :bridge="bridge" />
 				</div>
 			</a-col>
 			
@@ -64,11 +63,25 @@ export default {
 			         top: 31px;
 		}
 	}
-	.line{
-		height: 1px;
-    width: 100%;
-    background: red;
-	display: flex;
-    align-items: center;
-	}
+	.wf-formcanvas {
+    position: absolute;
+    left: 50%;
+    margin-left: -245px;
+    width: 490px;
+    height: 670px;
+    background: url(//img.alicdn.com/tfs/TB1vgDmBntYBeNjy1XdXXXXyVXa-980-1340.png) no-repeat top;
+    background-size: 100% 100%;
+}
+.wf-formcanvas-inner {
+    position: absolute;
+    overflow-x: hidden;
+    overflow-y: auto;
+    width: 292px;
+    height: 480px;
+    left: 50%;
+    margin-left: -146px;
+    top: 4px;
+    max-height: 480px;
+    background: #f6f6f6;
+}
 </style>
