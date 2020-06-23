@@ -21,9 +21,6 @@ const EVENTS = {
 };
 
 function or() { };
-function sortNumber(a,b){
-    return a-b;
-}
 //命令结构说明
 const STRUCTURE = {
     NODE_ADD: {
@@ -193,7 +190,7 @@ export default class Command {
                                 id: createId(data.node.type),
                                 type: data.node.type,
                                 size: {
-                                    height: 44,
+                                    height: 100,
                                 },
                                 props: {}
                             },
@@ -223,10 +220,8 @@ export default class Command {
                 break;
             }
             case EVENTS.NODE_SORT: {
-                //排序方法
-                let nodes = store.nodes;
                 console.log(datasource, 'da')
-                nodes.sort(sortNumber)
+               
                 break;
             }
             case EVENTS.BACK:

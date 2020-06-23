@@ -5,16 +5,16 @@
         <NodeMenu />
       </a-col>
       <a-col :span="8">
-        <div class="wf-formcanvas">
-          <Engine
-            class="wf-formcanvas-inner"
+		  <div class="wf-formcanvas">
+		  <Engine
+		   class="wf-formcanvas-inner"
             trigger
             mode="h5"
             :dataInject="dataInject"
             :nodeInject="nodeInject"
             :bridge="bridge"
           />
-        </div>
+         </div>
       </a-col>
 
       <a-col :span="8">
@@ -98,6 +98,8 @@ export default {
   align-items: center;
 }
 #app {
+	 background-color: #f5f5f9;
+	  height: 100%;
   .bj {
     width: 327px;
     height: 591px;

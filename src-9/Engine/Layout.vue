@@ -44,35 +44,37 @@ export default {
         isCursorInEngine,
         offset
       } = data;
-      //if (mode === "menu") {
-      const insertNodeData = {
-        type: "line",
-        props: {
-          label: "插入"
-        },
-        size: {
-          height: 44
-        }
-      };
-      children.splice(
-        //获取插入节点的位置
-        getInsertIndex({ px, nodes: nodes.toJS(), offset }),
-        0,
-        this.getWrapper(
-          nodeInject.get(h, this.mode, insertNodeData),
-          insertNodeData
-        )
-      );
-      //}
+      if (mode === "menu") {
+        const insertNodeData = {
+          type: "line",
+          props: {
+            label: "插入"
+          },
+          size: {
+            height:100
+          }
+        };
+        children.splice(
+          //获取插入节点的位置
+          getInsertIndex({ px, nodes: nodes.toJS(), offset }),
+          0,
+          this.getWrapper(
+            nodeInject.get(h, this.mode, insertNodeData),
+            insertNodeData
+          )
+        );
+      }
     }
 
     return <div class="layout">{children}</div>;
   },
   methods: {
     getWrapper(child, node) {
+     
       const { height } = node.size;
+       console.log(height,this.px.get(height),'this.px.get(height)')
       return (
-        <div class="node" style={{ height: this.px.get(height) }}>
+        <div class="node" style={{ height:this.px.get(height) }}>
           {child}
         </div>
       );
