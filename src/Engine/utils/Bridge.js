@@ -1,3 +1,4 @@
+
 //状态同步类 负责 同步 引擎和配置面板的数据通信
 function includes(list, v) {
     //判断list里有没有a数组的项
@@ -101,4 +102,4 @@ export default class Bridge {
     getDatasourceData(res) {
         return Promise.resolve(res)
     }
-}
+}                                                   

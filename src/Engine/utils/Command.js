@@ -206,7 +206,7 @@ export default class Command {
 
                     const oldIndex = nodes.findIndex(node => node.id === data.node.id);
                     //如果拖动前后的所有相差不超过1 则是在组件附近拖动 没有改变组件的位置
-                    const isIndexChange = oldIndex > nodeIndex + 1 || nodeIndex > oldIndex + 1;
+                    const isIndexChange = oldIndex >= nodeIndex + 1 || nodeIndex > oldIndex + 1;
                     console.log('实现引擎内组件移动', isIndexChange)
                     if (isIndexChange) {
                         this.execute({
@@ -223,10 +223,27 @@ export default class Command {
                 break;
             }
             case EVENTS.NODE_SORT: {
-                //排序方法
                 let nodes = store.nodes;
-                console.log(datasource, 'da')
-                nodes.sort(sortNumber)
+                function getNodeIndex(nodes,node,change) {
+                    //获取node所在的索引排序
+                    console.log(change,'change')
+                    const index = nodes.indexOf(node);
+                    
+                    if (index === change.oldIndex) {
+                        return change.index
+                    }
+                    return index >= change.index ? index + 1 : index - 1
+                }
+              let  node =  nodes.sort((n, p) => {
+                    const nIndex = getNodeIndex(nodes,n,data), pIndex = getNodeIndex(nodes,p,data);
+                    return nIndex > pIndex ? 1 : -1;
+                })
+                console.log(nodes.toJS(),'移动后的列表')
+                this.store.set({
+                    key: 'nodes',
+                    value: node,
+                    fields: 'node'
+                })
                 break;
             }
             case EVENTS.BACK:
@@ -264,12 +281,14 @@ export default class Command {
                             const {
                                 id
                             } = node;
+                            console.log(node)
                             const isDelete = Array.isArray(data) ? data.includes(id) : id === data;
                             node.oldIndex = index;
                             deleteNodeList.push(node);
                             record = deleteNodeList;
                             return !isDelete; //如果不被删除则返回
                         })
+                        console.log(nodes.toJS())
                     }
                     this.store.set({
                         key: 'nodes',

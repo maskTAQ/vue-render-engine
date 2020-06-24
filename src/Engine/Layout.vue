@@ -31,7 +31,7 @@ export default {
     const { data, type } = layer.toJS();
     const children = nodes
       .map(node => {
-        const { height } = node.size;
+        const { height} = node.size;
         const child = nodeInject.get(h, mode, node);
         return child ? this.getWrapper(child, node) : null;
       })
@@ -48,7 +48,7 @@ export default {
       const insertNodeData = {
         type: "line",
         props: {
-          label: "插入"
+          label: "插入",
         },
         size: {
           height: 44
@@ -70,9 +70,9 @@ export default {
   },
   methods: {
     getWrapper(child, node) {
-      const { height } = node.size;
+      // const { height } = node.size;
       return (
-        <div class="node" style={{ height: this.px.get(height) }}>
+        <div class="node" style={{ height: "100%"}}>
           {child}
         </div>
       );

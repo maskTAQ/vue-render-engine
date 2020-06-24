@@ -140,4 +140,9 @@ export default {
     max-height: 480px;
     background: #f6f6f6;
 }
+.van-field{
+  span{
+    word-wrap:break-word
+  }
+}
 </style>
