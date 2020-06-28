@@ -21,18 +21,21 @@ export default {
       type: Object,
       required: true
     },
+    readonly: {
+      type: Boolean
+    },
     mode: String
   },
   data() {
     return {};
   },
   render(h) {
-    const { nodes, nodeInject, mode, layer, px } = this;
+    const { nodes, nodeInject, mode, layer, px, readonly } = this;
     const { data, type } = layer.toJS();
     const children = nodes
       .map(node => {
-        const { height} = node.size;
-        const child = nodeInject.get(h, mode, node);
+        const { height } = node.size;
+        const child = nodeInject.get(h, { mode, node, readonly });
         return child ? this.getWrapper(child, node) : null;
       })
       .toJS()
@@ -48,7 +51,7 @@ export default {
       const insertNodeData = {
         type: "line",
         props: {
-          label: "插入",
+          label: "插入"
         },
         size: {
           height: 44
@@ -59,7 +62,11 @@ export default {
         getInsertIndex({ px, nodes: nodes.toJS(), offset }),
         0,
         this.getWrapper(
-          nodeInject.get(h, this.mode, insertNodeData),
+          nodeInject.get(h, {
+            mode: this.mode,
+            node: insertNodeData,
+            readonly
+          }),
           insertNodeData
         )
       );
@@ -72,11 +79,11 @@ export default {
     getWrapper(child, node) {
       // const { height } = node.size;
       return (
-        <div class="node" style={{ height: "100%",marginBottom:"2px"}}>
+        <div class="node" style={{ height: "100%", marginBottom: "2px" }}>
           {child}
         </div>
       );
-    },
+    }
   }
 };
 </script>

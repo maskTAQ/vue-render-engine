@@ -10,6 +10,7 @@
             class="wf-formcanvas-inner"
             trigger
             mode="h5"
+            :readonly="true"
             :dataInject="dataInject"
             :nodeInject="nodeInject"
             :bridge="bridge"
@@ -120,29 +121,30 @@ export default {
   }
 }
 .wf-formcanvas {
-    position: absolute;
-    left: 50%;
-    margin-left: -245px;
-    width: 490px;
-    height: 670px;
-    background: url(//img.alicdn.com/tfs/TB1vgDmBntYBeNjy1XdXXXXyVXa-980-1340.png) no-repeat top;
-    background-size: 100% 100%;
+  position: absolute;
+  left: 50%;
+  margin-left: -245px;
+  width: 490px;
+  height: 670px;
+  background: url(//img.alicdn.com/tfs/TB1vgDmBntYBeNjy1XdXXXXyVXa-980-1340.png)
+    no-repeat top;
+  background-size: 100% 100%;
 }
 .wf-formcanvas-inner {
-    position: absolute;
-    overflow-x: hidden;
-    overflow-y: auto;
-    width: 292px;
-    height: 480px;
-    left: 50%;
-    margin-left: -146px;
-    top: 7px;
-    max-height: 480px;
-    background: #f6f6f6;
+  position: absolute;
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 292px;
+  height: 480px;
+  left: 50%;
+  margin-left: -146px;
+  top: 7px;
+  max-height: 480px;
+  background: #f6f6f6;
 }
-.van-field{
-  span{
-    word-wrap:break-word
+.van-field {
+  span {
+    word-wrap: break-word;
   }
 }
 </style>
