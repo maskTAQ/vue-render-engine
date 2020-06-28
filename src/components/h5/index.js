@@ -3,10 +3,11 @@ const DEFAULT_PROPS = {
         label: '输入框',
         placeholder: '请输入',
         readonly:false,
+        required:false,
     },
     RATE: {
         label: '评分',
-        value:2.5,
+        value:0,
         readonly:false,
     },
 };
@@ -17,7 +18,7 @@ export default {
         return (
             <div class="field" data-engine-node={true} data-mode={mode} data-node-id={id} data-node-type="input">
               
-                    <van-field readonly={props.readonly || DEFAULT_PROPS.INPUT.readonly} colon={true} label={props.label || DEFAULT_PROPS.INPUT.label} placeholder={props.placeholder || DEFAULT_PROPS.placeholder} />
+                    <van-field rules={[{ required: props.required || DEFAULT_PROPS.INPUT.required, message: '必填'+ props.label || DEFAULT_PROPS.INPUT.label}]} readonly={props.readonly || DEFAULT_PROPS.INPUT.readonly} colon={true} label={props.label || DEFAULT_PROPS.INPUT.label} placeholder={props.placeholder || DEFAULT_PROPS.placeholder} />
                
             </div>
         )
@@ -26,11 +27,28 @@ export default {
         const { props = DEFAULT_PROPS.INPUT, id } = node;
         return (
            <div class="field" data-engine-node={true} data-mode={mode} data-node-id={id} data-node-type="rate">
-           <van-field name="rate" label="评分">
+           <van-field name="rate" label={props.label || DEFAULT_PROPS.RATE.label}>
            <template slot="input">
            <van-rate  value={props.value || DEFAULT_PROPS.RATE.value} readonly={props.readonly || DEFAULT_PROPS.RATE.readonly} />
            </template>
             </van-field>
+           </div>
+        )
+    },
+    field(h, node, mode = 'render'){
+        const { props = DEFAULT_PROPS.INPUT, id } = node;
+        return (
+           <div class="field" data-engine-node={true} data-mode={mode} data-node-id={id} data-node-type="rate">
+           <van-field
+           value={props.value || DEFAULT_PROPS.RATE.value}
+           rows="2"
+           autosize
+           label={props.label || DEFAULT_PROPS.RATE.label}
+           type="textarea"
+           maxlength="50"
+           placeholder="请输入留言"
+           show-word-limit
+         />
            </div>
         )
     },

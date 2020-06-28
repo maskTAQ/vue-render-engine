@@ -9,9 +9,10 @@
       <a-input :value="node.props.placeholder" @input="e=>onChange(e,'placeholder')" />
     </div>
     <div>
-      <div>
         <a-checkbox @change="e=>onChange(e,'readonly')">只读</a-checkbox>
-      </div>
+    </div>
+    <div>
+        <a-checkbox @change="e=>onChange(e,'required')">必填</a-checkbox>
     </div>
   </div>
 </template>
@@ -48,7 +49,7 @@ export default {
 
   methods: {
     onChange(e, key) {
-      if(key === 'readonly'){
+      if(key === 'readonly' || key === 'required'){
        this.bridge.execute({
         type: bridge.command.EVENTS.NODE_EDIT,
         data: { data: { props: { [key]: e.target.checked} } }

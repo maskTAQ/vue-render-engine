@@ -72,11 +72,11 @@ export default {
     getWrapper(child, node) {
       // const { height } = node.size;
       return (
-        <div class="node" style={{ height: "100%"}}>
+        <div class="node" style={{ height: "100%",marginBottom:"2px"}}>
           {child}
         </div>
       );
-    }
+    },
   }
 };
 </script>
