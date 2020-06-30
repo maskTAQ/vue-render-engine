@@ -1,3 +1,4 @@
+import bridge from '@/bridge';
 const DEFAULT_PROPS = {
     INPUT: {
         label: '输入框',
@@ -17,12 +18,11 @@ const DEFAULT_PROPS = {
         readonly: false,
     }
 };
-import Bridge from "@/Engine/utils/Bridge";
-import Command from "@/Engine/utils/Command";
+
+console.log('bridge in h5.js',bridge);
 export default {
     input(h, node, mode,readonly) {
         const { props = DEFAULT_PROPS.INPUT, id } = node;
-        console.log(readonly,'只读')
         return (
             <div class="field" data-engine-node={true} data-mode={mode} data-node-id={id} data-node-type="input">
                 <van-field maxlength={props.maxlength || DEFAULT_PROPS.INPUT.maxlength} readonly ={readonly || DEFAULT_PROPS.INPUT.readonly}
@@ -58,7 +58,6 @@ export default {
         )
     },
     field(h, node,mode,readonly) {
-        console.log(readonly, 'readonly2')
         const { props = DEFAULT_PROPS.INPUT, id } = node;
         return (
             <div class="field" data-engine-node={true} data-mode={mode} data-node-id={id} data-node-type="field">

@@ -8,15 +8,20 @@
       默认值:
       <a-input :value="node.props.placeholder" @input="e=>onChange(e,'placeholder')" />
     </div>
-      <div>
+    <div>
       限制字数:
-      <a-input :value="node.props.maxlength" :maxLength="10" type="number" @input="e=>onChange(e,'maxlength')" />
+      <a-input
+        :value="node.props.maxlength"
+        :maxLength="10"
+        type="number"
+        @input="e=>onChange(e,'maxlength')"
+      />
     </div>
     <div>
-        <a-checkbox @change="e=>onChange(e,'readonly')">只读</a-checkbox>
+      <a-checkbox @change="e=>onChange(e,'readonly')">只读</a-checkbox>
     </div>
     <div>
-        <a-checkbox @change="e=>onChange(e,'required')">必填</a-checkbox>
+      <a-checkbox @change="e=>onChange(e,'required')">必填</a-checkbox>
     </div>
   </div>
 </template>
@@ -53,16 +58,16 @@ export default {
 
   methods: {
     onChange(e, key) {
-      if(key === 'readonly' || key === 'required'){
-       this.bridge.execute({
-        type: bridge.command.EVENTS.NODE_EDIT,
-        data: { data: { props: { [key]: e.target.checked} } }
-      });
-      }else{
-      this.bridge.execute({
-        type: bridge.command.EVENTS.NODE_EDIT,
-        data: { data: { props: { [key]: e.target.value } } }
-      });
+      if (key === "readonly" || key === "required") {
+        this.bridge.execute({
+          type: bridge.command.EVENTS.NODE_EDIT,
+          data: { data: { props: { [key]: e.target.checked } } }
+        });
+      } else {
+        this.bridge.execute({
+          type: bridge.command.EVENTS.NODE_EDIT,
+          data: { data: { props: { [key]: e.target.value } } }
+        });
       }
     },
     onNodeChange() {
@@ -73,7 +78,6 @@ export default {
       if (selectNodeId) {
         const selectNode = nodes.find(node => node.id === selectNodeId);
         this.node = selectNode;
-        console.log("call onNo88adeChange", this.node);
       } else {
         this.node = null;
       }

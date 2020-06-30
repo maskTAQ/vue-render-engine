@@ -22,7 +22,6 @@
         <Setting :bridge="bridge" />
       </a-col>
     </a-row>
-     
   </div>
 </template>
 
@@ -31,11 +30,9 @@ import Engine from "@/Engine";
 import NodeMenu from "@/NodeMenu";
 import Setting from "./Seting/index.vue";
 
-import Bridge from "@/Engine/utils/Bridge";
 import { dataInject } from "@/utils";
 import nodeInject from "./components";
-
-const bridge = new Bridge();
+import bridge from "@/bridge";
 window.bridge = bridge;
 
 export default {
@@ -56,10 +53,10 @@ export default {
     //像引擎发送一个 EVENTS.NODE_MOVE 命令
     //bridge.execute({ type: bridge.command.EVENTS.NODE_MOVE, data: { x: 0, y: 0 } });
   },
-  methods:{
-     onSubmit(values) {
-      console.log('submit', values);
-    },
+  methods: {
+    onSubmit(values) {
+      console.log("submit", values);
+    }
   }
 };
 </script>

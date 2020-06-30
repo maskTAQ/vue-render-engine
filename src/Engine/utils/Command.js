@@ -102,7 +102,7 @@ export default class Command {
                 const { mode, id } = data.node;
                 const { point } = store;
                 //只有点击渲染在引擎内的组件才会触发点击
-                if (mode === 'render') {
+                if (!!mode) {
                     this.store.set({
                         key: 'point',
                         value: point.set('click', id),
@@ -210,7 +210,7 @@ export default class Command {
                     })
                 }
                 //上面是处理从左侧菜单拖进引擎中的处理 参考这个实现一个更改组件位置的实现
-                if (datasource.data.isCursorInEngine && data.node.mode === 'render') {
+                if (datasource.data.isCursorInEngine && data.node.mode !== 'menu') {
 
                     const oldIndex = nodes.findIndex(node => node.id === data.node.id);
                     //如果拖动前后的所有相差不超过1 则是在组件附近拖动 没有改变组件的位置
