@@ -35,9 +35,9 @@ export default {
         return ["auto", "h5", "pc", "wxminiapp"].includes(v);
       }
     },
-    readonly: {
-      type: Boolean,
-      default: false
+    scene: {
+      type: String,
+      default: 'view'
     }
   },
   data() {
@@ -106,7 +106,7 @@ export default {
   },
   render() {
     //引擎渲染入口 拆分为不同的场景 比如 移动浮层渲染层 组件渲染层
-    const { nodeInject, status, nodes, mode, readonly, layer, px } = this;
+    const { nodeInject, status, nodes, mode, scene, layer, px } = this;
      
     return (
       <div class="engine" ref="engine">
@@ -117,7 +117,7 @@ export default {
             mode={mode}
             px={px}
             layer={layer}
-            readonly={readonly}
+            scene={scene}
             key="layout"
             bridge={bridge}
           />,

@@ -9,7 +9,7 @@ export default class CommandCollect {
         this.command = command;
         Object.assign(this, config);
         const o = "orientationchange" in window ? "orientationchange" : "resize";
-        if (!config.readonly) {
+        if (!config.scene) {
             document.addEventListener('mousedown', this.handleMousedown, true);
             document.addEventListener('mousemove', this.tryMove, true);
             document.addEventListener('mouseup', this.handleMouseup, true);

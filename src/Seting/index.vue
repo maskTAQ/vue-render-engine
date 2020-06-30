@@ -18,7 +18,7 @@
       />
     </div>
     <div>
-      <a-checkbox @change="e=>onChange(e,'readonly')">只读</a-checkbox>
+      <a-checkbox @change="e=>onChange(e,'scene')">只读</a-checkbox>
     </div>
     <div>
       <a-checkbox @change="e=>onChange(e,'required')">必填</a-checkbox>
@@ -58,7 +58,7 @@ export default {
 
   methods: {
     onChange(e, key) {
-      if (key === "readonly" || key === "required") {
+      if (key === "scene" || key === "required") {
         this.bridge.execute({
           type: bridge.command.EVENTS.NODE_EDIT,
           data: { data: { props: { [key]: e.target.checked } } }

@@ -28,8 +28,8 @@ export default {
       type: Object,
       required: true
     },
-    readonly: {
-      type: Boolean
+    scene: {
+      type: String
     },
     mode: String
   },
@@ -39,13 +39,13 @@ export default {
         }
   },
   render(h) {
-    const { nodes, nodeInject, mode, layer, px, readonly } = this;
+    const { nodes, nodeInject, mode, layer, px, scene } = this;
     const { data, type } = layer.toJS();
     const children = nodes
       .map(node => {
         const { height } = node.size;
-        const child = nodeInject.get(h, { mode, node, readonly });
-        return child ? this.getWrapper(child, node,readonly) : null;
+        const child = nodeInject.get(h, { mode, node, scene });
+        return child ? this.getWrapper(child, node,scene) : null;
       })
       .toJS()
       .filter(node => !!node);
@@ -74,23 +74,23 @@ export default {
           nodeInject.get(h, {
             mode: this.mode,
             node: insertNodeData,
-            readonly
+            scene
           }),
           insertNodeData,
-          readonly
+          scene
         )
       );
       //}
     }
     return (
      <div class="layout">
-      {nodeInject.getForm(h, { mode, children,readonly })}
+      {nodeInject.getForm(h, { mode, children,scene })}
       </div>
     );
   },
   methods: {
-    getWrapper(child, node,readonly) {
-      if(!readonly){
+    getWrapper(child, node,scene) {
+      if(scene === 'view'){
       return (
         <div>
         <div class={node.id === this.nodesId ? 'acnode' : 'node'} onClick={() => this.handleClicknode(child, node)} style={{ height: "100%", marginBottom: "2px" }}>

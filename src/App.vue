@@ -6,11 +6,12 @@
       </a-col>
       <a-col :span="8">
         <div class="wf-formcanvas">
+          <!-- scene true 代表打开编辑false 不可以编辑 -->
           <Engine
             class="wf-formcanvas-inner"
             trigger
             mode="h5"
-            :readonly="false"
+            :scene="scene"
             :dataInject="dataInject"
             :nodeInject="nodeInject"
             :bridge="bridge"
@@ -39,6 +40,8 @@ export default {
   name: "App",
   data() {
     return {
+      // edit 可编辑的场景 view只读的场景 none 是隐藏
+      scene:'edit',
       dataInject,
       nodeInject,
       bridge
