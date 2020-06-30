@@ -45,7 +45,7 @@ export default {
       .map(node => {
         const { height } = node.size;
         const child = nodeInject.get(h, { mode, node, readonly });
-        return child ? this.getWrapper(child, node) : null;
+        return child ? this.getWrapper(child, node,readonly) : null;
       })
       .toJS()
       .filter(node => !!node);
@@ -76,20 +76,24 @@ export default {
             node: insertNodeData,
             readonly
           }),
-          insertNodeData
+          insertNodeData,
+          readonly
         )
       );
       //}
     }
-
-    return <div class="layout">{children}</div>;
+    return (
+     <div class="layout">
+      {nodeInject.getForm(h, { mode, children,readonly })}
+      </div>
+    );
   },
   methods: {
-    getWrapper(child, node,) {
-      if(this.mode == 'h5'){
+    getWrapper(child, node,readonly) {
+      if(!readonly){
       return (
         <div>
-        <div  class={node.id === this.nodesId ? 'acnode' : 'node'} onClick={() => this.handleClicknode(child, node)} style={{ height: "100%", marginBottom: "2px" }}>
+        <div class={node.id === this.nodesId ? 'acnode' : 'node'} onClick={() => this.handleClicknode(child, node)} style={{ height: "100%", marginBottom: "2px" }}>
           {child}
            <img class={node.id === this.nodesId? 'del' : 'displaydel'}  onClick={() => this.del(child, node)} src={del} />
         </div>
@@ -99,8 +103,8 @@ export default {
       else{
         return (
            <div class="node"  style={{ height: "100%", marginBottom: "2px" }}>
-          {child}
-        </div>
+           {child}
+           </div>
         )
       };
     },

@@ -6,7 +6,6 @@
       </a-col>
       <a-col :span="8">
         <div class="wf-formcanvas">
-          <van-form @submit="onSubmit">
           <Engine
             class="wf-formcanvas-inner"
             trigger
@@ -16,12 +15,6 @@
             :nodeInject="nodeInject"
             :bridge="bridge"
           />
-           <div style="margin:160px; 0px">
-      <van-button round block type="info" native-type="submit">
-      提交
-      </van-button>
-       </div>
-          </van-form>
         </div>
       </a-col>
 
