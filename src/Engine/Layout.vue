@@ -72,8 +72,9 @@ export default {
       );
       //}
     }
-
-    return <div class="layout">{children}</div>;
+    return (
+      <div class="layout">{nodeInject.getForm(h, { mode, children })}</div>
+    );
   },
   methods: {
     getWrapper(child, node) {

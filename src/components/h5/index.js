@@ -12,7 +12,8 @@ const DEFAULT_PROPS = {
     },
 };
 export default {
-    input(h, node, mode = 'render') {
+    input(h, node, mode = 'render', readonly) {
+        console.log({h, node, mode , readonly},'---')
         const { props = DEFAULT_PROPS.INPUT, id } = node;
         const isRenderByMenu = mode === 'menu';
         return (
@@ -56,6 +57,13 @@ export default {
         return (
             <div class="line-box flex-row center" data-engine-node={true} data-mode={mode} data-node-type="input">
                 <div class="line"></div>
+            </div>
+        )
+    },
+    form(h, children) {
+        return (
+            <div className="form">
+                {children}
             </div>
         )
     }
