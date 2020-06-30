@@ -53,6 +53,11 @@ export default {
     },
     rate(h, node, mode, scene) {
         const { props = DEFAULT_PROPS.INPUT, id } = node;
+        if(scene === 'none')
+        {
+            return '' 
+        }
+        else{
         return (
             <div class="field" data-engine-node={true} data-mode={mode} data-node-id={id} data-node-type="rate">
                 <van-field name="rate"
@@ -64,10 +69,15 @@ export default {
                     </template>
                 </van-field>
             </div>
-        )
+        )}
     },
     field(h, node, mode, scene) {
         const { props = DEFAULT_PROPS.INPUT, id } = node;
+        if(scene === 'none')
+        {
+            return '' 
+        }
+        else{
         return (
             <div class="field" data-engine-node={true} data-mode={mode} data-node-id={id} data-node-type="field">
                 <van-field
@@ -80,7 +90,7 @@ export default {
                     placeholder={props.placeholder || DEFAULT_PROPS.field.placeholder}
                 />
             </div>
-        )
+        )}
     },
     line(h, node, mode) {
         return (
