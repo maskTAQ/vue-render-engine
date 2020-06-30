@@ -1,10 +1,17 @@
 <script>
 import { TYPE as LayerType } from "./Layer.vue";
 import { getInsertIndex } from "./utils";
+import del from '@/assets/del.png'
+import Bridge from "@/Engine/utils/Bridge";
+import Command from "@/Engine/utils/Command";
 
 export default {
   name: "Layout",
   props: {
+    bridge: {
+      type: Object,
+      required: true
+    },
     nodes: {
       type: Object,
       required: true
@@ -26,8 +33,10 @@ export default {
     },
     mode: String
   },
-  data() {
-    return {};
+ data(){
+        return {
+            nodesId:'',
+        }
   },
   render(h) {
     const { nodes, nodeInject, mode, layer, px, readonly } = this;
@@ -76,14 +85,47 @@ export default {
     return <div class="layout">{children}</div>;
   },
   methods: {
-    getWrapper(child, node) {
-      // const { height } = node.size;
+    getWrapper(child, node,) {
+      if(this.mode == 'h5'){
       return (
-        <div class="node" style={{ height: "100%", marginBottom: "2px" }}>
+        <div>
+        <div  class={node.id === this.nodesId ? 'acnode' : 'node'} onClick={() => this.handleClicknode(child, node)} style={{ height: "100%", marginBottom: "2px" }}>
+          {child}
+           <img class={node.id === this.nodesId? 'del' : 'displaydel'}  onClick={() => this.del(child, node)} src={del} />
+        </div>
+        </div>
+      )
+      }
+      else{
+        return (
+           <div class="node"  style={{ height: "100%", marginBottom: "2px" }}>
           {child}
         </div>
-      );
-    }
+        )
+      };
+    },
+    handleClicknode(child, node){
+      this.nodesId = node.id
+    },
+    del(child, node){
+      console.log(node,'删除')
+     this.bridge.execute({type:bridge.command.EVENTS.DELETE_NODE,data:node.id});
+    },
   }
 };
 </script>
+<style>
+.displaydel{
+  display:none;
+}
+.del{
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    height: 15px;
+}
+.acnode{
+    border: 1px solid #3296fa ;
+    position: relative;
+}
+</style>

@@ -107,7 +107,7 @@ export default {
   render() {
     //引擎渲染入口 拆分为不同的场景 比如 移动浮层渲染层 组件渲染层
     const { nodeInject, status, nodes, mode, readonly, layer, px } = this;
-  
+     
     return (
       <div class="engine" ref="engine">
         {px && [
@@ -119,6 +119,7 @@ export default {
             layer={layer}
             readonly={readonly}
             key="layout"
+            bridge={bridge}
           />,
           <Layer data={layer} key="layer" />
         ]}
@@ -146,6 +147,6 @@ export default {
   margin: 69px 10px;
   width: 375px;
   height: 500px;
-  border: 1px solid pink;
+  /* border: 1px solid pink; */
 }
 </style>

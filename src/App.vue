@@ -6,15 +6,22 @@
       </a-col>
       <a-col :span="8">
         <div class="wf-formcanvas">
+          <van-form @submit="onSubmit">
           <Engine
             class="wf-formcanvas-inner"
             trigger
             mode="h5"
-            :readonly="true"
+            :readonly="false"
             :dataInject="dataInject"
             :nodeInject="nodeInject"
             :bridge="bridge"
           />
+           <div style="margin:160px; 0px">
+      <van-button round block type="info" native-type="submit">
+      提交
+      </van-button>
+       </div>
+          </van-form>
         </div>
       </a-col>
 
@@ -22,6 +29,7 @@
         <Setting :bridge="bridge" />
       </a-col>
     </a-row>
+     
   </div>
 </template>
 
@@ -54,6 +62,11 @@ export default {
   mounted() {
     //像引擎发送一个 EVENTS.NODE_MOVE 命令
     //bridge.execute({ type: bridge.command.EVENTS.NODE_MOVE, data: { x: 0, y: 0 } });
+  },
+  methods:{
+     onSubmit(values) {
+      console.log('submit', values);
+    },
   }
 };
 </script>

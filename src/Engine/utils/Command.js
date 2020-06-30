@@ -19,7 +19,11 @@ const EVENTS = {
     CLICK_NODE: 'CLICK_NODE',
     CLICK_CANVAS: 'CLICK_CANVAS'
 };
-
+const TYPENAME = {
+ 'input':"输入框",
+ 'rate':'评分',
+ 'field':'多行输入框'
+};
 function or() { };
 function sortNumber(a,b){
     return a-b;
@@ -186,6 +190,8 @@ export default class Command {
                     offset: data.offset
                 });
                 if (datasource.data.isCursorInEngine && data.node.mode === 'menu') {
+                    console.log(TYPENAME, TYPENAME,data.node.type,'++')
+                    let label = TYPENAME[data.node.type]
                     this.execute({
                         type: EVENTS.NODE_ADD,
                         data: {
@@ -195,7 +201,9 @@ export default class Command {
                                 size: {
                                     height: 44,
                                 },
-                                props: {}
+                                props: {
+                                    "label":label,
+                                }
                             },
                             insertIndex: nodeIndex
                         }

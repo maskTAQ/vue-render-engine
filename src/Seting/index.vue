@@ -8,6 +8,10 @@
       默认值:
       <a-input :value="node.props.placeholder" @input="e=>onChange(e,'placeholder')" />
     </div>
+      <div>
+      限制字数:
+      <a-input :value="node.props.maxlength" :maxLength="10" type="number" @input="e=>onChange(e,'maxlength')" />
+    </div>
     <div>
         <a-checkbox @change="e=>onChange(e,'readonly')">只读</a-checkbox>
     </div>
