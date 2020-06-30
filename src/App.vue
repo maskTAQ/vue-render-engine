@@ -15,6 +15,7 @@
             :dataInject="dataInject"
             :nodeInject="nodeInject"
             :bridge="bridge"
+            @submit="onSubmit"
           />
         </div>
       </a-col>
@@ -41,7 +42,7 @@ export default {
   data() {
     return {
       // edit 可编辑的场景 view只读的场景 none 是隐藏
-      scene:'edit',
+      scene: "edit",
       dataInject,
       nodeInject,
       bridge

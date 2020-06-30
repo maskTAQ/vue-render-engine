@@ -11,9 +11,9 @@ export default {
 		} = node;
 		return MODE_MAP[mode][type](h, node, mode, scene);
 	},
-	getForm(h, { mode, children, scene }) {
+	getForm(h, { mode, children, scene, onSubmit }) {
 		//会到这个函数 会找到MODE_MAP.h5.form 如果mode是pc就是 MODE_MAP.pc。form
-		return MODE_MAP[mode].form(h, children, mode, scene);
+		return MODE_MAP[mode].form(h, children, mode, scene, onSubmit);
 	},
 	getList() {
 		return list;

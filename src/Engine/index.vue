@@ -37,7 +37,7 @@ export default {
     },
     scene: {
       type: String,
-      default: 'view'
+      default: "view"
     }
   },
   data() {
@@ -107,7 +107,6 @@ export default {
   render() {
     //引擎渲染入口 拆分为不同的场景 比如 移动浮层渲染层 组件渲染层
     const { nodeInject, status, nodes, mode, scene, layer, px } = this;
-     
     return (
       <div class="engine" ref="engine">
         {px && [
@@ -120,11 +119,17 @@ export default {
             scene={scene}
             key="layout"
             bridge={bridge}
+            onSubmit={this.onSubmit}
           />,
           <Layer data={layer} key="layer" />
         ]}
       </div>
     );
+  },
+  methods: {
+    onSubmit(v) {
+      this.$emit("submit", v);
+    }
   }
 };
 </script>

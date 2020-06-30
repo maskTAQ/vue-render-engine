@@ -1,7 +1,7 @@
 <script>
 import { TYPE as LayerType } from "./Layer.vue";
 import { getInsertIndex } from "./utils";
-import del from '@/assets/del.png'
+import del from "@/assets/del.png";
 import Bridge from "@/Engine/utils/Bridge";
 import Command from "@/Engine/utils/Command";
 
@@ -33,10 +33,10 @@ export default {
     },
     mode: String
   },
- data(){
-        return {
-            nodesId:'',
-        }
+  data() {
+    return {
+      nodesId: ""
+    };
   },
   render(h) {
     const { nodes, nodeInject, mode, layer, px, scene } = this;
@@ -45,7 +45,7 @@ export default {
       .map(node => {
         const { height } = node.size;
         const child = nodeInject.get(h, { mode, node, scene });
-        return child ? this.getWrapper(child, node,scene) : null;
+        return child ? this.getWrapper(child, node, scene) : null;
       })
       .toJS()
       .filter(node => !!node);
@@ -83,53 +83,66 @@ export default {
       //}
     }
     return (
-     <div class="layout">
-      {nodeInject.getForm(h, { mode, children,scene })}
+      <div class="layout">
+        {nodeInject.getForm(h, { mode, children, scene ,onSubmit:this.onSubmit})}
       </div>
     );
   },
   methods: {
-    getWrapper(child, node,scene) {
-      if(scene === 'view'){
-      return (
-        <div>
-        <div class={node.id === this.nodesId ? 'acnode' : 'node'} onClick={() => this.handleClicknode(child, node)} style={{ height: "100%", marginBottom: "2px" }}>
-          {child}
-           <img class={node.id === this.nodesId? 'del' : 'displaydel'}  onClick={() => this.del(child, node)} src={del} />
-        </div>
-        </div>
-      )
-      }
-      else{
+    getWrapper(child, node, scene) {
+      if (scene === "view") {
         return (
-           <div class="node"  style={{ height: "100%", marginBottom: "2px" }}>
-           {child}
-           </div>
-        )
-      };
+          <div>
+            <div
+              class={node.id === this.nodesId ? "acnode" : "node"}
+              onClick={() => this.handleClicknode(child, node)}
+              style={{ height: "100%", marginBottom: "2px" }}
+            >
+              {child}
+              <img
+                class={node.id === this.nodesId ? "del" : "displaydel"}
+                onClick={() => this.del(child, node)}
+                src={del}
+              />
+            </div>
+          </div>
+        );
+      } else {
+        return (
+          <div class="node" style={{ height: "100%", marginBottom: "2px" }}>
+            {child}
+          </div>
+        );
+      }
     },
-    handleClicknode(child, node){
-      this.nodesId = node.id
+    handleClicknode(child, node) {
+      this.nodesId = node.id;
     },
-    del(child, node){
-      console.log(node,'删除')
-     this.bridge.execute({type:bridge.command.EVENTS.DELETE_NODE,data:node.id});
+    onSubmit(v){
+      this.$emit('submit',v)
     },
+    del(child, node) {
+      console.log(node, "删除");
+      this.bridge.execute({
+        type: bridge.command.EVENTS.DELETE_NODE,
+        data: node.id
+      });
+    }
   }
 };
 </script>
 <style>
-.displaydel{
-  display:none;
+.displaydel {
+  display: none;
 }
-.del{
-    position: absolute;
-    right: 0px;
-    top: 0px;
-    height: 15px;
+.del {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  height: 15px;
 }
-.acnode{
-    border: 1px solid #3296fa ;
-    position: relative;
+.acnode {
+  border: 1px solid #3296fa;
+  position: relative;
 }
 </style>
