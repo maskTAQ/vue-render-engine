@@ -1,35 +1,11 @@
 import bridge from '@/bridge';
-const DEFAULT_PROPS = {
-    INPUT: {
-        label: '输入框',
-        placeholder: '请输入',
-        scene: false,
-        required: false,
-        maxlength: "100",
-    },
-    RATE: {
-        label: '评分',
-        value: 0,
-        scene: false,
-    },
-    field: {
-        label: '多行输入框',
-        placeholder: '请输入',
-        scene: false,
-        maxlength: "100",
-    },
-    contacts:{
-        type:"contacts",
-        label: '联系人',
-        placeholder: '请输入',
-        scene: false,
-    },
-};
+import DEFAULT from '@/utils/com.js';
 
-console.log('bridge in h5.js', bridge);
+
+console.log('bridge in h5.js', DEFAULT);
 export default {
     input(h, node, mode, scene) {
-        const { props = DEFAULT_PROPS.INPUT, id } = node;
+        const { props = DEFAULT.DEFAULT_PROPS.input, id } = node;
         if (scene === 'none') {
             return ''
         }
@@ -37,29 +13,57 @@ export default {
             return (
                 <div class="field" data-engine-node={true} data-mode={mode} data-node-id={id} data-node-type="input">
                     <van-field
-                        name={props.label || DEFAULT_PROPS.INPUT.label}
-                        maxlength={props.maxlength || DEFAULT_PROPS.field.maxlength}
-                        readonly={scene === 'view' ? true : false || DEFAULT_PROPS.INPUT.scene}
+                        name={props.label +id || DEFAULT.DEFAULT_PROPS.input.label +id}
+                        maxlength={props.maxlength || DEFAULT.DEFAULT_PROPS.field.maxlength}
+                        readonly={scene === 'view' ? true : false || DEFAULT.DEFAULT_PROPS.input.scene}
+                        value={props.value}
+                        onInput={v => {
+                            bridge.execute({
+                                type: bridge.command.EVENTS.NODE_EDIT,
+                                data: { data: { id: id, props: { value: v } } }
+                            });
+                        }}
+                        required={props.required || DEFAULT.DEFAULT_PROPS.input.required}
+                        rules={[{ required: props.required || DEFAULT.DEFAULT_PROPS.input.required, message: '必填' + props.label || DEFAULT.DEFAULT_PROPS.input.label }]}
+                        colon={true}
+                        label={props.label || DEFAULT.DEFAULT_PROPS.input.label}
+                        placeholder={props.placeholder || DEFAULT.DEFAULT_PROPS.input.placeholder} />
+                </div>
+            )
+        }
+
+    },
+    tel(h, node, mode, scene) {
+        const { props = DEFAULT.DEFAULT_PROPS.input, id } = node;
+        if (scene === 'none') {
+            return ''
+        }
+        else {
+            return (
+                <div class="field" data-engine-node={true} data-mode={mode} data-node-id={id} data-node-type="input">
+                    <van-field
+                        name={props.label + id || DEFAULT.DEFAULT_PROPS.tel.label  + id }
+                        type="tel"
+                        readonly={scene === 'view' ? true : false || DEFAULT.DEFAULT_PROPS.input.scene}
                         value={props.value}
                         onInput={v => {
                             console.log(v, '编辑')
-                            // bridge.execute({
-                            //     type: bridge.command.EVENTS.NODE_EDIT,
-                            //     data: { data: { id: id, props: { value: v } } }
-                            // });
+                            bridge.execute({
+                                type: bridge.command.EVENTS.NODE_EDIT,
+                                data: { data: { id: id, props: { value: v } } }
+                            });
                         }}
-                        required={props.required || DEFAULT_PROPS.INPUT.required}
-                        rules={[{ required: props.required || DEFAULT_PROPS.INPUT.required, message: '必填' + props.label || DEFAULT_PROPS.INPUT.label }]}
+                        required={props.required || DEFAULT.DEFAULT_PROPS.input.required}
                         colon={true}
-                        label={props.label || DEFAULT_PROPS.INPUT.label}
-                        placeholder={props.placeholder || DEFAULT_PROPS.INPUT.placeholder} />
+                        label={props.label || DEFAULT.DEFAULT_PROPS.input.label}
+                        placeholder={props.placeholder || DEFAULT.DEFAULT_PROPS.input.placeholder} />
                 </div>
             )
         }
 
     },
     rate(h, node, mode, scene) {
-        const { props = DEFAULT_PROPS.INPUT, id } = node;
+        const { props = DEFAULT.DEFAULT_PROPS.input, id } = node;
         if(scene === 'none')
         {
             return '' 
@@ -67,11 +71,11 @@ export default {
         else{
         return (
             <div class="field" data-engine-node={true} data-mode={mode} data-node-id={id} data-node-type="rate">
-                <van-field name="rate"
-                    required={props.required || DEFAULT_PROPS.INPUT.required}
-                    label={props.label || DEFAULT_PROPS.RATE.label}>
+                <van-field  name={props.label +id || DEFAULT.DEFAULT_PROPS.rate.label +id}
+                    required={props.required || DEFAULT.DEFAULT_PROPS.input.required}
+                    label={props.label || DEFAULT.DEFAULT_PROPS.rate.label}>
                     <template slot="input">
-                        <van-rate value={props.value || DEFAULT_PROPS.RATE.value}
+                        <van-rate value={props.value || DEFAULT.DEFAULT_PROPS.rate.value}
                         onChange={v => {
                             console.log(v, '编辑')
                             bridge.execute({
@@ -79,14 +83,14 @@ export default {
                                 data: { data: { id: id, props: { value: v } } }
                             });
                         }}
-                            readonly={scene === 'view' ? true : false || DEFAULT_PROPS.field.scene} />
+                            readonly={scene === 'view' ? true : false || DEFAULT.DEFAULT_PROPS.field.scene} />
                     </template>
                 </van-field>
             </div>
         )}
     },
     field(h, node, mode, scene) {
-        const { props = DEFAULT_PROPS.INPUT, id } = node;
+        const { props = DEFAULT.DEFAULT_PROPS.input, id } = node;
         if(scene === 'none')
         {
             return '' 
@@ -95,10 +99,11 @@ export default {
         return (
             <div class="field" data-engine-node={true} data-mode={mode} data-node-id={id} data-node-type="field">
                 <van-field
-                    name={props.label || DEFAULT_PROPS.field.label}
-                    maxlength={props.maxlength || DEFAULT_PROPS.field.maxlength}
-                    required={props.required || DEFAULT_PROPS.INPUT.required}
+                    name={props.label +id || DEFAULT.DEFAULT_PROPS.field.label +id}
+                    maxlength={props.maxlength || DEFAULT.DEFAULT_PROPS.field.maxlength}
+                    required={props.required || DEFAULT.DEFAULT_PROPS.input.required}
                     rows="2"
+                    value={props.value}
                     onInput={v => {
                         console.log(v,id, '编辑')
                         bridge.execute({
@@ -107,16 +112,16 @@ export default {
                         });
                     }}
                     autosize
-                    readonly={scene === 'view' ? true : false || DEFAULT_PROPS.field.scene}
-                    label={props.label || DEFAULT_PROPS.field.label}
+                    readonly={scene === 'view' ? true : false || DEFAULT.DEFAULT_PROPS.field.scene}
+                    label={props.label || DEFAULT.DEFAULT_PROPS.field.label}
                     type="textarea"
-                    placeholder={props.placeholder || DEFAULT_PROPS.field.placeholder}
+                    placeholder={props.placeholder || DEFAULT.DEFAULT_PROPS.field.placeholder}
                 />
             </div>
         )}
     },
     contacts(h, node, mode, scene) {
-        const { props = DEFAULT_PROPS.INPUT, id } = node;
+        const { props = DEFAULT.DEFAULT_PROPS.input, id } = node;
         if (scene === 'none') {
             return ''
         }
@@ -125,19 +130,25 @@ export default {
                 <div class="contacts" data-engine-node={true} data-mode={mode} data-node-id={id} data-node-type="input">   
                 <van-field
                         input-align="right"
-                        name={props.label || DEFAULT_PROPS.contacts.label}
-                        maxlength={props.maxlength || DEFAULT_PROPS.INPUT.maxlength}
+                        name={props.label +id || DEFAULT.DEFAULT_PROPS.contacts.label +id}
+                        maxlength={props.maxlength || DEFAULT.DEFAULT_PROPS.input.maxlength}
                         readonly={true}
                         value={props.value}
                         onClick={v => {
-                            window.location.href="https://www.baidu.com";
+                            if(scene === 'view' ? true : false || DEFAULT.DEFAULT_PROPS.input.scene){
+
+                            }
+                            else{
+                                window.location.href="https://www.baidu.com";
+                            }
+                           
                         }}
                         right-icon="arrow"
-                        required={props.required || DEFAULT_PROPS.contacts.required}
-                        rules={[{ required: props.required || DEFAULT_PROPS.contacts.required, message: '必填' + props.label || DEFAULT_PROPS.INPUT.label }]}
+                        required={props.required || DEFAULT.DEFAULT_PROPS.contacts.required}
+                        rules={[{ required: props.required || DEFAULT.DEFAULT_PROPS.contacts.required, message: '必填' + props.label || DEFAULT.DEFAULT_PROPS.input.label }]}
                         colon={true}
-                        label={props.label || DEFAULT_PROPS.contacts.label}
-                        placeholder={props.placeholder || DEFAULT_PROPS.contacts.placeholder} >
+                        label={props.label || DEFAULT.DEFAULT_PROPS.contacts.label}
+                        placeholder={props.placeholder || DEFAULT.DEFAULT_PROPS.contacts.placeholder} >
                         </van-field>
                 </div>
             )
@@ -150,6 +161,26 @@ export default {
                 <div class="line"></div>
             </div>
         )
+    },
+    uploader(h, node, mode, scene) {
+        const { props = DEFAULT.DEFAULT_PROPS.uploader, id } = node;
+        if(scene === 'none')
+        {
+            return '' 
+        }
+        else{
+        return (
+            <div class="field" data-engine-node={true} data-mode={mode} data-node-id={id} data-node-type="uploader">
+                <van-field  name={props.label +id || DEFAULT.DEFAULT_PROPS.uploader.label +id}
+                    required={props.required || DEFAULT.DEFAULT_PROPS.uploader.required}
+                    label={props.label || DEFAULT.DEFAULT_PROPS.uploader.label}>
+                    <template slot="input">
+                        <van-uploader value={props.value || DEFAULT.DEFAULT_PROPS.uploader.label} />
+                    </template>
+                </van-field>
+               
+            </div>
+        )}
     },
     form(h, children, mode, scene, onSubmit) {
         return (

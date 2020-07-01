@@ -1,5 +1,6 @@
 import { MapUtils, getInsertIndex, createId } from './index';
 import { TYPE as LayerType } from "../Layer.vue";
+import DEFAULT from '@/utils/com.js';
 const EVENTS = {
     NODE_MOVE: 'NODE_MOVE',
     NODE_ADD: 'NODE_ADD',
@@ -191,8 +192,8 @@ export default class Command {
                     offset: data.offset
                 });
                 if (datasource.data.isCursorInEngine && data.node.mode === 'menu') {
-                    console.log(TYPENAME, TYPENAME,data.node.type,'++')
-                    let label = TYPENAME[data.node.type]
+                    console.log(DEFAULT.DEFAULT_PROPS, TYPENAME,data,'++')
+                    let label = DEFAULT.DEFAULT_PROPS[data.node.type].label
                     this.execute({
                         type: EVENTS.NODE_ADD,
                         data: {

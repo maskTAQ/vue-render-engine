@@ -1,5 +1,7 @@
 <script type="text/ecmascript-6">
 import nodeInject from "./components";
+import DEFAULT from '@/utils/com.js';
+
 export default {
   name: "NodeMenu",
   data() {
@@ -19,7 +21,7 @@ export default {
                 data-mode="menu"
                 data-node-type={type}
               >
-                {type}
+                {DEFAULT.DEFAULT_PROPS[type].label}
               </div>
             );
           }
