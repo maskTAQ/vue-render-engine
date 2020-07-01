@@ -22,7 +22,8 @@ const EVENTS = {
 const TYPENAME = {
  'input':"输入框",
  'rate':'评分',
- 'field':'多行输入框'
+ 'field':'多行输入框',
+ 'contacts':'联系人',
 };
 function or() { };
 function sortNumber(a,b){

@@ -1,28 +1,52 @@
 <template>
   <div id="app">
-   <router-view/>
+    <Engine
+     
+      trigger
+      mode="h5"
+      :scene="scene"
+      :dataInject="dataInject"
+      :nodeInject="nodeInject"
+      :bridge="bridge"
+      @submit="onSubmit"
+    />
   </div>
 </template>
 
 <script>
+import Engine from "@/Engine";
+import NodeMenu from "@/NodeMenu";
+import Setting from "./Seting/index.vue";
 
+import { dataInject } from "@/utils";
+import nodeInject from "./components";
+import bridge from "@/bridge";
+window.bridge = bridge;
 
 export default {
   name: "App",
   data() {
     return {
-     
+      // edit 可编辑的场景 view只读的场景 none 是隐藏
+      scene: "edit",
+      dataInject,
+      nodeInject,
+      bridge
     };
   },
   components: {
- 
+    Engine,
+    NodeMenu,
+    Setting
   },
   mounted() {
     //像引擎发送一个 EVENTS.NODE_MOVE 命令
     //bridge.execute({ type: bridge.command.EVENTS.NODE_MOVE, data: { x: 0, y: 0 } });
   },
   methods: {
-  
+    onSubmit(values) {
+      console.log("submit", values);
+    }
   }
 };
 </script>

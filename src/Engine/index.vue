@@ -154,4 +154,12 @@ export default {
   height: 500px;
   /* border: 1px solid pink; */
 }
+.contacts{
+  position: relative;
+}
+.contacts-arrow{
+  position: absolute;
+    top: 11px;
+    right: 0px;
+}
 </style>
