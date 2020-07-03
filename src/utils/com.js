@@ -1,6 +1,6 @@
 const DEFAULT_PROPS = {
     input: {
-        label: '输入框',
+        label: '单行输入框',
         placeholder: '请输入',
         scene: false,
         required: false,
@@ -10,6 +10,28 @@ const DEFAULT_PROPS = {
         label: '评分',
         value: 0,
         scene: false,
+    },
+    picker: {
+        label: '选择器',
+        scene: false,
+        value: '',
+        columns: [{
+            label: '选项1',
+            value: '1',
+            component: [],
+        },
+        {
+            label: '选项2',
+            value: '2',
+            component: [],
+        },
+        {
+            label: '选项3',
+            value: '3',
+            component: [],
+        }
+        ],
+        showPicker: false,
     },
     uploader: {
         label: '文件上传',
@@ -22,19 +44,21 @@ const DEFAULT_PROPS = {
         scene: false,
         maxlength: "100",
     },
-    contacts:{
-        type:"contacts",
+    contacts: {
+        type: "contacts",
         label: '联系人',
         placeholder: '请输入',
         scene: false,
     },
-    tel:{
+    tel: {
         label: '手机号',
         placeholder: '请输入',
         scene: false,
         required: false,
     }
 };
+
 export default {
-    DEFAULT_PROPS,
-  }
+    DEFAULT_PROPS
+
+}

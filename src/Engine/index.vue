@@ -133,7 +133,6 @@ export default {
   }
 };
 </script>
-
 <style lang="scss">
 * {
   margin: 0;
@@ -147,13 +146,7 @@ export default {
   -ms-user-select: none;
   user-select: none;
 }
-.engine {
-  position: relative;
-  margin: 69px 10px;
-  width: 375px;
-  height: 500px;
-  /* border: 1px solid pink; */
-}
+
 .contacts{
   position: relative;
 }

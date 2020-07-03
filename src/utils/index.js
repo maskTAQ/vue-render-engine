@@ -27,8 +27,10 @@ export function mock({ timeout = 1000, data, success = true }) {
 }
 export const dataInject = {
     getCanvas() {
+     let data =  localStorage.getItem('dataInject');
         return mock({
-            data: [
+            data: data?JSON.parse(data)
+            : [
                 {
                     type: 'input',
                     label: "输入框",
@@ -39,9 +41,19 @@ export const dataInject = {
                     props: {
                         "placeholder": "请输入",
                         "label": "单行输入框",
+                        'required':false,
+                        'value':""
                     }
                 }
             ]
+        });
+    }
+}
+export const datasource = {
+    getCanvas() {
+        let data=  localStorage.getItem('dataInject');
+        return mock({
+            data:JSON.parse(data)
         });
     }
 }

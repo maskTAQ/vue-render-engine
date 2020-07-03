@@ -5,7 +5,7 @@
       trigger
       mode="h5"
       :scene="scene"
-      :dataInject="dataInject"
+      :dataInject="datasource"
       :nodeInject="nodeInject"
       :bridge="bridge"
       @submit="onSubmit"
@@ -18,7 +18,7 @@ import Engine from "@/Engine";
 import NodeMenu from "@/NodeMenu";
 import Setting from "./Seting/index.vue";
 
-import { dataInject } from "@/utils";
+import { datasource } from "@/utils";
 import nodeInject from "./components";
 import bridge from "@/bridge";
 window.bridge = bridge;
@@ -29,7 +29,7 @@ export default {
     return {
       // edit 可编辑的场景 view只读的场景 none 是隐藏
       scene: "edit",
-      dataInject,
+      datasource,
       nodeInject,
       bridge
     };
@@ -39,11 +39,20 @@ export default {
     NodeMenu,
     Setting
   },
+  created(){
+    this.getdata()
+  },
   mounted() {
+    this.getdata()
     //像引擎发送一个 EVENTS.NODE_MOVE 命令
     //bridge.execute({ type: bridge.command.EVENTS.NODE_MOVE, data: { x: 0, y: 0 } });
   },
   methods: {
+    getdata(){
+    let data=  localStorage.getItem('dataInject');
+    console.log(JSON.parse(data),'+')
+    this.dataInject = JSON.parse(data)
+    },
     onSubmit(values) {
       console.log("submit", values);
     }

@@ -1,4 +1,5 @@
 <template>
+
   <div v-if="node" class="seting">
     <div>
       标题:
@@ -18,10 +19,17 @@
       />
     </div>
     <div>
-      <a-checkbox @change="e=>onChange(e,'scene')">只读</a-checkbox>
+      <a-checkbox @change="e=>onChangeScene(e,'scene')">隐藏</a-checkbox>
     </div>
     <div>
-      <a-checkbox @change="e=>onChange(e,'required')">必填</a-checkbox>
+      <a-checkbox :checked="node.props.required" @change="e=>onChange(e,'required')">必填</a-checkbox>
+    </div>
+    <div v-if="node.type === 'picker'">
+      <p>选项最多200项，每项最多50个字</p>
+      <div>
+        <DynamicForm :data="node"></DynamicForm>
+      </div>
+      <p>选项关联(已设置)</p>
     </div>
   </div>
 </template>
@@ -32,7 +40,7 @@
 <script>
 import Bridge from "@/Engine/utils/Bridge";
 import Command from "@/Engine/utils/Command";
-
+import DynamicForm from "./dynamicForm.vue"
 export default {
   name: "seting",
   props: {
@@ -41,6 +49,9 @@ export default {
       type: Object,
       required: true
     }
+  },
+  components: {
+    DynamicForm
   },
   data() {
     return {
@@ -57,11 +68,17 @@ export default {
   },
 
   methods: {
+    onChangeScene(e, key){
+       this.bridge.execute({
+          type: bridge.command.EVENTS.NODE_EDIT,
+          data: { data: { props: { [key]: 'none'} } }
+        });
+    },
     onChange(e, key) {
-      if (key === "scene" || key === "required") {
+      if (key === "required") {
         this.bridge.execute({
           type: bridge.command.EVENTS.NODE_EDIT,
-          data: { data: { props: { [key]: e.target.checked } } }
+          data: { data: {props: { [key]: e.target.checked } } }
         });
       } else {
         this.bridge.execute({

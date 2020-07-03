@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <a-row>
+      <div @click="save">保存</div>
       <a-col :span="8">
         <NodeMenu />
       </a-col>
@@ -42,7 +43,7 @@ export default {
   data() {
     return {
       // edit 可编辑的场景 view只读的场景 none 是隐藏
-      scene: "edit",
+      scene: "view",
       dataInject,
       nodeInject,
       bridge
@@ -58,6 +59,9 @@ export default {
     //bridge.execute({ type: bridge.command.EVENTS.NODE_MOVE, data: { x: 0, y: 0 } });
   },
   methods: {
+    save(){
+      localStorage.setItem('dataInject',JSON.stringify(bridge.getEngineState().nodes.toJS()));
+    },
     onSubmit(values) {
       console.log("submit", values);
     }
@@ -65,7 +69,16 @@ export default {
 };
 </script>
 
-<style lang="scss">
+
+<style lang="scss" scoped>
+
+.engine {
+  position: relative;
+  margin: 69px 10px;
+  width: 375px;
+  height: 500px;
+  /* border: 1px solid pink; */
+}
 .flex-row {
   display: flex;
   flex-direction: row;

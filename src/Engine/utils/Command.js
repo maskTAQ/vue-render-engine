@@ -205,6 +205,8 @@ export default class Command {
                                 },
                                 props: {
                                     "label":label,
+                                    'required':false,
+                                    'columns':DEFAULT.DEFAULT_PROPS[data.node.type].columns
                                 }
                             },
                             insertIndex: nodeIndex
