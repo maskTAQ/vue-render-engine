@@ -8,7 +8,7 @@
       label="名称"
       :required="false"
     >
-     <a-input  v-decorator="['className', { rules: [{ required: true, message: '必填' }] }]" />
+     <a-input  v-decorator="['className', {initialValue: { className:'0' }, rules: [{ required: true, message: '必填' }] }]" />
      </a-form-item>
   </a-form>
 </template>
