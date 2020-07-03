@@ -1,15 +1,48 @@
 <template>
-  <a-form :form="form" @submit="handleSubmit">
+  <a-form :form="form" @submit="handleSubmit" v-if="ok">
     {{data.props.columns}}
     <a-form-item
-      v-for="(k, index) in data.props.columns"
-      :key="index"
-      v-bind="formItemLayout"
-      label="名称"
+      v-for="(k, index) in form.getFieldValue('keys')"
+      :key="k"
+      v-bind="index === 0 ? formItemLayout : formItemLayoutWithOutLabel"
+      :label="index === 0 ? 'Passengers' : ''"
       :required="false"
     >
-     <a-input  v-decorator="['className', {initialValue: { className:'0' }, rules: [{ required: true, message: '必填' }] }]" />
-     </a-form-item>
+      <a-input
+        v-decorator="[
+          `names[${k}]`,
+          {
+            validateTrigger: ['change', 'blur'],
+            rules: [
+              {
+                required: true,
+                whitespace: true,
+                message: 'Please input passenger\'s name or delete this field.',
+              },
+            ],
+          },
+        ]"
+        placeholder="passenger name"
+        style="width: 60%; margin-right: 8px"
+      />
+      <a-icon
+        v-if="form.getFieldValue('keys').length > 1"
+        class="dynamic-delete-button"
+        type="minus-circle-o"
+        :disabled="form.getFieldValue('keys').length === 1"
+        @click="() => remove(k)"
+      />
+    </a-form-item>
+    <a-form-item v-bind="formItemLayoutWithOutLabel">
+      <a-button type="dashed" style="width: 60%" @click="add">
+        <a-icon type="plus" /> Add field
+      </a-button>
+    </a-form-item>
+    <a-form-item v-bind="formItemLayoutWithOutLabel">
+      <a-button type="primary" html-type="submit">
+        Submit
+      </a-button>
+    </a-form-item>
   </a-form>
 </template>
 
@@ -17,14 +50,16 @@
 let id = 0;
 export default {
   props: {
-    //数据提供
-    data: {
-      type: Object,
-      required: true
-    },
-    },
+//数据提供
+data: {
+type: Object,
+required: true
+},
+},
+
   data() {
     return {
+      ok:false,
       formItemLayout: {
         labelCol: {
           xs: { span: 24 },
@@ -44,14 +79,22 @@ export default {
     };
   },
   beforeCreate() {
+    // console.log(this.data,'this.data.props.columns')
     this.form = this.$form.createForm(this, { name: 'dynamic_form_item' });
-    // this.form.getFieldDecorator('keys', { initialValue: [], preserve: true });
+    setTimeout(()=>{
+    this.form.getFieldDecorator('keys', { initialValue:[], preserve: true });
+    this.ok = true
+    this.$nextTick(()=>{
+    this.form.setFieldsValue(data.props.columns);
+    })
+    })
+   
   },
   methods: {
     remove(k) {
       const { form } = this;
       // can use data-binding to get
-      const keys = data.porps.columns;
+      const keys = form.getFieldValue('keys');
       // We need at least one passenger
       if (keys.length === 1) {
         return;
@@ -66,7 +109,7 @@ export default {
     add() {
       const { form } = this;
       // can use data-binding to get
-      const keys = data.porps.columns;
+      const keys = form.getFieldValue('keys');
       const nextKeys = keys.concat(id++);
       // can use data-binding to set
       // important! notify form to detect changes
