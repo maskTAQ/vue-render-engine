@@ -1,5 +1,5 @@
 <template>
-  <a-form :form="form" @submit="handleSubmit" >
+  <a-form :form="form" @submit="handleSubmit">
     <a-form-item
       v-for="(k, index) in data.props.columns"
       :key="index"
@@ -9,7 +9,7 @@
     >
       <a-input
         v-decorator="[
-         `names[${k}]`,
+         `${k.id}`,
           {
             validateTrigger: ['change', 'blur'],
             initialValue:k.label,
@@ -35,73 +35,74 @@
     </a-form-item>
     <a-form-item v-bind="formItemLayoutWithOutLabel">
       <a-button type="dashed" style="width: 60%" @click="add">
-        <a-icon type="plus" /> Add field
+        <a-icon type="plus" />Add field
       </a-button>
     </a-form-item>
     <a-form-item v-bind="formItemLayoutWithOutLabel">
-      <a-button type="primary" html-type="submit">
-        Submit
-      </a-button>
+      <a-button type="primary" html-type="submit">Submit</a-button>
     </a-form-item>
   </a-form>
 </template>
 
 <script>
 let id = 0;
-import {  createId } from '@/Engine/utils/index.js';
+import { createId } from "@/Engine/utils/index.js";
 import bridge from "@/bridge";
 window.bridge = bridge;
 export default {
-props: {
-//数据提供
-data: {
-type: Object,
-required: true
-},
-},
+  props: {
+    //数据提供
+    data: {
+      type: Object,
+      required: true
+    }
+  },
 
   data() {
     return {
-      ok:false,
+      ok: false,
       formItemLayout: {
         labelCol: {
           xs: { span: 24 },
-          sm: { span: 4 },
+          sm: { span: 4 }
         },
         wrapperCol: {
           xs: { span: 24 },
-          sm: { span: 20 },
-        },
+          sm: { span: 20 }
+        }
       },
       formItemLayoutWithOutLabel: {
         wrapperCol: {
           xs: { span: 24, offset: 0 },
-          sm: { span: 20, offset: 4 },
-        },
-      },
+          sm: { span: 20, offset: 4 }
+        }
+      }
     };
   },
   beforeCreate() {
-    this.form = this.$form.createForm(this, { name: 'dynamic_form_item' });
-    setTimeout(()=>{
-    this.form.getFieldDecorator('keys', { initialValue:[], preserve: true });
-    this.ok = true
-     
-    })
-   
+    this.form = this.$form.createForm(this, { name: "dynamic_form_item" });
+    setTimeout(() => {
+      this.form.getFieldDecorator("keys", { initialValue: [], preserve: true });
+      this.ok = true;
+    });
+    console.log(this, "data.props.columns");
   },
   methods: {
-  
     remove(k) {
       const { form } = this;
       // can use data-binding to get
-      const keys = form.getFieldValue('keys');
+      const keys = form.getFieldValue("keys");
       // We need at least one passenger
       if (this.data.props.columns.length === 1) {
         return;
       }
-      console.log(k,this.data.props.columns.filter(key => key.id !== k.id))
-      this.data.props.columns = this.data.props.columns.filter(key => key.id !== k.id)
+      console.log(
+        k,
+        this.data.props.columns.filter(key => key.id !== k.id)
+      );
+      this.data.props.columns = this.data.props.columns.filter(
+        key => key.id !== k.id
+      );
       // form.setFieldsValue({
       //   keys: keys.filter(key => key !== k),
       // });
@@ -109,21 +110,21 @@ required: true
 
     add() {
       const { form } = this;
-     
+
       // can use data-binding to get
-      const keys = form.getFieldValue('keys');
+      const keys = form.getFieldValue("keys");
       let dataColumns = this.data.props.columns;
       var ary2 = JSON.parse(JSON.stringify(dataColumns));
       ary2.push({
-            id:createId(this.data.type+'-columns'),
-            label: '选项'+this.data.props.columns.length,
-            value: this.data.props.columns.length,
-            component: [],
-      })
-        bridge.execute({
-          type: bridge.command.EVENTS.NODE_EDIT,
-          data: { data: { id: this.data.id, props: {columns:ary2} } }
-        });
+        id: createId(this.data.type + "-columns"),
+        label: "选项" + this.data.props.columns.length,
+        value: this.data.props.columns.length,
+        component: []
+      });
+      bridge.execute({
+        type: bridge.command.EVENTS.NODE_EDIT,
+        data: { data: { id: this.data.id, props: { columns: ary2 } } }
+      });
       // can use data-binding to set
       // important! notify form to detect changes
       // form.setFieldsValue({
@@ -135,16 +136,25 @@ required: true
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
-          const { keys, names } = values;
-          console.log('Received values of form: ', values);
-          console.log(
-            'Merged values:',
-            keys.map(key => names[key]),
-          );
+          const nextColumns = this.data.props.columns.map(column => {
+            return {
+              ...column,
+              value: values[column.id]
+            };
+          });
+          bridge.execute({
+            type: bridge.command.EVENTS.NODE_EDIT,
+            data: {
+              id: this.data.id,
+              path: "props.columns",
+              value: nextColumns
+            }
+          });
+          console.log(nextColumns, "nextColumns");
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 <style>

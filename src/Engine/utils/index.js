@@ -2,7 +2,7 @@ import { List, Map } from 'immutable';
 
 import { LoadingControl } from "@/utils";
 
-window.immutable = { List }
+window.immutable = {Map, List }
 export const DATA = {
     GET_CANVAS() {
         const { dataInject, params } = this;

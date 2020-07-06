@@ -296,34 +296,31 @@ export default class Command {
                     })
                     break;
                 }
-            case EVENTS.NODE_EDIT:
-                //bridge.execute({type:bridge.command.EVENTS.NODE_EDIT,data:{edit:{type:'input',i:1,label:'我是被修改后的'},editIndex:0}})
-                {
-                    if (IS_BACK) {
+            case EVENTS.NODE_EDIT: {
+                if (IS_BACK) {
 
-                    }
-                    else {
-                        const { nodes, point } = store;
-                        const {
-                            id = point.get('click'),
-                            data: modify
-                        } = data;
-
-                        const index = nodes.findIndex(node => node.id === id);
-                        if (index > -1) {
-                            this.store.set({
-                                key: 'nodes',
-                                value: nodes.mergeDeepIn([index], modify),
-                                fields: 'node'
-                            })
-                            commandResult = RESULT.RESOLVE('编辑成功');
-                        } else {
-                            commandResult = RESULT.REJECT(`找不到id为:${id}的节点`);
-                        }
-                        console.log(nodes.toJS(),'nodes.toJS()')
-                        break;
-                    }
                 }
+                else {
+                    const { nodes, point } = store;
+                    const {
+                        id = point.get('click'),
+                        path,
+                        value
+                    } = data;
+                    const index = nodes.findIndex(node => node.id === id);
+                    if (index > -1) {
+                        this.store.set({
+                            key: 'nodes',
+                            value: nodes.setIn([index,...path.split('.')],value),
+                            fields: 'node'
+                        })
+                        commandResult = RESULT.RESOLVE('编辑成功');
+                    } else {
+                        commandResult = RESULT.REJECT(`找不到id为:${id}的节点`);
+                    }
+                    break;
+                }
+            }
 
         }
         //如果此触发源的命令需要添加进记录
