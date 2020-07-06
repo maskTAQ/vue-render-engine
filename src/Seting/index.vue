@@ -67,13 +67,6 @@ export default {
   },
 
   methods: {
-<<<<<<< HEAD
-    onChangeScene(e, key){
-       this.bridge.execute({
-          type: bridge.command.EVENTS.NODE_EDIT,
-          data: { data: { props: { [key]: 'none'} } }
-    });
-=======
     onChangeScene(e, key) {
       //  this.bridge.execute({
       //     type: bridge.command.EVENTS.NODE_EDIT,
@@ -83,7 +76,6 @@ export default {
         type: bridge.command.EVENTS.NODE_EDIT,
         data: { data: { readonly: true} }
       });
->>>>>>> e3175784b2b17de383b8c37f6fd1b3bf801d131a
     },
     onChange(e, key) {
       if (key === "required") {

@@ -165,8 +165,8 @@ export default {
             </div>
         )
     },
-    picker(h, node, mode) {
-        return <Picker node={node} mode={node} />
+    picker(h, node, mode,scene) {
+        return <Picker node={node} mode={mode} scene={scene}/>
     },
     uploader(h, node, mode, scene) {
         const { props = DEFAULT_PROPS.uploader, id } = node;
