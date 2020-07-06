@@ -333,7 +333,7 @@ export default class Command {
                         } else {
                             commandResult = RESULT.REJECT(`找不到id为:${id}的节点`);
                         }
-                        console.log(nodes.toJS())
+                        console.log(nodes.toJS(),'nodes.toJS()')
                         break;
                     }
                 }

@@ -1,6 +1,5 @@
 <template>
   <a-form :form="form" @submit="handleSubmit" >
-    {{data.props.columns}}
     <a-form-item
       v-for="(k, index) in data.props.columns"
       :key="index"
@@ -53,7 +52,7 @@ import {  createId } from '@/Engine/utils/index.js';
 import bridge from "@/bridge";
 window.bridge = bridge;
 export default {
-  props: {
+props: {
 //数据提供
 data: {
 type: Object,
@@ -114,16 +113,16 @@ required: true
       // can use data-binding to get
       const keys = form.getFieldValue('keys');
       let dataColumns = this.data.props.columns;
-      let newData = dataColumns
-       newData.push({
+      var ary2 = JSON.parse(JSON.stringify(dataColumns));
+      ary2.push({
             id:createId(this.data.type+'-columns'),
-            label: '选项',
+            label: '选项'+this.data.props.columns.length,
             value: this.data.props.columns.length,
             component: [],
-        })
+      })
         bridge.execute({
           type: bridge.command.EVENTS.NODE_EDIT,
-          data: { data: { props: { columns:newData} } }
+          data: { data: { id: this.data.id, props: {columns:ary2} } }
         });
       // can use data-binding to set
       // important! notify form to detect changes

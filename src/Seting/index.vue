@@ -72,7 +72,7 @@ export default {
        this.bridge.execute({
           type: bridge.command.EVENTS.NODE_EDIT,
           data: { data: { props: { [key]: 'none'} } }
-        });
+    });
     },
     onChange(e, key) {
       if (key === "required") {
