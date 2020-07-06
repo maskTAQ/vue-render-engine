@@ -16,16 +16,19 @@ const DEFAULT_PROPS = {
         scene: false,
         value: '',
         columns: [{
+            id:'1',
             label: '选项1',
             value: '1',
             component: [],
         },
         {
+            id:'2',
             label: '选项2',
             value: '2',
             component: [],
         },
         {
+            id:'3',
             label: '选项3',
             value: '3',
             component: [],

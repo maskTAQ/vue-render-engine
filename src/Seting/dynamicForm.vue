@@ -1,18 +1,19 @@
 <template>
-  <a-form :form="form" @submit="handleSubmit" v-if="ok">
+  <a-form :form="form" @submit="handleSubmit" >
     {{data.props.columns}}
     <a-form-item
-      v-for="(k, index) in form.getFieldValue('keys')"
-      :key="k"
+      v-for="(k, index) in data.props.columns"
+      :key="index"
       v-bind="index === 0 ? formItemLayout : formItemLayoutWithOutLabel"
       :label="index === 0 ? 'Passengers' : ''"
       :required="false"
     >
       <a-input
         v-decorator="[
-          `names[${k}]`,
+         `names[${k}]`,
           {
             validateTrigger: ['change', 'blur'],
+            initialValue:k.label,
             rules: [
               {
                 required: true,
@@ -22,14 +23,14 @@
             ],
           },
         ]"
-        placeholder="passenger name"
+        placeholder="请输入"
         style="width: 60%; margin-right: 8px"
       />
       <a-icon
-        v-if="form.getFieldValue('keys').length > 1"
+        v-if="data.props.columns.length > 1"
         class="dynamic-delete-button"
         type="minus-circle-o"
-        :disabled="form.getFieldValue('keys').length === 1"
+        :disabled="data.props.columns.length === 1"
         @click="() => remove(k)"
       />
     </a-form-item>
@@ -48,6 +49,9 @@
 
 <script>
 let id = 0;
+import {  createId } from '@/Engine/utils/index.js';
+import bridge from "@/bridge";
+window.bridge = bridge;
 export default {
   props: {
 //数据提供
@@ -79,43 +83,53 @@ required: true
     };
   },
   beforeCreate() {
-    // console.log(this.data,'this.data.props.columns')
     this.form = this.$form.createForm(this, { name: 'dynamic_form_item' });
     setTimeout(()=>{
     this.form.getFieldDecorator('keys', { initialValue:[], preserve: true });
     this.ok = true
-    this.$nextTick(()=>{
-    this.form.setFieldsValue(data.props.columns);
-    })
+     
     })
    
   },
   methods: {
+  
     remove(k) {
       const { form } = this;
       // can use data-binding to get
       const keys = form.getFieldValue('keys');
       // We need at least one passenger
-      if (keys.length === 1) {
+      if (this.data.props.columns.length === 1) {
         return;
       }
-
-      // can use data-binding to set
-      form.setFieldsValue({
-        keys: keys.filter(key => key !== k),
-      });
+      console.log(k,this.data.props.columns.filter(key => key.id !== k.id))
+      this.data.props.columns = this.data.props.columns.filter(key => key.id !== k.id)
+      // form.setFieldsValue({
+      //   keys: keys.filter(key => key !== k),
+      // });
     },
 
     add() {
       const { form } = this;
+     
       // can use data-binding to get
       const keys = form.getFieldValue('keys');
-      const nextKeys = keys.concat(id++);
+      let dataColumns = this.data.props.columns;
+      let newData = dataColumns
+       newData.push({
+            id:createId(this.data.type+'-columns'),
+            label: '选项',
+            value: this.data.props.columns.length,
+            component: [],
+        })
+        bridge.execute({
+          type: bridge.command.EVENTS.NODE_EDIT,
+          data: { data: { props: { columns:newData} } }
+        });
       // can use data-binding to set
       // important! notify form to detect changes
-      form.setFieldsValue({
-        keys: nextKeys,
-      });
+      // form.setFieldsValue({
+      //   keys: nextKeys,
+      // });
     },
 
     handleSubmit(e) {
