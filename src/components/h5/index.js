@@ -42,9 +42,9 @@ export default {
             return (
                 <div class="field" data-engine-node={true} data-mode={mode} data-node-id={id} data-node-type="input">
                     <van-field
-                        name={props.label + id || DEFAULT_PROPS.tel.label + id}
+                        name={props.label + id}
                         type="tel"
-                        readonly={scene === 'view' ? true : false || DEFAULT_PROPS.input.scene}
+                        readonly={scene === 'view' ? true : false}
                         value={props.value}
                         onInput={v => {
                             console.log(v, '编辑')
@@ -53,10 +53,11 @@ export default {
                                 data: { data: { id: id, props: { value: v } } }
                             });
                         }}
-                        required={props.required || DEFAULT_PROPS.input.required}
+                        rules={[{ required: props.required , message: '必填' + props.label }]}
+                        required={props.required }
                         colon={true}
-                        label={props.label || DEFAULT_PROPS.input.label}
-                        placeholder={props.placeholder || DEFAULT_PROPS.input.placeholder} />
+                        label={props.label}
+                        placeholder={props.placeholder} />
                 </div>
             )
         }
@@ -70,11 +71,11 @@ export default {
         else {
             return (
                 <div class="field" data-engine-node={true} data-mode={mode} data-node-id={id} data-node-type="rate">
-                    <van-field name={props.label + id || DEFAULT_PROPS.rate.label + id}
-                        required={props.required || DEFAULT_PROPS.input.required}
-                        label={props.label || DEFAULT_PROPS.rate.label}>
+                    <van-field name={props.label + id}
+                        required={props.required}
+                        label={props.label}>
                         <template slot="input">
-                            <van-rate value={props.value || DEFAULT_PROPS.rate.value}
+                            <van-rate value={props.value}
                                 onChange={v => {
                                     console.log(v, '编辑')
                                     bridge.execute({
@@ -82,7 +83,7 @@ export default {
                                         data: { data: { id: id, props: { value: v } } }
                                     });
                                 }}
-                                rules={[{ required: props.required || DEFAULT_PROPS.input.required, message: '必填' + props.label || DEFAULT_PROPS.input.label }]}
+                                rules={[{ required: props.required , message: '必填' + props.label  }]}
 
                                 readonly={scene === 'view' ? true : false || DEFAULT_PROPS.field.scene} />
                         </template>
@@ -100,11 +101,11 @@ export default {
             return (
                 <div class="field" data-engine-node={true} data-mode={mode} data-node-id={id} data-node-type="field">
                     <van-field
-                        name={props.label + id || DEFAULT_PROPS.field.label + id}
-                        maxlength={props.maxlength || DEFAULT_PROPS.field.maxlength}
-                        required={props.required || DEFAULT_PROPS.input.required}
+                        name={props.label + id}
+                        maxlength={props.maxlength}
+                        required={props.required}
                         rows="2"
-                        rules={[{ required: props.required || DEFAULT_PROPS.input.required, message: '必填' + props.label || DEFAULT_PROPS.input.label }]}
+                        rules={[{ required: props.required, message: '必填' + props.label }]}
                         value={props.value}
                         onInput={v => {
                             console.log(v, id, '编辑')
@@ -114,10 +115,10 @@ export default {
                             });
                         }}
                         autosize
-                        readonly={scene === 'view' ? true : false || DEFAULT_PROPS.field.scene}
-                        label={props.label || DEFAULT_PROPS.field.label}
+                        readonly={scene === 'view' ? true : false}
+                        label={props.label}
                         type="textarea"
-                        placeholder={props.placeholder || DEFAULT_PROPS.field.placeholder}
+                        placeholder={props.placeholder}
                     />
                 </div>
             )
@@ -133,12 +134,12 @@ export default {
                 <div class="contacts" data-engine-node={true} data-mode={mode} data-node-id={id} data-node-type="input">
                     <van-field
                         input-align="right"
-                        name={props.label + id || DEFAULT_PROPS.contacts.label + id}
-                        maxlength={props.maxlength || DEFAULT_PROPS.input.maxlength}
+                        name={props.label + id }
+                        maxlength={props.maxlength}
                         readonly={true}
                         value={props.value}
                         onClick={v => {
-                            if (scene === 'view' ? true : false || DEFAULT_PROPS.input.scene) {
+                            if (scene === 'view' ? true : false) {
 
                             }
                             else {
@@ -147,11 +148,11 @@ export default {
 
                         }}
                         right-icon="arrow"
-                        required={props.required || DEFAULT_PROPS.contacts.required}
-                        rules={[{ required: props.required || DEFAULT_PROPS.contacts.required, message: '必填' + props.label || DEFAULT_PROPS.input.label }]}
+                        required={props.required}
+                        rules={[{ required: props.required, message: '必填' + props.label || DEFAULT_PROPS.input.label }]}
                         colon={true}
-                        label={props.label || DEFAULT_PROPS.contacts.label}
-                        placeholder={props.placeholder || DEFAULT_PROPS.contacts.placeholder} >
+                        label={props.label}
+                        placeholder={props.placeholder} >
                     </van-field>
                 </div>
             )
@@ -176,11 +177,11 @@ export default {
         else {
             return (
                 <div class="field" data-engine-node={true} data-mode={mode} data-node-id={id} data-node-type="uploader">
-                    <van-field name={props.label + id || DEFAULT_PROPS.uploader.label + id}
-                        required={props.required || DEFAULT_PROPS.uploader.required}
-                        label={props.label || DEFAULT_PROPS.uploader.label}>
+                    <van-field name={props.label + id }
+                        required={props.required}
+                        label={props.label}>
                         <template slot="input">
-                            <van-uploader value={props.value || DEFAULT_PROPS.uploader.label} />
+                            <van-uploader value={props.value} />
                         </template>
                     </van-field>
 

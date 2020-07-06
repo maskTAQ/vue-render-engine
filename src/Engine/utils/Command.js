@@ -192,6 +192,7 @@ export default class Command {
                     offset: data.offset
                 });
                 if (datasource.data.isCursorInEngine && data.node.mode === 'menu') {
+                    console.log(data.node.type)
                     this.execute({
                         type: EVENTS.NODE_ADD,
                         data: {
