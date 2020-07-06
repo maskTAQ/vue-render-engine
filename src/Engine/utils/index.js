@@ -1,7 +1,6 @@
 import { List, Map } from 'immutable';
 
 import { LoadingControl } from "@/utils";
-import DEFAULT from '@/utils/com.js';
 
 window.immutable = { List }
 export const DATA = {
