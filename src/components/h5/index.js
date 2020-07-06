@@ -5,17 +5,19 @@ import getItem from '@/utils/com.js'
 console.log('bridge in h5.js', DEFAULT);
 export default {
     input(h, node, mode, scene) {
-        const { props = DEFAULT.DEFAULT_PROPS.input, id } = node;
+        const { readonly, props = DEFAULT.DEFAULT_PROPS.input, id } = node;
         if (scene === 'none') {
             return ''
         }
         else {
+            //当组件只读 或者 引擎场景为 查看的时候 禁止用户输入
+            const r = readonly || scene === 'view';
             return (
                 <div class="field" data-engine-node={true} data-mode={mode} data-node-id={id} data-node-type="input">
                     <van-field
                         name={props.label + id || DEFAULT.DEFAULT_PROPS.input.label + id}
                         maxlength={props.maxlength || DEFAULT.DEFAULT_PROPS.field.maxlength}
-                        readonly={scene === 'view' ? true : false || DEFAULT.DEFAULT_PROPS.input.scene}
+                        readonly={r}
                         value={props.value}
                         onInput={v => {
                             bridge.execute({
@@ -81,7 +83,7 @@ export default {
                                         data: { data: { id: id, props: { value: v } } }
                                     });
                                 }}
-                        rules={[{ required: props.required || DEFAULT.DEFAULT_PROPS.input.required, message: '必填' + props.label || DEFAULT.DEFAULT_PROPS.input.label }]}
+                                rules={[{ required: props.required || DEFAULT.DEFAULT_PROPS.input.required, message: '必填' + props.label || DEFAULT.DEFAULT_PROPS.input.label }]}
 
                                 readonly={scene === 'view' ? true : false || DEFAULT.DEFAULT_PROPS.field.scene} />
                         </template>
@@ -165,51 +167,51 @@ export default {
         )
     },
     picker(h, node, mode, scene) {
-        const { props = DEFAULT.DEFAULT_PROPS.picker , id } = node;
-        const {showPicker,columns} =DEFAULT.DEFAULT_PROPS.picker
-       
+        const { props = DEFAULT.DEFAULT_PROPS.picker, id } = node;
+        const { showPicker, columns } = DEFAULT.DEFAULT_PROPS.picker
+
         if (scene === 'none') {
             return ''
         }
         else {
             return (
-               <div class="field" data-engine-node={true} data-mode={mode} data-node-id={id} data-node-type="picker">
-               <van-field
-                readonly
-                clickable
-                name="picker"
-                value={props.value || ""}
-                label={props.label || DEFAULT.DEFAULT_PROPS.picker.label}
-                placeholder="点击选择城市"
-                onClick={v => {
-                if(scene === 'edit'){
-                    console.log('edit')
-                    bridge.execute({
-                        type: bridge.command.EVENTS.NODE_EDIT,
-                        data: { data: { id: id, props: { showPicker: true } } }
-                    });
-                }
-                }}
-              />
-              <van-popup  value={props.showPicker || showPicker} position="bottom">
-                <van-picker
-                  show-toolbar
-                  columns={props.columns || columns}
-                  value-key="label"
-                  onConfirm={v => {
-                    bridge.execute({
-                        type: bridge.command.EVENTS.NODE_EDIT,
-                        data: { data: { id: id, props: { value : v.label ,showPicker: false} } }
-                    });
-                 }}
-                 onCancel={v => {
-                    bridge.execute({
-                        type: bridge.command.EVENTS.NODE_EDIT,
-                        data: { data: { id: id, props: { showPicker: false } } }
-                    });
-                 }}
-                />
-              </van-popup>
+                <div class="field" data-engine-node={true} data-mode={mode} data-node-id={id} data-node-type="picker">
+                    <van-field
+                        readonly
+                        clickable
+                        name="picker"
+                        value={props.value || ""}
+                        label={props.label || DEFAULT.DEFAULT_PROPS.picker.label}
+                        placeholder="点击选择城市"
+                        onClick={v => {
+                            if (scene === 'edit') {
+                                console.log('edit')
+                                bridge.execute({
+                                    type: bridge.command.EVENTS.NODE_EDIT,
+                                    data: { data: { id: id, props: { showPicker: true } } }
+                                });
+                            }
+                        }}
+                    />
+                    <van-popup value={props.showPicker || showPicker} position="bottom">
+                        <van-picker
+                            show-toolbar
+                            columns={props.columns || columns}
+                            value-key="label"
+                            onConfirm={v => {
+                                bridge.execute({
+                                    type: bridge.command.EVENTS.NODE_EDIT,
+                                    data: { data: { id: id, props: { value: v.label, showPicker: false } } }
+                                });
+                            }}
+                            onCancel={v => {
+                                bridge.execute({
+                                    type: bridge.command.EVENTS.NODE_EDIT,
+                                    data: { data: { id: id, props: { showPicker: false } } }
+                                });
+                            }}
+                        />
+                    </van-popup>
                 </div>
             )
         }

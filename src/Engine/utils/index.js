@@ -1,6 +1,7 @@
 import { List, Map } from 'immutable';
 
 import { LoadingControl } from "@/utils";
+import DEFAULT from '@/utils/com.js';
 
 window.immutable = { List }
 export const DATA = {
@@ -141,6 +142,20 @@ export function createId(type = "") {
             .toString()
             .substr(2, 5)
     );
+}
+export function createdNodeData(type) {
+    return {
+        id: createId(type),
+        type,
+        size: {
+            height: 44,
+        },
+        props: {
+            "label": DEFAULT.DEFAULT_PROPS[type].label,
+            'required': false,
+            'columns': DEFAULT.DEFAULT_PROPS[type].columns
+        }
+    }
 }
 export const EMPTY_LIST = List();
 export const EMPTY_OBJECT = Map();

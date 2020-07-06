@@ -1,5 +1,4 @@
 <template>
-
   <div v-if="node" class="seting">
     <div>
       标题:
@@ -40,7 +39,7 @@
 <script>
 import Bridge from "@/Engine/utils/Bridge";
 import Command from "@/Engine/utils/Command";
-import DynamicForm from "./dynamicForm.vue"
+import DynamicForm from "./dynamicForm.vue";
 export default {
   name: "seting",
   props: {
@@ -68,17 +67,21 @@ export default {
   },
 
   methods: {
-    onChangeScene(e, key){
-       this.bridge.execute({
-          type: bridge.command.EVENTS.NODE_EDIT,
-          data: { data: { props: { [key]: 'none'} } }
-        });
+    onChangeScene(e, key) {
+      //  this.bridge.execute({
+      //     type: bridge.command.EVENTS.NODE_EDIT,
+      //     data: { data: { props: { [key]: 'none'} } }
+      //   });
+      this.bridge.execute({
+        type: bridge.command.EVENTS.NODE_EDIT,
+        data: { data: { readonly: true} }
+      });
     },
     onChange(e, key) {
       if (key === "required") {
         this.bridge.execute({
           type: bridge.command.EVENTS.NODE_EDIT,
-          data: { data: {props: { [key]: e.target.checked } } }
+          data: { data: { props: { [key]: e.target.checked } } }
         });
       } else {
         this.bridge.execute({
