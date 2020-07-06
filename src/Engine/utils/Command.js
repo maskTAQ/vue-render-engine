@@ -1,6 +1,6 @@
-import { MapUtils, getInsertIndex, createId } from './index';
+import { MapUtils, getInsertIndex, createdNodeData } from './index';
 import { TYPE as LayerType } from "../Layer.vue";
-import DEFAULT from '@/utils/com.js';
+
 const EVENTS = {
     NODE_MOVE: 'NODE_MOVE',
     NODE_ADD: 'NODE_ADD',
@@ -21,14 +21,14 @@ const EVENTS = {
     CLICK_CANVAS: 'CLICK_CANVAS'
 };
 const TYPENAME = {
- 'input':"输入框",
- 'rate':'评分',
- 'field':'多行输入框',
- 'contacts':'联系人',
+    'input': "输入框",
+    'rate': '评分',
+    'field': '多行输入框',
+    'contacts': '联系人',
 };
 function or() { };
-function sortNumber(a,b){
-    return a-b;
+function sortNumber(a, b) {
+    return a - b;
 }
 //命令结构说明
 const STRUCTURE = {
@@ -192,23 +192,10 @@ export default class Command {
                     offset: data.offset
                 });
                 if (datasource.data.isCursorInEngine && data.node.mode === 'menu') {
-                    console.log(DEFAULT.DEFAULT_PROPS, TYPENAME,data,'++')
-                    let label = DEFAULT.DEFAULT_PROPS[data.node.type].label
                     this.execute({
                         type: EVENTS.NODE_ADD,
                         data: {
-                            insert: {
-                                id: createId(data.node.type),
-                                type: data.node.type,
-                                size: {
-                                    height: 44,
-                                },
-                                props: {
-                                    "label":label,
-                                    'required':false,
-                                    'columns':DEFAULT.DEFAULT_PROPS[data.node.type].columns
-                                }
-                            },
+                            insert: createdNodeData(data.node.type),
                             insertIndex: nodeIndex
                         }
                     })
@@ -236,21 +223,21 @@ export default class Command {
             }
             case EVENTS.NODE_SORT: {
                 let nodes = store.nodes;
-                function getNodeIndex(nodes,node,change) {
+                function getNodeIndex(nodes, node, change) {
                     //获取node所在的索引排序
-                    console.log(change,'change')
+                    console.log(change, 'change')
                     const index = nodes.indexOf(node);
-                    
+
                     if (index === change.oldIndex) {
                         return change.index
                     }
                     return index >= change.index ? index + 1 : index - 1
                 }
-              let  node =  nodes.sort((n, p) => {
-                    const nIndex = getNodeIndex(nodes,n,data), pIndex = getNodeIndex(nodes,p,data);
+                let node = nodes.sort((n, p) => {
+                    const nIndex = getNodeIndex(nodes, n, data), pIndex = getNodeIndex(nodes, p, data);
                     return nIndex > pIndex ? 1 : -1;
                 })
-                console.log(nodes.toJS(),'移动后的列表')
+                console.log(nodes.toJS(), '移动后的列表')
                 this.store.set({
                     key: 'nodes',
                     value: node,

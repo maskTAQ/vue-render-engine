@@ -9,6 +9,8 @@ import Layout from "./Layout";
 import Layer, { TYPE as LayerType } from "./Layer";
 
 import bj from "../assets/bj.png";
+
+export { DEFAULT_PROPS } from "./utils/index";
 export default {
   name: "engine",
   props: {
@@ -147,12 +149,12 @@ export default {
   user-select: none;
 }
 
-.contacts{
+.contacts {
   position: relative;
 }
-.contacts-arrow{
+.contacts-arrow {
   position: absolute;
-    top: 11px;
-    right: 0px;
+  top: 11px;
+  right: 0px;
 }
 </style>
