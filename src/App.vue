@@ -28,6 +28,9 @@ export default {
 </script>
 
 <style lang="scss">
+input{
+  /* border: 1px solid red !important; */
+}
 .flex-row {
   display: flex;
   flex-direction: row;

@@ -7,6 +7,7 @@
       :scene="scene"
       :dataInject="datasource"
       :nodeInject="nodeInject"
+      :params="id"
       :bridge="bridge"
       @submit="onSubmit"
     />
@@ -17,6 +18,7 @@
 import Engine from "@/Engine";
 import NodeMenu from "@/NodeMenu";
 import Setting from "./Seting/index.vue";
+import {saveFormByCreateProcess,getFromForStart} from "@/service/getData.js"
 
 import { datasource } from "@/utils";
 import nodeInject from "./components";
@@ -29,6 +31,7 @@ export default {
     return {
       // edit 可编辑的场景 view只读的场景 none 是隐藏
       scene: "edit",
+      id:this.$route.query.id,
       datasource,
       nodeInject,
       bridge
@@ -49,9 +52,14 @@ export default {
   },
   methods: {
     getdata(){
-    let data=  localStorage.getItem('dataInject');
-    console.log(JSON.parse(data),'+')
-    this.dataInject = JSON.parse(data)
+      // let id = this.$route.query.id
+      // getFromForStart(id,{
+      //     headers: {
+      //       "Content-Type": "application/json"
+      //     }
+      //   }).then(res=>{
+      //  console.log(res.result,'res')
+      // })
     },
     onSubmit(values) {
       console.log("submit", values);

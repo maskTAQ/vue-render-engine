@@ -101,13 +101,13 @@ export default class Command {
         const store = this.store.get();
         switch (type) {
             case EVENTS.CLICK_NODE: {
-                const { mode, id } = data.node;
+                const { mode, nid } = data.node;
                 const { point } = store;
                 //只有点击渲染在引擎内的组件才会触发点击
                 if (!!mode) {
                     this.store.set({
                         key: 'point',
-                        value: point.set('click', id),
+                        value: point.set('click', nid),
                         fields: 'click'
                     });
                 }
@@ -119,7 +119,7 @@ export default class Command {
                     // console.log(store.nodes, this.store, '我是处理 EVENTS.NODE_MOVE 命令的逻辑');
                     break;
                 }
-            // bridge.execute({type:bridge.command.EVENTS.NODE_ADD,data:{insert:[{type:'input',i:1,label:'dsdfs',id:'0002'},{type:'input',i:1,label:'dsdfs',id:'00026'}],insertIndex:0}})
+            // brnidge.execute({type:brnidge.command.EVENTS.NODE_ADD,data:{insert:[{type:'input',i:1,label:'dsdfs',nid:'0002'},{type:'input',i:1,label:'dsdfs',nid:'00026'}],insertIndex:0}})
             case EVENTS.NODE_ADD:
                 {
                     let nodes = store.nodes;
@@ -204,7 +204,7 @@ export default class Command {
                 //上面是处理从左侧菜单拖进引擎中的处理 参考这个实现一个更改组件位置的实现
                 if (datasource.data.isCursorInEngine && data.node.mode !== 'menu') {
 
-                    const oldIndex = nodes.findIndex(node => node.id === data.node.id);
+                    const oldIndex = nodes.findIndex(node => node.nid === data.node.nid);
                     //如果拖动前后的所有相差不超过1 则是在组件附近拖动 没有改变组件的位置
                     const isIndexChange = oldIndex >= nodeIndex + 1 || nodeIndex > oldIndex + 1;
                     console.log('实现引擎内组件移动', isIndexChange)
@@ -212,7 +212,7 @@ export default class Command {
                         this.execute({
                             type: EVENTS.NODE_SORT,
                             data: {
-                                id: data.node.id,
+                                nid: data.node.nid,
                                 oldIndex,
                                 index: nodeIndex
                             }
@@ -256,11 +256,11 @@ export default class Command {
                     commandResult = this.getRecord().forward(data);
                     break;
                 }
-            // bridge.execute({type:bridge.command.EVENTS.DELETE_NODE,data:['input']});//删多个
+            // brnidge.execute({type:brnidge.command.EVENTS.DELETE_NODE,data:['input']});//删多个
             case EVENTS.DELETE_NODE:
                 {
                     const {
-                        id
+                        nid
                     } = data;
                     let nodes = store.nodes;
                     if (IS_BACK) {
@@ -279,10 +279,9 @@ export default class Command {
                         const deleteNodeList = [];
                         nodes = nodes.filter((node, index) => {
                             const {
-                                id
+                                nid
                             } = node;
-                            console.log(node)
-                            const isDelete = Array.isArray(data) ? data.includes(id) : id === data;
+                            const isDelete = Array.isArray(data) ? data.includes(nid) : nid === data;
                             node.oldIndex = index;
                             deleteNodeList.push(node);
                             record = deleteNodeList;
@@ -299,16 +298,18 @@ export default class Command {
                 }
             case EVENTS.NODE_EDIT: {
                 if (IS_BACK) {
-
+                // 去除需要修改的值 存起来
+                // 拿到之前修改的值覆盖 
+                // console.log()
                 }
                 else {
                     const { nodes, point } = store;
                     const {
-                        id = point.get('click'),
+                        nid = point.get('click'),
                         path,
                         value
                     } = data;
-                    const index = nodes.findIndex(node => node.id === id);
+                    const index = nodes.findIndex(node => node.nid === nid);
                     if (index > -1) {
                         this.store.set({
                             key: 'nodes',
@@ -317,7 +318,7 @@ export default class Command {
                         })
                         commandResult = RESULT.RESOLVE('编辑成功');
                     } else {
-                        commandResult = RESULT.REJECT(`找不到id为:${id}的节点`);
+                        commandResult = RESULT.REJECT(`找不到nid为:${nid}的节点`);
                     }
                     break;
                 }

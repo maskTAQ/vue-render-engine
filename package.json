@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "webpack --config webpack.config.js --progress --colors"
+    "build":"vue-cli-service build"
   },
   "dependencies": {
     "ant-design-vue": "^1.6.2",

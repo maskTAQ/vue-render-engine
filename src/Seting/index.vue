@@ -1,5 +1,5 @@
 <template>
-  <div v-if="node" class="seting">
+  <div  v-if="node" class="seting">
     <div>
       标题:
       <a-input :value="node.props.label" @input="e=>onChange(e,'label')" />
@@ -17,14 +17,14 @@
         @input="e=>onChange(e,'maxlength')"
       />
     </div>
-    <div>
+    <!-- <div>
       <a-checkbox @change="e=>onChangeScene(e,'scene')">隐藏</a-checkbox>
-    </div>
+    </div> -->
     <div>
       <a-checkbox :checked="node.props.required" @change="e=>onChange(e,'required')">必填</a-checkbox>
     </div>
     <div v-if="node.type === 'picker'">
-      <p>选项最多200项，每项最多50个字</p>
+      <p>选项最多10项，每项最多20个字</p>
       <div>
         <DynamicForm :data="node"></DynamicForm>
       </div>
@@ -72,22 +72,30 @@ export default {
       //     type: bridge.command.EVENTS.NODE_EDIT,
       //     data: { data: { props: { [key]: 'none'} } }
       //   });
-      this.bridge.execute({
-        type: bridge.command.EVENTS.NODE_EDIT,
-        data: { data: { readonly: true} }
-      });
+      // this.bridge.execute({
+      //   type: bridge.command.EVENTS.NODE_EDIT,
+      //   data: { data: { readonly: true} }
+      // });
     },
     onChange(e, key) {
       if (key === "required") {
-        this.bridge.execute({
-          type: bridge.command.EVENTS.NODE_EDIT,
-          data: { data: { props: { [key]: e.target.checked } } }
-        });
+           this.bridge.execute({
+                type: bridge.command.EVENTS.NODE_EDIT,
+                data: {
+                id: this.node.nid,
+                path: "props."+key,
+               value:  e.target.checked
+            }
+          });
       } else {
-        this.bridge.execute({
-          type: bridge.command.EVENTS.NODE_EDIT,
-          data: { data: { props: { [key]: e.target.value } } }
-        });
+         this.bridge.execute({
+                type: bridge.command.EVENTS.NODE_EDIT,
+                data: {
+                id:  this.node.nid,
+                path: "props."+key,
+               value:  e.target.value
+            }
+          });
       }
     },
     onNodeChange() {
@@ -96,7 +104,7 @@ export default {
       const selectNodeId = point.toJS().click;
 
       if (selectNodeId) {
-        const selectNode = nodes.find(node => node.id === selectNodeId);
+        const selectNode = nodes.find(node => node.nid === selectNodeId);
         this.node = selectNode;
       } else {
         this.node = null;

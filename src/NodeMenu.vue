@@ -38,5 +38,10 @@ export default {
   border: 1px solid #cfcaca;
   border-radius: 5px;
   text-align: center;
+    margin-left:15px;
+   margin-bottom:15px;
+}
+.con:hover{
+     cursor: move;
 }
 </style>

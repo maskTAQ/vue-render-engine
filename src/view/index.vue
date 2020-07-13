@@ -20,7 +20,6 @@
           />
         </div>
       </a-col>
-
       <a-col :span="8">
         <Setting :bridge="bridge" />
       </a-col>
@@ -32,12 +31,12 @@
 import Engine from "@/Engine";
 import NodeMenu from "@/NodeMenu";
 import Setting from "@/Seting/index.vue";
-
+import {saveFormByCreateProcess} from "@/service/getData.js"
 import { dataInject } from "@/utils";
 import nodeInject from "@/components";
 import bridge from "@/bridge";
 window.bridge = bridge;
-
+import Qs from 'qs'
 export default {
   name: "App",
   data() {
@@ -60,6 +59,21 @@ export default {
   },
   methods: {
     save(){
+       let data = bridge.getEngineState().nodes.toJS();
+        let obj=  JSON.stringify(data)
+        saveFormByCreateProcess(obj,{
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+        .then(res => {
+          let routeData = this.$router.resolve({
+           path:'h5',
+           query: {id: res.message}
+          });
+          console.log(routeData,'routeData.href')
+          window.open(routeData.href , '_blank');
+        })
       localStorage.setItem('dataInject',JSON.stringify(bridge.getEngineState().nodes.toJS()));
     },
     onSubmit(values) {

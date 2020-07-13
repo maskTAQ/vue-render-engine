@@ -4,7 +4,7 @@
       v-for="(k, index) in data.props.columns"
       :key="index"
       v-bind="index === 0 ? formItemLayout : formItemLayoutWithOutLabel"
-      :label="index === 0 ? 'Passengers' : ''"
+      :label="index === 0 ? '选择器值' : ''"
       :required="false"
     >
       <a-input
@@ -12,12 +12,13 @@
          `${k.id}`,
           {
             validateTrigger: ['change', 'blur'],
-            initialValue:k.label,
+            initialValue:k.value,
             rules: [
               {
                 required: true,
                 whitespace: true,
-                message: 'Please input passenger\'s name or delete this field.',
+                message: '必填',
+                maxLength:20
               },
             ],
           },
@@ -34,13 +35,12 @@
       />
     </a-form-item>
     <a-form-item v-bind="formItemLayoutWithOutLabel">
-      <a-button type="dashed" style="width: 60%" @click="add">
-        <a-icon type="plus" />Add field
+      <a-button  v-if="data.props.columns.length < 10" type="dashed" style="width:100px;margin-right: 8px" @click="add">
+        <a-icon type="plus" />增加
       </a-button>
+      <a-button type="primary" style="width:100px" html-type="submit">保存</a-button>
     </a-form-item>
-    <a-form-item v-bind="formItemLayoutWithOutLabel">
-      <a-button type="primary" html-type="submit">Submit</a-button>
-    </a-form-item>
+    
   </a-form>
 </template>
 
@@ -96,13 +96,10 @@ export default {
       if (this.data.props.columns.length === 1) {
         return;
       }
-      console.log(
-        k,
-        this.data.props.columns.filter(key => key.id !== k.id)
-      );
-      this.data.props.columns = this.data.props.columns.filter(
+      console.log(k, this.data.props.columns.filter(key => key.id !== k.id) );
+       this.data.props.columns = this.data.props.columns.filter(
         key => key.id !== k.id
-      );
+       );
       // form.setFieldsValue({
       //   keys: keys.filter(key => key !== k),
       // });
@@ -110,7 +107,6 @@ export default {
 
     add() {
       const { form } = this;
-
       // can use data-binding to get
       const keys = form.getFieldValue("keys");
       let dataColumns = this.data.props.columns;
@@ -118,20 +114,19 @@ export default {
       ary2.push({
         id: createId(this.data.type + "-columns"),
         label: "选项" + this.data.props.columns.length,
-        value: this.data.props.columns.length,
+        value: "选项" +  this.data.props.columns.length,
         component: []
       });
-      bridge.execute({
-        type: bridge.command.EVENTS.NODE_EDIT,
-        data: { data: { id: this.data.id, props: { columns: ary2 } } }
-      });
-      // can use data-binding to set
-      // important! notify form to detect changes
-      // form.setFieldsValue({
-      //   keys: nextKeys,
-      // });
+     
+       bridge.execute({
+            type: bridge.command.EVENTS.NODE_EDIT,
+            data: {
+              id: this.data.nid,
+              path: "props.columns",
+              value: ary2
+            }
+       });
     },
-
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
@@ -145,7 +140,7 @@ export default {
           bridge.execute({
             type: bridge.command.EVENTS.NODE_EDIT,
             data: {
-              id: this.data.id,
+              id: this.data.nid,
               path: "props.columns",
               value: nextColumns
             }

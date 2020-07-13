@@ -1,3 +1,6 @@
+import {saveFormByCreateProcess,getFromForStart} from "@/service/getData.js"
+
+
 export function LoadingControl({ call, params, change }) {
     change({
         status: 'loading',
@@ -27,33 +30,31 @@ export function mock({ timeout = 1000, data, success = true }) {
 }
 export const dataInject = {
     getCanvas() {
-     let data =  localStorage.getItem('dataInject');
+        let data = localStorage.getItem('dataInject');
         return mock({
-            data: data?JSON.parse(data)
-            : [
-                {
-                    type: 'input',
-                    label: "输入框",
-                    id: '001',
-                    size: {
-                        height: 44,
-                    },
-                    props: {
-                        "placeholder": "请输入",
-                        "label": "单行输入框",
-                        'required':false,
-                        'value':""
-                    }
-                }
-            ]
+            data: data ? JSON.parse(data)
+                : []
         });
     }
 }
+function parse(v) {
+    const result = {...v};
+    for (const k in v) {
+        try{
+            result[k] = JSON.parse(v[k])
+        }catch(e){
+            //
+        }
+    }
+    return result
+}
 export const datasource = {
-    getCanvas() {
-        let data=  localStorage.getItem('dataInject');
-        return mock({
-            data:JSON.parse(data)
-        });
+    getCanvas(id) {
+        return getFromForStart(id,{
+            headers: {
+              "Content-Type": "application/json"
+            }
+          }).then(res=>res.result)
+       
     }
 }

@@ -6,6 +6,7 @@ window.immutable = {Map, List }
 export const DATA = {
     GET_CANVAS() {
         const { dataInject, params } = this;
+       
         return LoadingControl({
             call: dataInject.getCanvas,
             params,
@@ -146,18 +147,18 @@ const DEFAULT_PROPS = {
     input: {
         label: '单行输入框',
         placeholder: '请输入',
-        scene: false,
+        scene: 'view',
         required: false,
         maxlength: "100",
     },
     rate: {
         label: '评分',
         value: 0,
-        scene: false,
+        scene: 'view',
     },
     picker: {
         label: '选择器',
-        scene: false,
+        scene: 'view',
         value: '',
         columns: [{
             id: '1',
@@ -183,30 +184,30 @@ const DEFAULT_PROPS = {
     uploader: {
         label: '文件上传',
         value: [{ url: 'https://img.yzcdn.cn/vant/leaf.jpg' }],
-        scene: false,
+        scene: 'view',
     },
     field: {
         label: '多行输入框',
         placeholder: '请输入',
-        scene: false,
+        scene: 'view',
         maxlength: "100",
     },
     contacts: {
         type: "contacts",
         label: '联系人',
         placeholder: '请输入',
-        scene: false,
+        scene: 'view',
     },
     tel: {
         label: '手机号',
         placeholder: '请输入',
-        scene: false,
+        scene: 'view',
         required: false,
     }
 };
 export function createdNodeData(type) {
     return {
-        id: createId(type),
+        nid: createId(type),
         type,
         size: {
             height: 44,

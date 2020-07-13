@@ -92,15 +92,18 @@ export default {
     getWrapper(child, node, scene) {
       if (scene === "view") {
         return (
-          <div>
-            <div
-              class={node.id === this.nodesId ? "acnode" : "node"}
+             <div data-engine-node={true}
+              data-mode="h5"
+              data-node-type={node.type}
+              data-node-id={node.nid}>
+              <div
+              class={node.nid === this.nodesId ? "acnode" : "node"}
               onClick={() => this.handleClicknode(child, node)}
               style={{ height: "100%", marginBottom: "2px" }}
-            >
+              >
               {child}
               <img
-                class={node.id === this.nodesId ? "del" : "displaydel"}
+                class={node.nid === this.nodesId ? "del" : "displaydel"}
                 onClick={() => this.del(child, node)}
                 src={del}
               />
@@ -116,16 +119,15 @@ export default {
       }
     },
     handleClicknode(child, node) {
-      this.nodesId = node.id;
+      this.nodesId = node.nid;
     },
     onSubmit(v){
       this.$emit('submit',v)
     },
     del(child, node) {
-      console.log(node, "删除");
       this.bridge.execute({
         type: bridge.command.EVENTS.DELETE_NODE,
-        data: node.id
+        data: node.nid
       });
     }
   }

@@ -1,24 +1,22 @@
 <template>
   <div
     class="field"
-    :data-engine-node="true"
-    :data-mode="mode"
-    :data-node-id="node.id"
-    data-node-type="picker"
   >
     <van-field
       readonly
       clickable
-      name="picker"
+      :name="node.type +'-'+ node.nid"
       :value="value"
-      label="选择器"
+      :label="node.props.label"
       placeholder="点击选择城市"
       @click="scene=== 'edit' ? showPicker = true : showPicker = false"
+      :required="node.props.required"
+      :rules="[{ required: node.props.required, message: '必填' + node.props.label }]"
     />
     <van-popup v-model="showPicker" position="bottom">
       <van-picker
         show-toolbar
-        value-key="label"
+        value-key="value"
         :columns="node.props.columns"
         @confirm="onConfirm"
         @cancel="showPicker = false"
@@ -49,7 +47,7 @@
 //                                 console.log('edit')
 //                                 bridge.execute({
 //                                     type: bridge.command.EVENTS.NODE_EDIT,
-//                                     data: { data: { id: id, props: { showPicker: true } } }
+//                                     data: { data: { nid: id, props: { showPicker: true } } }
 //                                 });
 //                             }
 //                         }}
@@ -62,13 +60,13 @@
 //                             onConfirm={v => {
 //                                 bridge.execute({
 //                                     type: bridge.command.EVENTS.NODE_EDIT,
-//                                     data: { data: { id: id, props: { value: v.label, showPicker: false } } }
+//                                     data: { data: { nid: id, props: { value: v.label, showPicker: false } } }
 //                                 });
 //                             }}
 //                             onCancel={v => {
 //                                 bridge.execute({
 //                                     type: bridge.command.EVENTS.NODE_EDIT,
-//                                     data: { data: { id: id, props: { showPicker: false } } }
+//                                     data: { data: { nid: id, props: { showPicker: false } } }
 //                                 });
 //                             }}
 //                         />
@@ -100,11 +98,15 @@ export default {
   },
   methods: {
     onConfirm(v) {
-      this.value = v.label;
+      this.value = v.value;
       bridge.execute({
-        type: bridge.command.EVENTS.NODE_EDIT,
-        data: { data: { id: this.node.id, props: { value: v.label } } }
-      });
+            type: bridge.command.EVENTS.NODE_EDIT,
+            data: {
+              nid: this.node.nid,
+              path: "props.value",
+              value:  v.value
+            }
+       });
       this.showPicker = false;
     }
   }

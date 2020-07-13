@@ -4,7 +4,7 @@
 ```
 yarn install
 ```
-
+### // "build": "webpack --config webpack.config.js --progress --colors"
 ### Compiles and hot-reloads for development
 ```
 yarn serve

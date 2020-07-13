@@ -29,6 +29,7 @@ export default {
       type: Object,
       required: true
     },
+    params:{},
     //引擎渲染面试
     mode: {
       type: String,
@@ -139,14 +140,6 @@ export default {
 * {
   margin: 0;
   padding: 0;
-
-  moz-user-select: -moz-none;
-  -moz-user-select: none;
-  -o-user-select: none;
-  -khtml-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
 }
 
 .contacts {

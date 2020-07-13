@@ -66,7 +66,7 @@ export default class CommandCollect {
         return match ? match.value : undefined;
     }
     getTarget(dom) {
-        const { attributes, className = '', id } = dom;
+        const { attributes, className = '', nid } = dom;
         if (attributes && attributes['data-engine-node']) {
             const nodeType = this.attr(dom, 'data-node-type');
             const nodeId = this.attr(dom, 'data-node-id');
@@ -77,7 +77,7 @@ export default class CommandCollect {
                 dom,
                 node: {
                     type: nodeType,
-                    id: nodeId,
+                    nid: nodeId,
                     mode: nodeMode
                 }
             };
@@ -87,7 +87,7 @@ export default class CommandCollect {
             return {
                 type: 'resize',
                 direction: className.split(' ')[0],
-                moduleId: moduleDom.id,
+                moduleId: moduleDom.nid,
                 trigger: dom,
                 dom: dom.parentNode
             };
@@ -96,7 +96,7 @@ export default class CommandCollect {
             const moduleDom = dom.parentNode.childNodes[0];
             return {
                 type: 'rotate',
-                moduleId: moduleDom.id,
+                moduleId: moduleDom.nid,
                 trigger: dom,
                 dom: dom.parentNode
             };
@@ -273,7 +273,6 @@ export default class CommandCollect {
                         }
                     });
                 } else {
-                    console.log(e.target.innerHTML,'发送')
                     execute({
                         type: EVENTS.CLICK_NODE,
                         data:{node:node,value:e.target.innerHTML}
