@@ -9,6 +9,12 @@
         <button @click="printData">+</button>
       </div>
     </div>
+    <a-modal
+      title="Title"
+      :visible="visible"
+    >
+      <p>66</p>
+    </a-modal>
   </div>
 </template>
 <script>
@@ -23,9 +29,15 @@ export default {
       }
     }
   },
+  data(){
+    return{
+      visible:false,
+    }
+  },
   methods: {
     printData() {
       const info = confirm("确定是添加审核节点，取消是添加条件节点 ");
+      // this.visible = true
       this.$bus.$emit("treeChange", {
         type: "add",
         nodeType: info,

@@ -7,6 +7,7 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@antv/g6": "^3.5.10",
     "ant-design-vue": "^1.6.2",
     "core-js": "^3.6.5",
     "immutable": "^4.0.0-rc.12",

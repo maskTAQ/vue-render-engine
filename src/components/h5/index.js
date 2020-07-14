@@ -133,7 +133,7 @@ export default {
                             bridge.execute({
                                 type: bridge.command.EVENTS.NODE_EDIT,
                                 data: {
-                                  nid: id,
+                                  nid: nid,
                                   path: "props.value",
                                   value:  v
                                 }

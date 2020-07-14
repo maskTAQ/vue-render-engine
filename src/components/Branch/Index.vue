@@ -10,7 +10,8 @@ export default {
   data() {
     return {
       bus: new Vue(),
-      nodeTree: null
+      nodeTree: null,
+      no:'',
     };
   },
   provide() {
@@ -42,7 +43,7 @@ export default {
         data.nodeId,
         this.nodeTree.traverseBF
       );
-      console.log(newTree._root,'_root')
+      console.log(JSON.stringify(newTree._root),'_root')
       this.$emit("update:branchData", newTree._root);
     });
     this.bus.$on("treeDelNode", data => {
@@ -62,6 +63,7 @@ export default {
   render(createElement) {
     function getDom(nodeData, parentNode) {
       let domLoopList = [];
+      var that = this;
       if (nodeData.type === "start" || nodeData.type === "approver") {
         domLoopList = domLoopList.concat([
           createElement("AddNode", {
@@ -71,7 +73,7 @@ export default {
           })
         ]);
       }
-      if (nodeData.type === "condition") {
+      if (nodeData.type === "condition"){
         domLoopList = domLoopList.concat([
           createElement("ConditionNode", {
             props: {
@@ -94,6 +96,15 @@ export default {
       }
       if (nodeData.childNode) {
         domLoopList = domLoopList.concat(getDom(nodeData.childNode, nodeData));
+      }
+      if(!nodeData.childNode){
+      domLoopList = domLoopList.concat([
+          createElement("EndNode", {
+            props: {
+              // addData: nodeData
+            }
+          })
+        ]);
       }
       return domLoopList;
     }

@@ -18,8 +18,11 @@
 import Engine from "@/Engine";
 import NodeMenu from "@/NodeMenu";
 import Setting from "./Seting/index.vue";
-import {saveFormByCreateProcess,getFromForStart} from "@/service/getData.js"
+import {WfFormVariablesSave} from "@/service/getData.js"
+import Vue from 'vue';
+import { Toast } from 'vant';
 
+Vue.use(Toast);
 import { datasource } from "@/utils";
 import nodeInject from "./components";
 import bridge from "@/bridge";
@@ -62,6 +65,13 @@ export default {
       // })
     },
     onSubmit(values) {
+      WfFormVariablesSave(values,{
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }).then(res=>{
+        Toast.success(res.message);
+      })
       console.log("submit", values);
     }
   }
