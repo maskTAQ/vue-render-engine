@@ -1,4 +1,4 @@
-class AddNode {
+export class AddNode {
     constructor(nodeId, prevId) {
         this.nodeId = nodeId;
         this.name = nodeId;
@@ -6,7 +6,7 @@ class AddNode {
         this.type = 'approver';
     }
 }
-class ConditionNode {
+export class ConditionNode {
     constructor(nodeId, prevId) {
         this.nodeId = nodeId;
         this.type = 'route';
