@@ -76,6 +76,7 @@ export default {
           stroke: '#E4E4E4'
         }
       })
+      console.log(this.g6Data.nodes,'this.g6Data.nodes')
       this.g6Data.edges = this._g6GetEdges()
     },
     initG6 () {

@@ -12,17 +12,19 @@ import Vue from "vue";
 class Format {
   constructor(data) {
     this.data = data;
+    this.nodes = [data];
     const line = [data];
     this.lines = [line];
 
     this.recursive({
       node: data,
+      nodes: this.nodes,
       lines: this.lines,
       line,
       set() {}
     });
   }
-  recursive({ node, lines, line, set }) {
+  recursive({ nodes, node, lines, line, set }) {
     const { childNode, nodeId } = node;
     switch (true) {
       case childNode instanceof ConditionNodeClass: {
@@ -35,11 +37,21 @@ class Format {
           //将新线段添加到线段的集合中
           lines.push(lineBranch);
           //为子节点添加父级
-          childNode.parent = node;
+          childNode.from = node.nodeId;
+          node.to = childNode.nodeId;
+          // childNode.parent = node;
           //将子节点添加到线段中
           lineBranch.push(childNode);
+          //将节点添加到节点集合中
+          nodes.push(childNode);
           //继续添加子节点中的子节点到本线段中
-          this.recursive({ node: childNode, lines, line: lineBranch, set });
+          this.recursive({
+            nodes,
+            node: childNode,
+            lines,
+            line: lineBranch,
+            set
+          });
           // pathAppend.push(lineAppend);
           // set(pathAppend);
         });
@@ -48,17 +60,21 @@ class Format {
       }
       case childNode instanceof AddNodeClass: {
         //为子节点添加父级
-        childNode.parent = node;
+        childNode.from = node.nodeId;
+        node.to = childNode.nodeId;
+        // childNode.parent = node;
         //把node的子节点添加到线条中
         line.push(childNode);
+        //将节点添加到节点集合中
+        nodes.push(childNode);
         //继续添加子节点中的子节点到本线段中
-        this.recursive({ node: childNode, lines, line, set });
+        this.recursive({ nodes, node: childNode, lines, line, set });
         break;
       }
     }
   }
   get() {
-    return this.lines;
+    return this.nodes;
   }
 }
 export default {
@@ -114,7 +130,7 @@ export default {
         data.currentNode.prevId,
         this.nodeTree.traverseBF
       );
-      console.log(newTree._root);
+      console.log(JSON.stringify(newTree._root,'++'))
     });
   },
 
